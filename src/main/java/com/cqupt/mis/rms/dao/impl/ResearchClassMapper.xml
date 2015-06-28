@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResearchClassDao" >
+	<!-- 科研类别类的映射 -->
+	<resultMap id="ResearchClass" type="com.cqupt.mis.rms.model.ResearchClass" >
+		<id column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="class_name" property="className" jdbcType="VARCHAR" />
+		<result column="class_des" property="classDes" jdbcType="VARCHAR" />
+		<result column="class_remark" property="classRemark" jdbcType="VARCHAR" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+		<result column="order" property="order" jdbcType="INTEGER" />
+		<result column="submittime" property="submittime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- 所有的数据库字段 -->
+	<sql id="ColumnList" >
+		`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+	</sql>
+	
+	<!-- 查找所有记录 -->
+	<select id="findAll" resultMap="ResearchClass" parameterType="java.lang.Integer" >
+		select 
+		<include refid="ColumnList" />
+		from `research_class`
+		where `is_delete` = 0
+		order by `order`
+	</select>
+	
+	<!-- 根据主键查找记录 -->
+	<select id="selectByPrimaryKey" resultMap="ResearchClass" parameterType="java.lang.Integer" >
+		select 
+		<include refid="ColumnList" />
+		from `research_class`
+		where `class_id` = #{classId, jdbcType=INTEGER}
+	</select>
+	
+	<!-- 根据主键删除记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		delete from `research_class`
+		where `class_id` = #{classId,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- 根据主键假删除记录，设置is_delete为1，order为0 -->
+	<update id="delete" parameterType="java.lang.Integer" >
+		update `research_class`
+		set `is_delete` = 1, `order` = 0
+		where `class_id` = #{classId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 插入一条记录 -->
+	<insert id="add" parameterType="com.cqupt.mis.rms.model.ResearchClass" >
+	  insert into `research_class`
+	  <trim prefix="(" suffix=")" suffixOverrides="," >
+	    <if test="classId != 0" >
+	      `class_id`,
+	    </if>
+	    <if test="className != null" >
+	      `class_name`,
+	    </if>
+	    <if test="classDes != null" >
+	      `class_des`,
+	    </if>
+	    <if test="classRemark != null" >
+	      `class_remark`,
+	    </if>
+	    <if test="isDelete != 0" >
+	      `is_delete`,
+	    </if>
+	    <if test="order != 0" >
+	      `order`,
+	    </if>
+	    <if test="submittime != null" >
+	      `submittime`,
+	    </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	    <if test="classId != 0" >
+	      #{classId,jdbcType=INTEGER},
+	    </if>
+	    <if test="className != null" >
+	      #{className,jdbcType=VARCHAR},
+	    </if>
+	    <if test="classDes != null" >
+	      #{classDes,jdbcType=VARCHAR},
+	    </if>
+	    <if test="classRemark != null" >
+	      #{classRemark,jdbcType=VARCHAR},
+	    </if>
+	    <if test="isDelete != 0" >
+	      #{isDelete,jdbcType=INTEGER},
+	    </if>
+	    <if test="order != 0" >
+	      #{order,jdbcType=INTEGER},
+	    </if>
+	    <if test="submittime != null" >
+	      #{submittime,jdbcType=TIMESTAMP},
+	    </if>
+	  </trim>
+	</insert>
+  
+	<!-- 根据主键修改记录 -->
+	<update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchClass" >
+	  update `research_class`
+	  <set >
+	    <if test="className != null" >
+	      `class_name` = #{className,jdbcType=VARCHAR},
+	    </if>
+	    <if test="classDes != null" >
+	      `class_des` = #{classDes,jdbcType=VARCHAR},
+	    </if>
+	    <if test="classRemark != null" >
+	      `class_remark` = #{classRemark,jdbcType=VARCHAR},
+	    </if>
+	    <if test="isDelete != null" >
+	      `is_delete` = #{isDelete,jdbcType=INTEGER},
+	    </if>
+	    <if test="order != null" >
+	      `order` = #{order,jdbcType=INTEGER},
+	    </if>
+	    <if test="submittime != null" >
+	      `submittime` = #{submittime, jdbcType=TIMESTAMP},
+	    </if>
+	  </set>
+	  where `class_id` = #{classId,jdbcType=INTEGER}
+	</update>
+  
+</mapper>

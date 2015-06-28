@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.RolePurviewDynDao" >
+	<!-- 动态权限类的结果集 -->
+	<resultMap id="RolePurviewDyn" type="com.cqupt.mis.rms.model.RolePurviewDyn" >
+		<id column="rp_role_id" property="roleInfo.roleId" />
+		<id column="rp_class_id" property="researchClass.classId"/>
+		
+		<result column="input" property="input" jdbcType="BOOLEAN"/>
+		<result column="manage" property="manage" jdbcType="BOOLEAN"/>
+		<result column="approve" property="approve"  jdbcType="BOOLEAN"/>
+		<result column="statistics" property="statistics"  jdbcType="BOOLEAN"/>
+		
+		<association column="rp_role_id" property="roleInfo" resultMap="com.cqupt.mis.rms.dao.CQUPTRoleDao.BaseResultMap" />
+		<association column="rp_class_id" property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"/>
+	</resultMap>
+	
+	<!-- 所有的字段集合 -->
+	<sql id="ColumnList">
+		rp.`role_id` AS `rp_role_id`, rp.`class_id` AS `rp_class_id`, `input`, `manage`, `approve`, `statistics`
+	</sql>
+	
+	<!-- 根据角色ID查找动态权限 -->
+	<select id="findByRoleId" resultMap="RolePurviewDyn">
+		SELECT <include refid="ColumnList"></include>,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime` 
+		FROM `role_purview_dynamic` rp, `research_class` c
+		WHERE rp.`class_id` = c.`class_id` AND rp.`role_id` = #{rId, jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查找所有的记录 -->
+	<select id="findAll" resultMap="RolePurviewDyn">
+		SELECT <include refid="ColumnList"></include>,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`,
+		r.`role_id`, `role_name`, `role_level_id`, `description`
+		FROM `role_purview_dynamic` rp, `research_class` c, `cqupt_role` r
+		WHERE rp.`class_id` = c.`class_id` AND r.`role_id` = rp.`role_id`
+	</select>
+	
+	<!--根据角色Id添加动态权限  -->
+	<insert id="addRolePurviewDyn" parameterType="java.util.List">
+		insert into role_purview_dynamic (role_id , class_id, input, manage, approve, statistics) values
+		<foreach collection="list" item="item"  separator="," > 
+		(#{item.roleInfo.roleId,jdbcType=INTEGER},#{item.researchClass.classId,jdbcType=VARCHAR},
+  			#{item.input,jdbcType=BOOLEAN},#{item.manager,jdbcType=BOOLEAN},
+  			#{item.approve,jdbcType=BOOLEAN},#{item.statistics,jdbcType=BOOLEAN})
+		</foreach>
+	</insert>
+</mapper>

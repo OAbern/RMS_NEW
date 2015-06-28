@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResearchPersonDao" >
+	<!-- 科研相关人员结果集 -->
+	<resultMap id="ResearchPerson" type="com.cqupt.mis.rms.model.ResearchPerson" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="record_id" property="recordId" jdbcType="VARCHAR" />
+		<result column="member_id" property="userId" jdbcType="VARCHAR" />
+		<result column="member_name" property="name" jdbcType="VARCHAR" />
+		<result column="orders" property="order" jdbcType="INTEGER" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 字段集 -->
+	<sql id="ColumnList" >
+		`id`, `record_id`, `member_id`, `member_name`, `orders`, `remarks`
+	</sql>
+	
+	<!-- 插入一组数据 -->
+	<insert id="addList" >
+		insert into research_person (`record_id`, member_id, `member_name`, `orders`, `remarks`)
+		values 
+		<foreach collection="persons" item="p" separator=",">
+			(	#{rId, jdbcType=VARCHAR}, #{p.userId, jdbcType=VARCHAR}, 
+				#{p.name, jdbcType=VARCHAR}, #{p.order, jdbcType=INTEGER}, 
+				#{p.remarks, jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	
+	<!-- 根据recordId查找一组数据 -->
+	<select id="findListByRecordId" resultMap="ResearchPerson" parameterType="java.lang.String" >
+		select 
+		<include refid="ColumnList" />
+		from `research_person`
+		where `record_id` = #{recordId, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据recordId列表查找数据 -->
+	<select id="findListByRecordIds" resultMap="ResearchPerson" parameterType="java.lang.String" >
+		select 
+		<include refid="ColumnList" />
+		from `research_person`
+		where `record_id` IN (
+			<foreach collection="rIds" item="i" separator=",">
+				#{i, jdbcType=VARCHAR}
+			</foreach>
+		)
+	</select>
+	
+	
+	
+	
+	
+	
+	<!-- ********************************************************** -->
+	
+	<!-- 根据主键查找 -->
+	<select id="selectByPrimaryKey" resultMap="ResearchPerson" parameterType="java.lang.Integer" >
+		select 
+		<include refid="ColumnList" />
+		from `research_person`
+		where `id` = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 根据主键删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		delete from research_person
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqupt.mis.rms.model.ResearchPerson" >
+    update research_person
+    <set >
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchPerson" >
+    update research_person
+    set record_id = #{recordId,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      orders = #{orders,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

@@ -1,0 +1,16 @@
+.clear{ clear:both;}
+		body{ background:#E4E4E4;}
+		#allpage{ background:#fff; padding-top:6px;}
+		.content{ margin:20px 0;}
+		.content form{ width:760px; margin:0 auto;}
+		.content form label{ padding-right:18px; cursor:pointer; display:block; float:left; width:100px; text-align:right;}
+		.content form input , .content form select{ margin-left:10px; width:20em;}
+		.content form input:focus{ background:#F6F6F6;}
+		.content form p{ margin:3em 0 0 20em;}
+		.content form .add{ color:#F06274; padding-left:16px;}
+		
+		
+		input.rightformcss,select.rightformcss,textarea.rightformcss{border:1px solid #5383F2;padding:1px;}
+		.failmsg{color:#a40000;}
+		input.failformcss,select.failformcss,textarea.failformcss{border:1px solid #F06274;padding:1px;}
+		.content form input.btn{background:url(../image/button.png) no-repeat; width:57px; height:25px; line-height:25px; color:#FFF; border:0; cursor:pointer;}

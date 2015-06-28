@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.SortDao">
+	<!-- 添加时，维护排序字段 -->
+	<update id="sortBeforeAdd">
+		UPDATE `${table}` 
+		SET `order` = `order`+1 
+		WHERE `order` >= #{order, jdbcType=INTEGER}
+		<if test="classId > 0 ">
+		and `class_id` = #{classId, jdbcType=INTEGER}
+		</if>
+	</update>
+	
+	<!-- 删除时，维护排序字段 -->
+	<update id="sortAfterDelete">
+		UPDATE `${table}` 
+		SET `order` = `order`-1 
+		WHERE `order` >= #{order, jdbcType=INTEGER}
+		<if test="classId > 0 ">
+		and `class_id` = #{classId, jdbcType=INTEGER}
+		</if>
+	</update>
+	
+	<!-- 处理修改时，旧排序值比新排序值大时的情况 -->
+	<update id="sortForModify1">
+		UPDATE `${table}`
+		SET `order` = `order` + 1
+		WHERE `order` BETWEEN #{newOrder, jdbcType=INTEGER} AND #{oldOrder, jdbcType=INTEGER}
+		<if test="classId > 0 ">
+		AND `class_id` = #{classId, jdbcType=INTEGER}
+		</if>
+	</update>
+	
+	<!-- 处理修改时，旧排序值比新排序值小时的情况 -->
+	<update id="sortForModify2">
+		UPDATE `${table}` 
+		SET `order` = `order` - 1 
+		WHERE `order` BETWEEN #{oldOrder, jdbcType=INTEGER} AND #{newOrder, jdbcType=INTEGER}
+		<if test="classId > 0 ">
+		and `class_id` = #{classId, jdbcType=INTEGER}
+		</if>
+	</update>
+	
+</mapper>

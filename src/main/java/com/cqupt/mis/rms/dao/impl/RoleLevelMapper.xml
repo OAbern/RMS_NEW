@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.RoleLevelDao" >
+
+  <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.RoleLevel" >
+    <id column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="role_level_name" property="roleLevelName" jdbcType="VARCHAR" />
+    <result column="role_level_description" property="roleLevelDescription" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    level_id, role_level_name, role_level_description
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from role_level
+    where level_id = #{levelId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from role_level
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role_level
+    where level_id = #{levelId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="add" parameterType="com.cqupt.mis.rms.model.RoleLevel" >
+    insert into role_level (level_id, role_level_name, role_level_description)
+    values (#{levelId,jdbcType=INTEGER}, #{roleLevelName,jdbcType=VARCHAR}, #{roleLevelDescription,jdbcType=VARCHAR})
+  </insert>
+
+
+  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.RoleLevel" >
+    update role_level
+    set role_level_name = #{roleLevelName,jdbcType=VARCHAR},
+      role_level_description = #{roleLevelDescription,jdbcType=VARCHAR}
+    where level_id = #{levelId,jdbcType=INTEGER}
+  </update>
+</mapper>

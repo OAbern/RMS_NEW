@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.RolePurviewDao" >
+	<!-- 静态权限类的结果集 -->
+	<resultMap id="RolePurview" type="com.cqupt.mis.rms.model.RolePurview" >
+		<id column="roleId" property="roleInfo.roleId" jdbcType="INTEGER"/>
+		<id column="purviewId" property="purviewInfo.purviewId" jdbcType="INTEGER" />
+		<association column="roleId" property="roleInfo" resultMap="com.cqupt.mis.rms.dao.CQUPTRoleDao.BaseResultMap" />
+		<association column="purviewId" property="purviewInfo" resultMap="com.cqupt.mis.rms.dao.ResourceInfoDao.BaseResultMap"/>
+	</resultMap>
+	
+	<!-- 所有的字段集合 -->
+	<sql id="Base_Column_List">
+		roleId,purviewId
+	</sql>
+	
+	
+	
+	
+	
+	<!--***********************************************************  -->
+	<!--插入角色静态资源权限数据到中间表  -->
+	<insert id="addRolePurview">
+		insert into role_purview_fixed (<include refid="Base_Column_List"/>) values
+		<foreach collection="resourceIdArr" item="item" index="index"  separator="," > 
+		(#{roleId,jdbcType=INTEGER},#{item,jdbcType=INTEGER})
+		</foreach>
+	</insert>
+	
+	
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ProofDao" >
+	<!-- 旁证材料的结果映射 -->
+	<resultMap id="Proof" type="com.cqupt.mis.rms.model.Proof" >
+		<id column="proof_id" property="proofId" jdbcType="INTEGER" />
+		<result column="record_id" property="recordId" jdbcType="VARCHAR" />
+		<result column="time_proof_upload" property="timeProofUpload" jdbcType="TIMESTAMP" />
+		<result column="desc_proof" property="descProof" jdbcType="VARCHAR" />
+		<result column="proof_path" property="proofPath" jdbcType="VARCHAR" />
+		<result column="upload_proof_name" property="uploadProofName" jdbcType="VARCHAR" />
+		<result column="upload_real_name" property="uploadRealName" jdbcType="VARCHAR" />
+		<result column="upload_content_type" property="uploadContentType" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 字段集 -->
+	<sql id="ColumnList" >
+		`proof_id`, `record_id`, `time_proof_upload`, `desc_proof`, `proof_path`, `upload_proof_name`, 
+		`upload_real_name`, `upload_content_type`
+	</sql>
+	
+	<!-- 添加一组数据  -->
+	<insert id="addList" >
+	    insert into proofs (`record_id`, `time_proof_upload`, `desc_proof`, `proof_path`,
+	     					`upload_proof_name`, `upload_real_name`, `upload_content_type`)
+	    values 
+	    <foreach collection="proofs" item="p" separator=",">
+	     (	#{rId, jdbcType=VARCHAR}, #{p.timeProofUpload, jdbcType=TIMESTAMP}, 
+	      	#{p.descProof, jdbcType=VARCHAR}, #{p.proofPath, jdbcType=VARCHAR}, #{p.uploadProofName, jdbcType=VARCHAR}, 
+	      	#{p.uploadRealName, jdbcType=VARCHAR}, #{p.uploadContentType, jdbcType=VARCHAR}	)
+	    </foreach>
+  	</insert>
+	
+	<!-- 根据记录id查找一组数据 -->
+	<select id="findListByRecordId" resultMap="Proof" >
+	    select 
+	    <include refid="ColumnList" />
+	    from `proofs`
+	    where `record_id` = #{recordId, jdbcType=VARCHAR}
+  	</select>
+  	
+  	<!-- 根据记录id列表查找数据 -->
+	<select id="findListByRecordIds" resultMap="Proof" >
+	    select 
+	    <include refid="ColumnList" />
+	    from `proofs`
+	    where `record_id` IN (
+	    <foreach collection="rIds" item="i" separator=",">
+	    	#{i, jdbcType=VARCHAR}
+	    </foreach>
+	    )
+  	</select>
+
+
+
+
+
+
+
+
+
+<!-- ********************************************************** -->
+	
+  <select id="selectByPrimaryKey" resultMap="Proof" parameterType="java.lang.Integer" >
+    select 
+    <include refid="ColumnList" />
+    from proofs
+    where proof_id = #{proofId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from proofs
+    where proof_id = #{proofId,jdbcType=INTEGER}
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqupt.mis.rms.model.Proof" >
+    update proofs
+    <set >
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="timeProofUpload != null" >
+        time_proof_upload = #{timeProofUpload,jdbcType=TIMESTAMP},
+      </if>
+      <if test="descProof != null" >
+        desc_proof = #{descProof,jdbcType=VARCHAR},
+      </if>
+      <if test="proofPath != null" >
+        proof_path = #{proofPath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadProofName != null" >
+        upload_proof_name = #{uploadProofName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadRealName != null" >
+        upload_real_name = #{uploadRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadContentType != null" >
+        upload_content_type = #{uploadContentType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where proof_id = #{proofId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cqupt.mis.rms.model.Proof" >
+    update proofs
+    set record_id = #{recordId,jdbcType=VARCHAR},
+      time_proof_upload = #{timeProofUpload,jdbcType=TIMESTAMP},
+      desc_proof = #{descProof,jdbcType=VARCHAR},
+      proof_path = #{proofPath,jdbcType=VARCHAR},
+      upload_proof_name = #{uploadProofName,jdbcType=VARCHAR},
+      upload_real_name = #{uploadRealName,jdbcType=VARCHAR},
+      upload_content_type = #{uploadContentType,jdbcType=VARCHAR}
+    where proof_id = #{proofId,jdbcType=INTEGER}
+  </update>
+</mapper>

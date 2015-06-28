@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResearchDataDao" >
+	<!-- 科研数据结果集 -->
+	<resultMap id="ResearchData" type="com.cqupt.mis.rms.model.ResearchData" >
+		<id column="filed_id" property="filed.id" />
+		<id column="record_id" property="recordId" jdbcType="VARCHAR" />
+		<result column="value" property="value" jdbcType="VARCHAR" />
+		
+		<association property="filed"  resultMap="com.cqupt.mis.rms.dao.ResearchFiledDao.ResearchFiled" />
+		
+	</resultMap>
+	
+	<!-- 字段集 -->
+	<sql id="ColumnList" >
+		`record_id`, d.`filed_id` AS `f_id`, `value`
+	</sql>
+	
+	<!-- 添加一组数据 -->
+	<insert id="addSet" >
+		insert into `research_data` (`record_id`, `filed_id`, `value`)
+		values 
+		<foreach collection="datas" item="d" index="i" separator=",">
+			(	#{rId, jdbcType=VARCHAR}, #{d.filed.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	)
+			<!-- (	'1', #{d.filed.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	) -->
+		</foreach>
+	</insert>
+	
+	
+	<!-- 根据记录id和类别id查找完整的科研记录（包含完整的一个类别下所有字段） -->
+	<select id="findList1" resultMap="ResearchData" >
+		select 
+		`record_id`, `value`,
+		<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
+		from `research_data` d
+		RIGHT JOIN `research_filed` f ON f.`filed_id` = d.`filed_id` AND d.`record_id` = #{rId,jdbcType=VARCHAR} 
+		where f.`class_id` = #{cId,jdbcType=INTEGER} AND f.`is_delete` = 0 
+		
+		<!-- 
+			SELECT
+			d.`record_id`, d.`value`,
+			<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
+			FROM `research_filed` f
+			LEFT JOIN `research_data` d ON f.`filed_id` = d.`filed_id` AND d.`record_id` = '20150619094333245'
+			WHERE f.`class_id` = 1 AND f.`is_delete` = 0
+		 -->
+	</select>
+	
+	<!-- 根据记录id列表和类别id查找科研记录（不完整，不包括空值字段） -->
+	<select id="findList2" resultMap="ResearchData" >
+		select 
+		`record_id`, `value`,
+		<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
+		from `research_data` d
+		RIGHT JOIN `research_filed` f ON f.`filed_id` = d.`filed_id` 
+			AND d.`record_id` IN (<foreach collection="rIds" item="i" separator=","> #{i,jdbcType=VARCHAR}  </foreach>)
+		where f.`class_id` = #{cId,jdbcType=INTEGER} AND f.`is_delete` = 0 
+	</select>
+
+
+
+
+
+	
+	
+	
+	<!-- ********************************************************** -->
+	
+	
+	<!-- 根据主键查找数据 -->
+	<select id="selectByPrimaryKey" resultMap="ResearchData" parameterType="com.cqupt.mis.rms.model.ResearchData" >
+		select 
+		<include refid="ColumnList" />
+		from research_data
+		where record_id = #{recordId,jdbcType=VARCHAR}
+		  and field_id = #{fieldId,jdbcType=INTEGER}
+	</select>
+
+	<!--  -->
+	<delete id="deleteByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchData" >
+		delete from research_data
+		where record_id = #{recordId,jdbcType=VARCHAR}
+		  and field_id = #{fieldId,jdbcType=INTEGER}
+	</delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqupt.mis.rms.model.ResearchData" >
+    update research_data
+    <set >
+      <if test="value != null" >
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=VARCHAR}
+      and field_id = #{fieldId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchData" >
+    update research_data
+    set value = #{value,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+      and field_id = #{fieldId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResourceInfoDao" >
+<!--资源简单结果映射  -->
+  <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.ResourceInfo" >
+    <id column="resourceId" property="resourceId" jdbcType="INTEGER" />
+    <result column="resourceName" property="resourceName" jdbcType="VARCHAR" />
+    <result column="resourceUrl" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="resourceRemark" property="resourceRemark" jdbcType="VARCHAR" />
+    <association column="parentId" property="parentResourceinfo" javaType="com.cqupt.mis.rms.model.ResourceInfo" />
+  </resultMap>
+  
+<!--所有字段集和  -->
+  <sql id="Base_Column_List" >
+    resourceId, resourceName, resourceUrl,resourceRemark,parentId
+  </sql>
+  
+  
+  <!--**********************************************************  -->
+  
+  <!--根据  -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from resource_info
+    where resourceId = #{resourceId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resource_info
+  </select>
+  
+   <select id="findResourceByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from resource_info
+    where parentId = #{parentResourceinfo.resourceId,jdbcType=INTEGER}
+  </select>
+  
+  
+    <!--**********************************************************  -->
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from resource_info
+    where resourceId = #{resourceId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="add" parameterType="com.cqupt.mis.rms.model.ResourceInfo">
+  
+  	insert into resource_info (<include refid="Base_Column_List" />)
+  	values (#{resourceId,jdbcType=INTEGER},#{resourceName,jdbcType=VARCHAR},
+  			#{resourceUrl,jdbcType=VARCHAR},#{resourceRemark,jdbcType=VARCHAR},
+  			#{parentResourceinfo.resourceId,jdbcType=INTEGER})
+  			
+  </insert>
+  
+  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResourceInfo" >
+    update resource_info
+    set resourceName = #{resourceName,jdbcType=VARCHAR},
+    	resourceUrl = #{resourceUrl,jdbcType=VARCHAR},
+    	resourceRemark = #{resourceRemark,jdbcType=VARCHAR}
+      parentId = #{parentResourceinfo.resourceId,jdbcType=INTEGER}
+    where resourceId = #{resourceId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

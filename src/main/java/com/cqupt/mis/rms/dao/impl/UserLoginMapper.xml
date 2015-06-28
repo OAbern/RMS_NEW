@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.UserLoginDao" >
+
+  <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.UserLogin" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_pw" property="userPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.cqupt.mis.rms.model.UserLogin" id="UserRoleResultMap" extends="BaseResultMap">
+  	<collection property="userRoleInfo" ofType="com.cqupt.mis.rms.model.UserRoleInfo">
+  		<association property="roleinfo" javaType="com.cqupt.mis.rms.model.CQUPTRole">
+  		
+  			<id column="role_id" property="roleId" jdbcType="INTEGER" />
+    		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    		<result column="description" property="description" jdbcType="VARCHAR" />
+    		<association column="role_level_id" property="roleLevel" javaType="com.cqupt.mis.rms.model.RoleLevel" />
+    		
+  		</association>
+  	
+  	</collection>
+  	
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    user_id, user_pw
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_login
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from user_login
+  </select>
+  
+  <select id="findUNameAndUPass" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from user_login
+    where user_id = #{userId,jdbcType=VARCHAR} and user_pw = #{userPwd,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findCQUPTRoleByUserId" resultMap="UserRoleResultMap" parameterType="java.lang.String">
+  		select 
+  		  user_login.user_id,
+  		  user_login.user_pw,
+  		  cqupt_role.role_id, 
+  		  cqupt_role.role_name, 
+  		  cqupt_role.role_level_id,
+  		  cqupt_role.description
+  		  from user_login
+  		  left join user_role on  user_login.user_id = user_role.user_id
+  		  left join cqupt_role on  user_role.role_id = cqupt_role.role_id
+  		  where user_login.user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_login
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="add" parameterType="com.cqupt.mis.rms.model.UserLogin" >
+    insert into user_login (user_id, user_pw)
+    values (#{userId,jdbcType=VARCHAR}, #{userPw,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.UserLogin" >
+    update user_login
+    set user_pw = #{userPw,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

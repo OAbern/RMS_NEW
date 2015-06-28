@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.CQUPTUserDao" >
+  <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.CQUPTUser" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="college_id" property="collegeId" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="nationality" property="nationality" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="political_status" property="politicalStatus" jdbcType="VARCHAR" />
+    <result column="time_join_party" property="timeJoinParty" jdbcType="VARCHAR" />
+    <result column="time_begin_cqupt" property="timeBeginCqupt" jdbcType="VARCHAR" />
+    <result column="time_begin_work" property="timeBeginWork" jdbcType="VARCHAR" />
+    <result column="first_degree" property="firstDegree" jdbcType="VARCHAR" />
+    <result column="first_professional_name" property="firstProfessionalName" jdbcType="VARCHAR" />
+    <result column="first_graduate_school" property="firstGraduateSchool" jdbcType="VARCHAR" />
+    <result column="last_degree" property="lastDegree" jdbcType="VARCHAR" />
+    <result column="last_professional_name" property="lastProfessionalName" jdbcType="VARCHAR" />
+    <result column="last_graduate_school" property="lastGraduateSchool" jdbcType="VARCHAR" />
+    <result column="last_academic" property="lastAcademic" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, college_id, department, user_name, gender, origin, nationality, birthday, 
+    political_status, time_join_party, time_begin_cqupt, time_begin_work, first_degree, 
+    first_professional_name, first_graduate_school, last_degree, last_professional_name, 
+    last_graduate_school, last_academic
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cqupt_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from cqupt_user
+  </select>
+  
+   <select id="findCQUPTUserByCollegeId" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from cqupt_user
+    where college_id = #{collegeId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cqupt_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  
+   <delete id="deleteByArray" parameterType="java.lang.String" >
+    delete from cqupt_user
+    where user_id in
+    <foreach item="item" index="index" collection="array"
+		open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </delete>
+  
+  
+  <insert id="add" parameterType="com.cqupt.mis.rms.model.CQUPTUser" >
+    insert into cqupt_user (user_id, college_id, department, 
+      user_name, gender, origin, 
+      nationality, birthday, political_status, 
+      time_join_party, time_begin_cqupt, time_begin_work, 
+      first_degree, first_professional_name, first_graduate_school, 
+      last_degree, last_professional_name, last_graduate_school, 
+      last_academic)
+    values (#{userId,jdbcType=VARCHAR}, #{collegeId,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, 
+      #{nationality,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{politicalStatus,jdbcType=VARCHAR}, 
+      #{timeJoinParty,jdbcType=VARCHAR}, #{timeBeginCqupt,jdbcType=VARCHAR}, #{timeBeginWork,jdbcType=VARCHAR}, 
+      #{firstDegree,jdbcType=VARCHAR}, #{firstProfessionalName,jdbcType=VARCHAR}, #{firstGraduateSchool,jdbcType=VARCHAR}, 
+      #{lastDegree,jdbcType=VARCHAR}, #{lastProfessionalName,jdbcType=VARCHAR}, #{lastGraduateSchool,jdbcType=VARCHAR}, 
+      #{lastAcademic,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  
+ 
+  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.CQUPTUser" >
+    update cqupt_user
+    set college_id = #{collegeId,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      origin = #{origin,jdbcType=VARCHAR},
+      nationality = #{nationality,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      political_status = #{politicalStatus,jdbcType=VARCHAR},
+      time_join_party = #{timeJoinParty,jdbcType=VARCHAR},
+      time_begin_cqupt = #{timeBeginCqupt,jdbcType=VARCHAR},
+      time_begin_work = #{timeBeginWork,jdbcType=VARCHAR},
+      first_degree = #{firstDegree,jdbcType=VARCHAR},
+      first_professional_name = #{firstProfessionalName,jdbcType=VARCHAR},
+      first_graduate_school = #{firstGraduateSchool,jdbcType=VARCHAR},
+      last_degree = #{lastDegree,jdbcType=VARCHAR},
+      last_professional_name = #{lastProfessionalName,jdbcType=VARCHAR},
+      last_graduate_school = #{lastGraduateSchool,jdbcType=VARCHAR},
+      last_academic = #{lastAcademic,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

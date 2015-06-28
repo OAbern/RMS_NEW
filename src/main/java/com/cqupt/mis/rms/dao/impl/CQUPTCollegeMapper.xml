@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.CQUPTCollegeDao" >
+  <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.CQUPTCollege" >
+    <id column="college_id" property="collegeId" jdbcType="VARCHAR" />
+    <result column="college_name" property="collegeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    college_id, college_name
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cqupt_college
+    where college_id = #{collegeId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from cqupt_college
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cqupt_college
+    where college_id = #{collegeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="add" parameterType="com.cqupt.mis.rms.model.CQUPTCollege" >
+    insert into cqupt_college (college_id, college_name)
+    values (#{collegeId,jdbcType=VARCHAR}, #{collegeName,jdbcType=VARCHAR})
+  </insert>
+  
+ 
+ 
+  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.CQUPTCollege" >
+    update cqupt_college
+    set college_name = #{collegeName,jdbcType=VARCHAR}
+    where college_id = #{collegeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+
+	body{ text-align:center;}
+	#allpage{}
+	.item{ clear:both; margin:10px 0 30px; text-align:left;}
+	.element{ padding:8px 0 0 0; float:left; width:300px;}
+	.element label{ width:100px; text-align:right; display:block; float:left; padding-right:8px;}
+	.element input{ width:150px;}
+	.line{ clear:both; width:900px;}
+	.title{ clear:both; text-indent:2em; border-bottom:2px solid #85C0F1; width:900px; line-height:30px;}
+	p#tijiao{ margin:3em 0 3em 20em;}
+	#tijiao .btn{background:url(../image/button.png) no-repeat; width:57px; height:25px; line-height:25px; color:#FFF; border:0; cursor:pointer;}
+	.content{ width:900px;}
+	.bottomcontent{ width:900px;}

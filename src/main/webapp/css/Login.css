@@ -1,0 +1,39 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0;}
+body{ background:#8fbffe;}
+#allpage{ background:url(../images/login/slice_2.gif) repeat-x left top; height:600px; padding:100px 0 0;}
+#login{ font-family:'微软雅黑','幼圆','黑体','宋体',Verdana, Geneva, sans-serif; width:520px; height:382px; padding:30px 0px 0px 50px; margin:0 auto; background:url(../images/login/slice_1.gif) repeat-x;}
+.radius{ border-radius:16px; -moz-border-radius:16px; -webkit-border-radius:16px;}
+.shadow{ box-shadow:3px 3px 3px #666; -moz-box-shadow:3px 3px 3px #666; -webkit-box-shadow:3px 3px 3px #666;}
+#login form{ height:352px; background:url(../images/login/cqupt.gif) no-repeat right;}
+#login form h2{ color:#666; text-align:center; line-height:60px; margin:10px 0 30px;}
+#login form label{ display:block; width:100px; height:54px; float:left; cursor:pointer;}
+#login form input , #login form  select{ float:left; width:14em;}
+#login form input:focus{ background:#EDF5FE;}
+#login form label input{ margin-right:10px; width:auto;}
+#login form br{ clear:both;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

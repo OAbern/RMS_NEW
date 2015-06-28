@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResearchRecordDao" >
+
+	<!-- 科研记录简单结果映射 -->
+	<resultMap id="SimpleResearchRecord" type="com.cqupt.mis.rms.vo.ResearchRecordVO" >
+		<id column="record_id" property="recordId" jdbcType="VARCHAR" />
+		<result column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="return_reason" property="returnReason" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		
+		<result column="submit_user_id" property="submitUserId" jdbcType="VARCHAR" />
+		<result column="approved_user_id" property="approvedUserId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 科研记录的结果映射 -->
+	<resultMap id="ResearchRecord" type="com.cqupt.mis.rms.model.ResearchRecord" >
+		<id column="record_id" property="id" jdbcType="VARCHAR" />
+		<result column="return_reason" property="returnReason" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		
+		<!-- <result column="class_id" property="classId" jdbcType="INTEGER" />
+		<result column="submit_user_id" property="submitUserId" jdbcType="VARCHAR" />
+		<result column="approved_user_id" property="approvedUserId" jdbcType="VARCHAR" /> -->
+	
+		<association column="r_class_id" property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"></association>
+		<association column="u1_id" property="submitUser" javaType="com.cqupt.mis.rms.model.CQUPTUser">
+			<id column="u1_id" property="userId"/>
+			<result column="u1_name" property="userName"/>
+		</association>
+		<association column="u2_id" property="approvedUser" javaType="com.cqupt.mis.rms.model.CQUPTUser">
+			<id column="u2_id" property="userId"/>
+			<result column="u2_name" property="userName"/>
+		</association>
+	</resultMap>
+	
+	<!-- 所有字段的集合 -->
+	<sql id="ColumnList" >
+		`record_id`, r.`class_id` AS `r_class_id`, `return_reason`, `status`, `submit_user_id`, `approved_user_id`
+	</sql>
+  	
+  	<!-- 删除一条记录（级联删除所有信息） -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from `research_record`
+		where `record_id` = #{recordId, jdbcType=VARCHAR}
+	</delete>
+  
+	<!-- 添加一条记录 -->
+	<insert id="add" parameterType="com.cqupt.mis.rms.model.ResearchRecord" >
+		insert into `research_record` (`record_id`, `class_id`, `status`, `submit_user_id`)
+		values (	#{id,jdbcType=VARCHAR}, #{researchClass.classId,jdbcType=INTEGER}, 
+					#{status,jdbcType=INTEGER}, #{submitUser.userId,jdbcType=VARCHAR}	)
+	</insert>
+	
+	<!-- 审批通过科研记录 -->
+	<update id="accept" >
+		update `research_record` 
+		set `status` = 2, `approved_user_id` = #{userId,jdbcType=VARCHAR}
+		where `record_id` = #{record.id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 审批拒绝科研记录 -->
+	<update id="refuse">
+		update `research_record` 
+		set `status` = 3, `approved_user_id` = #{userId, jdbcType=VARCHAR}, `return_reason` = #{record.returnReason, jdbcType=VARCHAR}
+		where `record_id` = #{record.id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据记录ID查找一条记录 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResearchRecord">
+		SELECT u1.`user_id` AS `u1_id`, u1.`user_name` AS `u1_name`, u2.`user_id` AS `u2_id`, u2.`user_name` AS `u2_name`,
+		<include refid="ColumnList" />,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+		FROM `research_record` r
+		LEFT JOIN `research_class` c ON r.`class_id` = c.`class_id` 
+		LEFT JOIN `cqupt_user` u1 ON r.`submit_user_id` = u1.`user_id`
+		LEFT JOIN `cqupt_user` u2 ON r.`approved_user_id` = u2.`user_id`
+		WHERE r.`record_id` = #{recordId, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查找指定用户、指定类别下所有的记录 -->
+	<select id="findListByUserAndClass" resultMap="ResearchRecord">
+		SELECT u1.`user_id` AS `u1_id`, u1.`user_name` AS `u1_name`, u2.`user_id` AS `u2_id`, u2.`user_name` AS `u2_name`,
+		<include refid="ColumnList" />,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+		FROM `research_record` r
+		LEFT JOIN `research_class` c ON r.`class_id` = c.`class_id` 
+		LEFT JOIN `cqupt_user` u1 ON r.`submit_user_id` = u1.`user_id`
+		LEFT JOIN `cqupt_user` u2 ON r.`approved_user_id` = u2.`user_id`
+		WHERE `submit_user_id` = #{uId, jdbcType=VARCHAR} AND r.`class_id` = #{cId, jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查找指定类别下的所有待审核记录 -->
+	<select id="findListByClassForApprove" resultMap="ResearchRecord">
+		SELECT u1.`user_id` AS `u1_id`, u1.`user_name` AS `u1_name`, u2.`user_id` AS `u2_id`, u2.`user_name` AS `u2_name`,
+		<include refid="ColumnList" />,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+		FROM `research_record` r
+		LEFT JOIN `research_class` c ON r.`class_id` = c.`class_id` 
+		LEFT JOIN `cqupt_user` u1 ON r.`submit_user_id` = u1.`user_id`
+		LEFT JOIN `cqupt_user` u2 ON r.`approved_user_id` = u2.`user_id`
+		WHERE r.`class_id` = #{cId, jdbcType=INTEGER} AND `status` = 1
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- ************************************************************** -->
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqupt.mis.rms.model.ResearchRecord" >
+    update research_record
+    <set >
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="returnReason != null" >
+        return_reason = #{returnReason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="submitUserId != null" >
+        submit_user_id = #{submitUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedUserId != null" >
+        approved_user_id = #{approvedUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchRecord" >
+    update research_record
+    set class_id = #{classId,jdbcType=INTEGER},
+      return_reason = #{returnReason,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      submit_user_id = #{submitUserId,jdbcType=VARCHAR},
+      approved_user_id = #{approvedUserId,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>
