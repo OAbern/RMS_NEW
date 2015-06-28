@@ -13,9 +13,15 @@ import com.cqupt.mis.rms.service.UserManagerService;
  *
  */
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserInfoController {
 	@Resource
 	UserManagerService userManagerServiceImpl;
+	
+	@RequestMapping("/loginchech")
+	public void login() {
+		
+	}
+	
 	
 }

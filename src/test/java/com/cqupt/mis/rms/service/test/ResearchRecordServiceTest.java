@@ -150,4 +150,10 @@ public class ResearchRecordServiceTest {
 		System.out.println(JSONUtils.toJSONString(records));
 	}
 	
+	@Test
+	public void printJson() {
+		ResearchRecord record = new ResearchRecord();
+		System.out.println(JSONUtils.toJSONString(record));
+	}
+	
 }

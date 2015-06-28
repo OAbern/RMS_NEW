@@ -32,10 +32,7 @@ public class AuthorityResource {
 	
 	private Map<Integer, Map<Integer, RolePurviewDyn>> dynamicResourceMap = null;	//外层map中：类别id为key， 权限为value；内层map中：角色id为key，权限为value
 
-	public AuthorityResource() {
-		loadFixed();
-		loadDynamic();
-	}
+	public AuthorityResource() {}
 	
 	/**
 	 * 加载静态的角色资源权限列表
@@ -106,10 +103,16 @@ public class AuthorityResource {
 	}
 
 	public Map<String, List<Integer>> getFixedResourceMap() {
+		if(fixedResourceMap == null) {
+			loadFixed();
+		}
 		return fixedResourceMap;
 	}
 
 	public Map<Integer, Map<Integer, RolePurviewDyn>> getDynamicResourceMap() {
+		if(dynamicResourceMap == null) {
+			loadDynamic();
+		}
 		return dynamicResourceMap;
 	}
 	

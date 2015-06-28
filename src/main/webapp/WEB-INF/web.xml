@@ -7,7 +7,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   
 	<!-- 首页配置 -->
 	<welcome-file-list>
-	  <welcome-file>index.jsp</welcome-file>
+	  <welcome-file>login.html</welcome-file>
 	</welcome-file-list>
 	 
 	<!-- 设置session过期的时间 -->
@@ -69,7 +69,11 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</filter>
 	<filter-mapping>
 		<filter-name>AuthorityFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>AuthorityFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
 	</filter-mapping>
 	 
 	<!-- 将所有*.do的请求交给springMVC的DispatcherServlet来处理 -->

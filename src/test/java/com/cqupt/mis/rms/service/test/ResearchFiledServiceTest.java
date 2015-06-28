@@ -65,13 +65,7 @@ public class ResearchFiledServiceTest {
 	@Test
 	public void findByClassId() {
 		List<ResearchFiled> list = researchFiledServiceImpl.findByClassId(1);
-		for(ResearchFiled filed : list) {
-			System.out.println(filed.getId());
-			System.out.println(filed.getName());
-			System.out.println("classOrder:"+filed.getResearchClass().getClassName());
-			System.out.println("classOrder:"+filed.getResearchClass().getOrder());
-			System.out.println("***********");
-		}
+		System.out.println(JSONUtils.toJSONString(list));
 	}
 	
 	@Test
