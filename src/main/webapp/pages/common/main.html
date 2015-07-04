@@ -23,17 +23,25 @@
 		<div position="left" title="主菜单" id="accordion1">
 
 			<div title="">
-
 				<div style="height: 7px;"></div>
-					
 				<a class="l-link" href=""></a>
-
 			</div>
+			
+			<div title="系统管理员功能">
+				<div style="height: 7px;"></div>
+				<a class="l-link" href="javascript:f_addTab('rolePurviewInfo','角色权限管理','roleInfo.action')">角色权限管理</a>
+				<a class="l-link" href="javascript:f_addTab('userRoleInfo','用户角色管理','viewUserAndRole.action')">用户角色管理</a>
+				<a class="l-link" href="javascript:f_addTab('deleteErrorExcel','删除批量导入时错误的EXCEL','deleteErrorExcel.action')">删除批量导入时错误的EXCEL</a>
+				<a class="l-link" href="javascript:f_addTab('adddynamicdatafield','添加动态数据库字段','pages/system/adddynamicdatafield.jsp')">添加动态数据库字段</a>
+				<a class="l-link" href="javascript:f_addTab('managedynamicdatafield','管理动态数据库字段','pages/system/managedynamicdatafield.jsp')">管理动态数据库字段</a>
+			</div>
+			
+		</div>
 
 		</div>
 		<div position="center" id="framecenter">
 			<div tabid="home" title="欢迎" style="height: 300px">
-				<iframe frameborder="0" name="home" id="home" src="pages/common/welcome.html"></iframe>
+				<iframe frameborder="0" name="home" id="home" src="welcome.html"></iframe>
 			</div>
 		</div>
 	</div>
