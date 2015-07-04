@@ -7,7 +7,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   
 	<!-- 首页配置 -->
 	<welcome-file-list>
-	  <welcome-file>login.html</welcome-file>
+	  <welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
 	 
 	<!-- 设置session过期的时间 -->
@@ -62,7 +62,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<url-pattern>/</url-pattern>
 	</filter-mapping>
 	 
-	<!-- 权限拦截器 	必须放在Spring拦截器之前 -->
+	<!-- 权限拦截器 	必须放在Spring拦截器之前 
 	<filter>
 		<filter-name>AuthorityFilter</filter-name>
 		<filter-class>com.cqupt.mis.rms.filter.AuthorityFilter</filter-class>
@@ -75,6 +75,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<filter-name>AuthorityFilter</filter-name>
 		<url-pattern>*.html</url-pattern>
 	</filter-mapping>
+	 -->
 	 
 	<!-- 将所有*.do的请求交给springMVC的DispatcherServlet来处理 -->
 	<servlet>

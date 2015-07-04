@@ -18,12 +18,14 @@ public interface MenuService {
 	 * @return
 	 */
 	public List<MenuInfo>  findMenuList(int roleId);
+	
 	/**
 	 * 根据角色Id加载一级的菜单项
 	 * @param roleId
 	 * @return
 	 */
 	public CQUPTRole findMenuOneList(int roleId);
+	
 	/**
 	 * 根据角色Id和父类Id加载相应的二级的菜单项
 	 * @param roleId

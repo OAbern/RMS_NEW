@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"%>
-<!DOCTYPE html>
+<%    
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <html>
+<base href="<%=basePath%>">
 <head>
 	<meta charset="UTF-8">
 	<title>高校科研管理系统——登录</title>
@@ -27,10 +31,14 @@
 	<div id="mid">
 		<div class="left"></div>
 		<div class="right radius">
-			<form action="/login/check.do" method="post" onsubmit="return checkForm()">
+			<form action="login/check.do" method="post" onsubmit="return checkForm()">
 				<h3>请输入用户名和密码</h3>
 				<FONT color="red">
-					<s:property value="#session.loginFailed"/>
+				<%
+					Object object = request.getAttribute("loginFailed");
+					if(object != null)
+						out.print(object);		
+				%>
 				</FONT>
 				<br>
 				<label for="userName">用户名</label>
@@ -107,7 +115,7 @@
 				$("#role").empty();
 				$.each(eval(msg), function(i, item) {
 					$(
-							"<option value='" + item.id + "'>"
+							"<option value='" + item.roleId + "'>"
 									+ item.roleName + "</option>")
 							.appendTo($("#role"));
 				});

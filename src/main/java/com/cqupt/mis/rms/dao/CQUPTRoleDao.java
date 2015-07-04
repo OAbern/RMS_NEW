@@ -22,12 +22,14 @@ public interface CQUPTRoleDao extends BaseDao<CQUPTRole, Integer>{
 	 * @return 
 	 */
 	public  CQUPTRole findRolePurviewByRoleId(int roleId);
+	
 	/**
 	 * 根据角色Id和父类资源查找静态资源
 	 * @param roleId
 	 * @return 
 	 */
 	public CQUPTRole findRolePurviewByRoleIdAndParent(@Param("roleId")int roleId,@Param("parentId")int parentId);
+	
 	/**
 	 * 根据角色Id查找动态资源
 	 * @param roleId
@@ -41,7 +43,6 @@ public interface CQUPTRoleDao extends BaseDao<CQUPTRole, Integer>{
 	 * @param roleLevelId
 	 * @return
 	 */
-	
 	public  CQUPTRole findRoleLevel(@Param("userId")String userId,@Param("roleLevelId")int roleLevelId);
 	
 	

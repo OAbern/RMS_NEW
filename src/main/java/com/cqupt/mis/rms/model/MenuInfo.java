@@ -1,11 +1,7 @@
-/**
- * 
- */
 package com.cqupt.mis.rms.model;
 
+import java.io.Serializable;
 import java.util.List;
-
-import com.cqupt.mis.rms.model.Purviewinfo;
 
 /**
  * <p>
@@ -13,21 +9,14 @@ import com.cqupt.mis.rms.model.Purviewinfo;
  *
  * @author Welkin
  * */
-public class MenuInfo {
+public class MenuInfo implements Serializable {
+	private static final long serialVersionUID = 6838692197212711550L;
 	
 	// 一级菜单
 	private ResourceInfo first;
 	// 二级菜单静态资源
 	private List<ResourceInfo> second;
-	// 二级菜单动态资源
-	private List<ResearchClass> secondDyn;
 
-	public List<ResearchClass> getSecondDyn() {
-		return secondDyn;
-	}
-	public void setSecondDyn(List<ResearchClass> secondDyn) {
-		this.secondDyn = secondDyn;
-	}
 	public ResourceInfo getFirst() {
 		return first;
 	}

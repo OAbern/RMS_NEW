@@ -48,12 +48,12 @@
     where role_id = #{roleId,jdbcType=INTEGER}
   </select>
   
+	<!-- 登录时校验用户名和角色是否正确 -->
   <select id="findRoleLevel" resultMap="BaseResultMap">
-    select r.role_id, role_name, role_level_id, description
-   
-    from cqupt_role as r
-    right join user_role on r.role_id = user_role.role_id
-    where r.role_level_id = #{roleLevelId,jdbcType=INTEGER} and user_role.user_id = #{userId,jdbcType=VARCHAR}
+  	SELECT r.`role_id`, `role_name`, `role_level_id`, `description`  
+	FROM `cqupt_role` AS r, `user_role`
+	WHERE user_role.`user_id` = #{userId,jdbcType=VARCHAR} AND `user_role`.`role_id` = #{roleLevelId,jdbcType=INTEGER} 
+			AND r.`role_id` = user_role.`role_id`
   </select>
   
   <select id="findAll" resultMap="BaseResultMap">
@@ -76,6 +76,7 @@
   	 where role_id = #{roleId,jdbcType=INTEGER}
   </select>
   
+  <!-- 根据角色Id和父类资源查找静态资源 -->
   <select id="findRolePurviewByRoleIdAndParent" resultMap="RolePurviewResultMap" parameterType="java.lang.Integer">
   	select
   	 <include refid="Base_Column_List" />,
