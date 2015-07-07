@@ -9,27 +9,27 @@ public class ResearchConstant {
 	/**
 	 * 录入科研信息的url
 	 */
-	private static final String INPUTURL = "pages/record/inputrecord.html";
+	public static final String INPUTURL = "pages/record/inputrecord.html";
 	
 	/**
 	 * 管理个人科研信息的url
 	 */
-	private static final String MANAGEURL = "pages/record/managerecord.html";
+	public static final String MANAGEURL = "pages/record/managerecord.html";
 	
 	/**
 	 * 审批科研信息的url
 	 */
-	private static final String APPROVEURL = "pages/record/approverecord.html";
+	public static final String APPROVEURL = "pages/record/approverecord.html";
 	
 	/**
 	 * 查询统计科研信息的url
 	 */
-	private static final String STATISTICSURL = "pages/record/statisticsrecord.html";
+	public static final String STATISTICSURL = "pages/record/statisticsrecord.html";
 	
 	/**
 	 * url的第一参数的key
 	 */
-	private static final String PARAM1 = "?classId=";
+	public static final String PARAM1 = "?classId=";
 	
 	/**
 	 * 获取录入科研信息的url

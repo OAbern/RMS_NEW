@@ -20,6 +20,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.cqupt.mis.rms.model.RolePurviewDyn;
 import com.cqupt.mis.rms.service.impl.AuthorityResource;
+import com.cqupt.mis.rms.utils.ResearchConstant;
 
 /**
  * 进行权限验证的拦截器
@@ -86,9 +87,8 @@ public class AuthorityFilter implements Filter {
 			return;
 		}
 		
-		//权限校验不通过,转发到到越权界面
-		request.getRequestDispatcher("accessDenied.jsp").forward(request, response);
-//		response.sendRedirect("accessDenied.jsp");
+		//权限校验不通过,重定向到越权界面
+		response.sendRedirect("accessDenied.jsp");
 		
 	}
 	
@@ -101,7 +101,7 @@ public class AuthorityFilter implements Filter {
 		String requestUrl = request.getRequestURI();
 		
 		if(fixedResourceMap.containsKey(requestUrl)) {
-			int roleId = (Integer) request.getAttribute("roleId");//TODO ????
+			int roleId = (Integer) request.getSession().getAttribute("roleId");
 			List<Integer> list = fixedResourceMap.get(requestUrl);
 			if(list.contains(roleId)) {
 				return true;
@@ -128,7 +128,41 @@ public class AuthorityFilter implements Filter {
 	 * 检测是否满足动态资源的权限
 	 */
 	public boolean decideDynamic(HttpServletRequest request) {
-		//TODO
+		String requestUrl = request.getRequestURI();
+		int roleId = (Integer) request.getSession().getAttribute("roleId");		//角色Id
+		
+		//获取不带参数的url、参数"classId"的值
+		int index1 = requestUrl.indexOf("?");
+		int index2 = index1 + ResearchConstant.PARAM1.length();
+		String urlNoParam = requestUrl.substring(0, index1);		//请求URL路径不包括参数列表
+		String param1Value = requestUrl.substring(index2, index2+1);		//参数"classId"的value
+		
+		int classId = 0;
+		try {		
+			 classId = Integer.parseInt(param1Value);
+		} catch(NumberFormatException e) {		//classId参数值转换失败，说明参数中不包含classId，判定为不是动态权限，拒绝访问
+			return false;
+		}
+		
+		//获取相应科研类别的权限列表
+		Map<Integer, RolePurviewDyn> map = dynamicResourceMap.get(classId);
+		if(map == null) {
+			return false;
+		}
+		RolePurviewDyn rolePurviewDyn = map.get(roleId);
+		if(rolePurviewDyn == null) {	//该角色没有当前科研类别的任何权限，拒绝访问
+			return false;
+		}
+		
+		if(ResearchConstant.INPUTURL.equals(urlNoParam)) {	//验证是否有<录入科研记录>的权限
+			return rolePurviewDyn.isInput();
+		} else if(ResearchConstant.MANAGEURL.equals(urlNoParam)) {	//验证是否有<管理个人科研记录>的权限
+			return rolePurviewDyn.isManage();
+		} else if(ResearchConstant.APPROVEURL.equals(urlNoParam)) {	//验证是否有<审批科研记录>的权限
+			return rolePurviewDyn.isApprove();
+		} else if(ResearchConstant.STATISTICSURL.equals(urlNoParam)) {	//验证是否有<查询统计科研记录>的权限
+			return rolePurviewDyn.isStatistics();
+		}
 		
 		return false;
 	}

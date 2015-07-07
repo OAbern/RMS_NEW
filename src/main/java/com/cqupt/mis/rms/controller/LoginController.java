@@ -56,7 +56,7 @@ public class LoginController {
         
         String rand = (String)request.getSession().getAttribute("rand");
         if(rand == null) {		//长时间为挂起网页，导致session失效
-        	view.setViewName("login");
+        	view.setViewName("login.jsp");
         	request.setAttribute("loginFailed", "验证码过期，请重试！");
         	return view;
         }
@@ -69,18 +69,18 @@ public class LoginController {
      				// 用户名和密码正确,则保存登录名和用户角色信息——因为后面很多地方会使用到这两个参数，所以存放在session里面
      				request.getSession().setAttribute(SessionConstant.USEID, userName);
      				request.getSession().setAttribute(SessionConstant.ROLEID, role.getRoleId());
-     				view.setViewName("main");
+     				view.setViewName("redirect:/pages/common/main.html");
      			} else {
      				request.setAttribute("loginFailed", "用户名或密码错误！");
-     				view.setViewName("login");
+     				view.setViewName("login.jsp");
      			}
      		} else {
      			request.setAttribute("loginFailed", "身份不匹配,请重新选择！");
-         		view.setViewName("login");
+         		view.setViewName("login.jsp");
      		}
      	} else {
      		request.setAttribute("loginFailed", "请输入正确的验证码！");
- 			view.setViewName("login");
+ 			view.setViewName("login.jsp");
      	}
      	return view;
 	}

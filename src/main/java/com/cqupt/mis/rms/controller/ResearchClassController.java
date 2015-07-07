@@ -1,7 +1,5 @@
 package com.cqupt.mis.rms.controller;
 
-import java.io.IOException;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,12 +22,7 @@ public class ResearchClassController {
 	
 	@RequestMapping("/get")
 	public void get(HttpServletResponse response) {
-		try {
-			response.getWriter().print(JSONUtils.toJSONString(researchClassServiceImpl.findAll()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		JSONUtils.toJSON(researchClassServiceImpl.findAll(), response);
 		
 	}
 
