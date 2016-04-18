@@ -10,5 +10,8 @@
 
 .idea/
 
+target/
+
 src/main/*.iml
+
 src/test/*.iml

@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+#hippo .list{ border:1px solid #CCC; list-style:none; height:auto; background:#FFF;}
+#hippo .list li{ line-height:30px; height:30px;}
+#hippo .list li select ,#hippo .list li input ,#hippo .list li span{ margin:0 10px; white-space:nowrap; overflow:hidden; list-style:none; display:block; float:left;}
+#hippo .list li .logical{ height:20px; line-height:20px; font-size:14px; width:6em;}
+#hippo .list li .logical_item{ height:20px; line-height:20px; font-size:14px; width:6em;}
+#hippo .list li .logical_word{ text-align:left; height:20px; line-height:20px; font-size:14px; width:10em;}
+#hippo .list li.til{ line-height:34px; height:34px; border-bottom:2px solid #CCC; background:#F8F8F8; margin-bottom:10px;}
+#hippo .list li.item{ margin:0;}
+#hippo .list li.til span{ text-align:center; height:34px; line-height:34px;}
+#hippo .list li a:hover{ text-decoration:none;}
+
+#hippo input{ float:left;}
+#hippo label{ padding-left:12px; width:40em; cursor:pointer; display:block; float:left;}

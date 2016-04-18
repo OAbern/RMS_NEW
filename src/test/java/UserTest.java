@@ -2,7 +2,6 @@
 
 
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ import com.cqupt.mis.rms.service.UserManagerService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:config/spring-mybatis.xml" })
+@ContextConfiguration(locations = {"classpath:/spring-mybatis.xml"})
 public class UserTest {
 	
 	@Resource

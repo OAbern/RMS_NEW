@@ -9,7 +9,8 @@ import java.io.Serializable;
 */
 public class RolePurviewDyn implements Serializable {
 	private static final long serialVersionUID = 6604549633890745986L;
-	
+	//逻辑主键
+	private int id;
 	// 角色实体
 	private CQUPTRole roleInfo;
 	// 资源信息实体
@@ -22,7 +23,13 @@ public class RolePurviewDyn implements Serializable {
 	private boolean approve;
 	//统计的权限
 	private boolean statistics;
-	
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public CQUPTRole getRoleInfo() {
 		return roleInfo;
 	}
@@ -58,6 +65,42 @@ public class RolePurviewDyn implements Serializable {
 	}
 	public boolean isStatistics() {
 		return statistics;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((roleInfo == null) ? 0 : roleInfo.hashCode());
+		result = prime * result
+				+ ((researchClass == null) ? 0 : researchClass.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		RolePurviewDyn other = (RolePurviewDyn) obj;
+		if (roleInfo == null) {
+			if (other.roleInfo != null)
+				return false;
+		} else if (!roleInfo.equals(other.roleInfo))
+			return false;
+
+		if (researchClass == null) {
+			if (other.researchClass != null)
+				return false;
+		} else if (!researchClass.equals(other.researchClass))
+			return false;
+
+		return true;
 	}
 	
 }

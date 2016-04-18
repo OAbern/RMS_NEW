@@ -1,0 +1,730 @@
+[
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 12,
+            "resourceName" : "录入人文社科科研成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1205,
+               "resourceName" : "录入人文社科科研获奖信息",
+               "resourceRemark" : "inputhumanitiesresearchreward",
+               "resourceUrl" : "pages/teacher/inputhumanitiesresearchreward.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1202,
+               "resourceName" : "录入人文社科著作信息",
+               "resourceRemark" : "inputhumanitiesbook",
+               "resourceUrl" : "pages/teacher/inputhumanitiesbook.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1206,
+               "resourceName" : "录入人文社科学术会议信息",
+               "resourceRemark" : "inputhumanitiesacademicmeeting",
+               "resourceUrl" : "pages/teacher/inputhumanitiesacademicmeeting.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1204,
+               "resourceName" : "录入人文社科会议交流论文信息",
+               "resourceRemark" : "inputhumanitiesexchangepaper",
+               "resourceUrl" : "pages/teacher/inputhumanitiesexchangepaper.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1201,
+               "resourceName" : "录入人文社科论文信息",
+               "resourceRemark" : "inputhumanitiespaper",
+               "resourceUrl" : "pages/teacher/inputhumanitiespaper.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1203,
+               "resourceName" : "录入人文社科科研项目信息",
+               "resourceRemark" : "inputhumanitiesproject",
+               "resourceUrl" : "pages/teacher/inputhumanitiesproject.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" :
+         [
+            {
+               "classDes" : null,
+               "classId" : 4,
+               "className" : "社科类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 5,
+               "submittime" : "2015-06-15T22:43:47.000"
+            },
+            {
+               "classDes" : null,
+               "classId" : 5,
+               "className" : "科创类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 3,
+               "submittime" : "2015-06-15T22:46:08.000"
+            },
+            {
+               "classDes" : null,
+               "classId" : 1,
+               "className" : "人文类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 1,
+               "submittime" : "2015-06-15T22:27:55.000"
+            }
+         ]
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 13,
+            "resourceName" : "录入教学类成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1310,
+               "resourceName" : "录入发表教改论文信息(动态)",
+               "resourceRemark" : "inputMajorContributeRecord",
+               "resourceUrl" : "inputMajorContributeRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1312,
+               "resourceName" : "录入教学技术奖信息(动态)",
+               "resourceRemark" : "inputExcellentTrainerRecord",
+               "resourceUrl" : "inputExcellentTrainerRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1307,
+               "resourceName" : "录入指导学生参赛获奖信息(动态)",
+               "resourceRemark" : "inputStudentAwardsRecord",
+               "resourceUrl" : "inputStudentAwardsRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1315,
+               "resourceName" : "录入教改项目(动态)",
+               "resourceRemark" : "inputEducationalReformRecord",
+               "resourceUrl" : "inputEducationalReformRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1314,
+               "resourceName" : "录入重庆市大学生创新创业训练计划项目(动态)",
+               "resourceRemark" : "inputLearningEvaluationRecord",
+               "resourceUrl" : "inputLearningEvaluationRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1308,
+               "resourceName" : "录入教学成果奖信息(动态)",
+               "resourceRemark" : "inputTeacherAwardsRecord",
+               "resourceUrl" : "inputTeacherAwardsRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1311,
+               "resourceName" : "录入教材出版信息(动态)",
+               "resourceRemark" : "inputTeachingMaterialRecord",
+               "resourceUrl" : "inputTeachingMaterialRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1313,
+               "resourceName" : "录入本科教学工程信息(动态)",
+               "resourceRemark" : "inputQualityProjectRecord",
+               "resourceUrl" : "inputQualityProjectRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1316,
+               "resourceName" : "录入其他获奖信息(动态)",
+               "resourceRemark" : "inputOtherTeachingAwardsRecord",
+               "resourceUrl" : "inputOtherTeachingAwardsRecord.action",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" : null
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 63,
+            "resourceName" : "批量导入科研信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6302,
+               "resourceName" : "批量导入理工类科研信息",
+               "resourceRemark" : "pages/teacher/inputexcel/inputtecexcel.jsp",
+               "resourceUrl" : "pages/teacher/inputexcel/inputtecexcel.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6303,
+               "resourceName" : "批量导入教学成果类信息",
+               "resourceRemark" : "pages/teacher/inputexcel/inputachexcel.jsp",
+               "resourceUrl" : "pages/teacher/inputexcel/inputachexcel.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6301,
+               "resourceName" : "批量导入人文类科研信息",
+               "resourceRemark" : "pages/teacher/inputexcel/inputhumexcel.jsp",
+               "resourceUrl" : "pages/teacher/inputexcel/inputhumexcel.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" : null
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 16,
+            "resourceName" : "管理个人教学类成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1611,
+               "resourceName" : "发表教改论文信息(动态)",
+               "resourceRemark" : "viewMajorContributeRecords",
+               "resourceUrl" : "viewMajorContributeRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1616,
+               "resourceName" : "其他获奖信息(动态)",
+               "resourceRemark" : "viewOtherTeachingAwardsRecords",
+               "resourceUrl" : "viewOtherTeachingAwardsRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1612,
+               "resourceName" : "教材出版信息(动态)",
+               "resourceRemark" : "viewTeachingMaterialRecords",
+               "resourceUrl" : "viewTeachingMaterialRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1613,
+               "resourceName" : "本科教学工程信息(动态)",
+               "resourceRemark" : "viewQualityProjectRecords",
+               "resourceUrl" : "viewQualityProjectRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1610,
+               "resourceName" : "教学技术奖信息(动态)",
+               "resourceRemark" : "viewExcellentTrainerRecords",
+               "resourceUrl" : "viewExcellentTrainerRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1614,
+               "resourceName" : "重庆市大学生创新创业训练计划项目(动态)",
+               "resourceRemark" : "viewLearningEvaluationRecords",
+               "resourceUrl" : "viewLearningEvaluationRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1615,
+               "resourceName" : "教改项目(动态)",
+               "resourceRemark" : "viewEducationalReformRecords",
+               "resourceUrl" : "viewEducationalReformRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1609,
+               "resourceName" : "教学成果奖信息(动态)",
+               "resourceRemark" : "viewTeacherAwardsRecords",
+               "resourceUrl" : "viewTeacherAwardsRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1608,
+               "resourceName" : "指导学生参赛获奖",
+               "resourceRemark" : "viewStudentAwardsRecords",
+               "resourceUrl" : "viewStudentAwardsRecords.action",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" :
+         [
+            {
+               "classDes" : null,
+               "classId" : 5,
+               "className" : "科创类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 3,
+               "submittime" : "2015-06-15T22:46:08.000"
+            }
+         ]
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 11,
+            "resourceName" : "录入理工科研成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1108,
+               "resourceName" : "录入理科科技交流信息",
+               "resourceRemark" : "inputsciencetechexchange",
+               "resourceUrl" : "pages/teacher/inputsciencetechexchange.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1102,
+               "resourceName" : "录入理科科技项目信息",
+               "resourceRemark" : "inputscienceotechproject",
+               "resourceUrl" : "pages/teacher/inputsciencetechproject.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1105,
+               "resourceName" : "录入理科政府科技奖励信息",
+               "resourceRemark" : "inputsciencegovernmentaward",
+               "resourceUrl" : "pages/teacher/inputsciencegovernmentaward.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1101,
+               "resourceName" : "录入理科科技活动机构信息",
+               "resourceRemark" : "inputscienceorganization",
+               "resourceUrl" : "pages/teacher/inputscienceorganization.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1103,
+               "resourceName" : "录入理科著作信息",
+               "resourceRemark" : "inputsciencebook",
+               "resourceUrl" : "pages/teacher/inputsciencebook.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1107,
+               "resourceName" : "录入理科技术转让信息",
+               "resourceRemark" : "inputsciencetechtransfer",
+               "resourceUrl" : "pages/teacher/inputsciencetechtransfer.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1104,
+               "resourceName" : "录入理科论文信息",
+               "resourceRemark" : "inputsciencepaper",
+               "resourceUrl" : "pages/teacher/inputsciencepaper.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1106,
+               "resourceName" : "录入理科知识产权信???",
+               "resourceRemark" : "inputscienceiprights",
+               "resourceUrl" : "pages/teacher/inputscienceiprights.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" : null
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 61,
+            "resourceName" : "管理个人信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6102,
+               "resourceName" : "修改密码",
+               "resourceRemark" : "t_modifypwd",
+               "resourceUrl" : "pages/common/modifypassword.jsp",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6104,
+               "resourceName" : "管理职务信息",
+               "resourceRemark" : "viewPositions",
+               "resourceUrl" : "viewPositions.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6103,
+               "resourceName" : "管理职称信息",
+               "resourceRemark" : "viewTitles",
+               "resourceUrl" : "viewTitles.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 6101,
+               "resourceName" : "管理个人基本信息",
+               "resourceRemark" : "t_manageUserInfo",
+               "resourceUrl" : "manageUserInfo.action",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" : null
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 15,
+            "resourceName" : "管理个人人文社科科研成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1506,
+               "resourceName" : "人文社科学术会议信息",
+               "resourceRemark" : "viewHumanitiesAcademicMeeting",
+               "resourceUrl" : "viewHumanitiesAcademicMeeting.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1503,
+               "resourceName" : "人文社科科研项目信息",
+               "resourceRemark" : "viewHumanitiesProject",
+               "resourceUrl" : "viewHumanitiesProject.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1504,
+               "resourceName" : "人文社科会议交流论文信息",
+               "resourceRemark" : "viewHumanitiesExchangePaper",
+               "resourceUrl" : "viewHumanitiesExchangePaper.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1501,
+               "resourceName" : "人文社科论文信息",
+               "resourceRemark" : "viewHumanitiesPaper",
+               "resourceUrl" : "viewHumanitiesPaper.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1505,
+               "resourceName" : "人文社科科研获奖信息",
+               "resourceRemark" : "viewHumanitiesResearchReward",
+               "resourceUrl" : "viewHumanitiesResearchReward.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1502,
+               "resourceName" : "人文社科著作信息",
+               "resourceRemark" : "viewHumanitiesBook",
+               "resourceUrl" : "viewHumanitiesBook.action",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" :
+         [
+            {
+               "classDes" : null,
+               "classId" : 4,
+               "className" : "社科类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 5,
+               "submittime" : "2015-06-15T22:43:47.000"
+            }
+         ]
+   },
+   {
+      "first" :
+         {
+            "parentResourceinfo" : null,
+            "resourceId" : 14,
+            "resourceName" : "管理个人理工科研成果信息",
+            "resourceRemark" : null,
+            "resourceUrl" : null,
+            "rolePurviews" :
+               [
+               ]
+         },
+      "second" :
+         [
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1408,
+               "resourceName" : "理科科技交流信息",
+               "resourceRemark" : "viewScienceTechExchange",
+               "resourceUrl" : "viewScienceTechExchange.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1407,
+               "resourceName" : "理科技术转让信息",
+               "resourceRemark" : "viewScienceTechTransfer",
+               "resourceUrl" : "viewScienceTechTransfer.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1405,
+               "resourceName" : "理科政府科技奖励信息",
+               "resourceRemark" : "viewScienceGovernmentAward",
+               "resourceUrl" : "viewScienceGovernmentAward.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1404,
+               "resourceName" : "理科论文信息",
+               "resourceRemark" : "viewSciencePaper",
+               "resourceUrl" : "viewSciencePaper.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1402,
+               "resourceName" : "理科科技项目信息",
+               "resourceRemark" : "viewScienceTechProject",
+               "resourceUrl" : "viewScienceTechProject.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1403,
+               "resourceName" : "理科著作信息",
+               "resourceRemark" : "viewScienceBook",
+               "resourceUrl" : "viewScienceBook.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1401,
+               "resourceName" : "理科科技活动机构信息",
+               "resourceRemark" : "viewScienceOrganization",
+               "resourceUrl" : "viewScienceOrganization.action",
+               "rolePurviews" :
+                  [
+                  ]
+            },
+            {
+               "parentResourceinfo" : null,
+               "resourceId" : 1406,
+               "resourceName" : "理科知识产权信息",
+               "resourceRemark" : "viewScienceIpRights",
+               "resourceUrl" : "viewScienceIpRights.action",
+               "rolePurviews" :
+                  [
+                  ]
+            }
+         ],
+      "secondDyn" :
+         [
+            {
+               "classDes" : null,
+               "classId" : 4,
+               "className" : "社科类",
+               "classRemark" : null,
+               "isDelete" : 0,
+               "order" : 5,
+               "submittime" : "2015-06-15T22:43:47.000"
+            }
+         ]
+   }
+]

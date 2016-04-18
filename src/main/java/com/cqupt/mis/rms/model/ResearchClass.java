@@ -18,6 +18,7 @@ public class ResearchClass implements Serializable {
 	private int isDelete;		//类别是否删除，0为未删除，1为删除
 	private int order;		//类别展示顺序
 	private Date submittime;		//类别提交时间
+	private int parentId;		//类别的父类id
 	
 	public int getClassId() {
 		return classId;
@@ -61,5 +62,10 @@ public class ResearchClass implements Serializable {
 	public void setClassRemark(String classRemark) {
 		this.classRemark = classRemark;
 	}
-	
+	public int getParentId() {
+		return parentId;
+	}
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
 }

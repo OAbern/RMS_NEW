@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理个人信息</title>
+	<link href="../../css/ligerui-all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/manageinfo.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="allpage">
+		<div class="content">
+			<form action="modifyUserInfo.action" method="post">
+				<label for="userName">姓名</label>
+				<input type="text" id="userName" name="cquptUser.userName" value="" readonly />
+				<br /><br />
+				
+				<label for="college">所在学院</label>
+				<input type="text" id="collegein" name="" value="" readonly />
+				<br /><br />
+				
+				<label for="department">部门</label>
+				<input type="text" id="department" name="cquptUser.department" value="" class=":required"/>
+				<br /><br />
+				
+				<label for="gender">性别</label>
+				<input type="text" id="gender" name="cquptUser.gender" value="" />
+				
+				<br /><br />
+				
+				<label for="origin">籍贯</label>
+				<input type="text" id="origin" name="cquptUser.origin" value="" />
+				<br /><br />
+				
+				<label for="nationality">民族</label>
+				<input type="text" id="nationality" name="cquptUser.nationality" value="" />
+				<br /><br />
+				
+				<label for="birthday">出生日期</label>
+				<input type="text" id="birthday" name="cquptUser.birthday" value="" />
+				<br /><br />
+				
+				<label for="politicalStatus">政治面貌</label>
+				<input type="text" id="politicalStatus" name="cquptUser.politicalStatus" value="" />
+				<br /><br />
+				
+				<label for="timeJoinParty">参加党派时间</label>
+				<input type="text" id="timeJoinParty" name="cquptUser.timeJoinParty" value="" />
+				<br /><br />
+				
+				<label for="timeBeginCqupt">进入重邮时间</label>
+				<input type="text" id="timeBeginCqupt" name="cquptUser.timeBeginCqupt" value="" />
+				<br /><br />
+				
+				<label for="timeBeginWork">参加工作时间</label>
+				<input type="text" id="timeBeginWork" name="cquptUser.timeBeginWork" value="" />
+				<br /><br />
+				
+				<label for="firstDegree">第一学位</label>
+				<input type="text" id="firstDegree" name="cquptUser.firstDegree" value="" />
+				<br /><br />
+				
+				<label for="firstProfessionalName">第一学位专业名称</label>
+				<input type="text" id="firstProfessionalName" name="cquptUser.firstProfessionalName" value="" />
+				<br /><br />
+				
+				<label for="firstGraduateSchool">第一学位毕业学校</label>
+				<input type="text" id="firstGraduateSchool" name="cquptUser.firstGraduateSchool" value="" />
+				<br /><br />
+				
+				<label for="lastDegree">最后学位</label>
+				<input type="text" id="lastDegree" name="cquptUser.lastDegree" value="" />
+				<br /><br />
+				
+				<label for="lastProfessionalName">最后学位专业名称</label>
+				<input type="text" id="lastProfessionalName" name="cquptUser.lastProfessionalName" value="" />
+				<br /><br />
+				
+				<label for="lastGraduateSchool">最后学位毕业学校</label>
+				<input type="text" id="lastGraduateSchool" name="cquptUser.lastGraduateSchool" value="" />
+				<br /><br />
+				
+				<label for="lastAcademic">最后学历</label>
+				<input type="text" id="lastAcademic" name="cquptUser.lastAcademic" value="" />
+				<br /><br />
+				
+				<p>
+				<input type="submit" class="btn" value="修改" />
+				<input type="reset" class="btn" value="重置"/>
+				</p>
+			</form>
+			
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</body>
+
+<script src="../../js/jquery-1.4.4.min.js"></script> 
+<script src="../../js/vanadium.js"></script>
+<script src="../../js/check.js"></script>
+
+</html>

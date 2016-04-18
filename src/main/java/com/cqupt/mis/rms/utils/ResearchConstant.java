@@ -82,7 +82,7 @@ public class ResearchConstant {
 	 * @return 菜单名
 	 */
 	public static String getManageName(String className) {
-		return "管理" + className + "科研信息";
+		return "管理个人的" + className + "科研信息";
 	}
 	
 	/**

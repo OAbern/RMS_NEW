@@ -22,6 +22,8 @@ public class ResourceInfo implements Serializable {
 	private String resourceRemark;
 	// 资源父类信息
 	private ResourceInfo parentResourceinfo;
+	// 资源父类的id
+	private int parentId;
 	// 与角色进行多对一关联
 	private Set<RolePurview> rolePurviews = new HashSet<RolePurview>();
 	
@@ -61,6 +63,10 @@ public class ResourceInfo implements Serializable {
 	public void setRolepurviews(Set<RolePurview> rolePurviews) {
 		this.rolePurviews = rolePurviews;
 	}
-
-	
+	public int getParentId() {
+		return parentId;
+	}
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
 }

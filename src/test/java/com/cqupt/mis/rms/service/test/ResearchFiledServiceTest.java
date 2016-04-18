@@ -1,7 +1,5 @@
 package com.cqupt.mis.rms.service.test;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -25,7 +23,7 @@ import com.cqupt.mis.rms.utils.JSONUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
-@ContextConfiguration(locations={"classpath:config/spring-myBatis.xml"})  
+@ContextConfiguration(locations={"classpath:/spring-myBatis.xml"})
 public class ResearchFiledServiceTest {
 	@Resource
 	ResearchFiledService researchFiledServiceImpl;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+	<title>指导学生参赛获奖</title>
+	<link href="../../../css/ligerui-all.css" rel="stylesheet" type="text/css" />
+	<link href="../../../lib/ligerUI/skins/ligerui-icons.css" rel="stylesheet" type="text/css" />
+  <link href="../../../css/Data.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="overflow:hidden;">
+<form id="form1">
+  <input type="hidden" value="" id="data" />
+  <div id="toptoolbar"></div> 
+	<div id="maingrid">
+
+    <div id="search">
+      <input type="hidden" value=""/>
+    </div>
+
+	  <script type="text/javascript">
+	  //行数据
+	  var data = $("#search input").last();
+	  $.each(data, function(){
+		  var r1 = '\"id\": \"${r.id}\", \"refuse\": \"${r.returnReason}\", \"name\": \"${r.name}\",\"Status\":\"${r.statusDes}\"';
+		  var rowdata="";
+		  var rvalue = $(this).val();
+  	  var objVal = eval(rvalue);
+		  for(var j=1;j<=objVal.length;j++) {
+
+        //在这里读json的行数据
+        rowdata+="\"value"+j+"\":\""+objVal[j-1].value+"\",";
+
+      }
+      rowdata=rowdata+r1;
+      var row="{"+rowdata+"}";
+      var rowObj = JSON.parse(row);
+      rows.push(rowObj);
+	    
+    });
+	  </script>
+
+  </div>
+  	
+  <div style="display:none;">
+
+  </div>
+</form>
+</body>
+
+<script src="../../../lib/jquery/jquery-1.5.2.min.js"></script>
+<script src="../../../lib/ligerUI/js/ligerui.min.js"></script>
+<script  src="../../../js/teacher/viewStudentAwardsrecords.js"></script>
+
+</html>

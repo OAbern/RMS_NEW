@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+body{ background:#3D67B2; color:#F8F3F3; font-size:14px;}
+#logo{ height:140px; background:#3D67B2; padding:10px 20px;}
+#logo a{ display:block; height:135px; width:142px; overflow:hidden;}
+#logo a img{ height:135px; width:142px;}
+#logo div{ float:left;}
+#logo div{ float:right; text-align:center; padding:20px 0 0;}
+#logo div .cn{ font-family:'幼圆'; font-size:30px; line-height:50px; font-weight:bold;}
+#logo div .en{ font-family:'黑体'; font-size:18px; line-height:40px; font-weight:bold;}
+#logo div .slice{ width:490px; background:url(../image/slice.png) repeat-x; height:6px;}
+
+#mid{ height:338px; background:#DBE3F1; padding:12px;}
+#mid .left{ background:url(../image/bg_image.png) no-repeat; width:389px; height:338px;}
+#mid .right{ background:#6CA5D7; width:300px; height:338px;}
+#mid .right form{ padding:20px;}
+#mid .right form label{ text-align:right; display:block; width:50px; padding-right:8px; float:left;}
+#mid .right form input{ height:20px; float:left; width:12em;}
+#mid .right form input#check{ width:6em;}
+#mid .right form p{ height:20px;}
+#mid .right form h3{ line-height:70px;}
+#mid .right form img{ width:60px; height:24px;}
+#mid .right form span{ cursor:pointer;}
+#mid .right form div{ width:160px; margin:0 auto;}
+#mid .right form input#login , #mid .right form input#reset{ margin-right:20px; width:57px; height:25px; cursor:pointer; color:#F8F3F3; background:url(../image/button.png) no-repeat; border:0;}
+
+#footer{ background:#3D67B2; height:100px; text-align:center; line-height:40px;}
+#footer .slice{ background:url(../image/slice.png) repeat-x; height:6px;}
+
+
+
+
+
+
+
+
+
+
+
+

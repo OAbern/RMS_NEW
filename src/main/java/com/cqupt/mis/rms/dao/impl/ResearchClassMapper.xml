@@ -10,11 +10,12 @@
 		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
 		<result column="order" property="order" jdbcType="INTEGER" />
 		<result column="submittime" property="submittime" jdbcType="TIMESTAMP" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 	</resultMap>
 	
 	<!-- 所有的数据库字段 -->
 	<sql id="ColumnList" >
-		`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+		`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`, `parent_id`
 	</sql>
 	
 	<!-- 查找所有记录 -->
@@ -33,6 +34,15 @@
 		from `research_class`
 		where `class_id` = #{classId, jdbcType=INTEGER}
 	</select>
+
+	<!-- 查询parentId为0的一级动态资源信息 -->
+	<select id="selectFirstClass" resultMap="ResearchClass">
+		select
+		<include refid="ColumnList" />
+		from `research_class`
+		where `is_delete` = 0 AND `parent_id` = 0
+		order by `order`
+	</select>
 	
 	<!-- 根据主键删除记录 -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -41,10 +51,17 @@
 	</delete>
 	
 	<!-- 根据主键假删除记录，设置is_delete为1，order为0 -->
-	<update id="delete" parameterType="java.lang.Integer" >
+	<update id="deleteByClassId" parameterType="java.lang.Integer" >
 		update `research_class`
 		set `is_delete` = 1, `order` = 0
 		where `class_id` = #{classId,jdbcType=INTEGER}
+	</update>
+
+	<!-- 根据parent_id假删除同一大类，设置is_delete为1 -->
+	<update id="deleteByPId" parameterType="java.lang.Integer" >
+		update `research_class`
+		set `is_delete` = 1
+		where `parent_id` = #{pId,jdbcType=INTEGER}
 	</update>
 	
 	<!-- 插入一条记录 -->
@@ -72,6 +89,9 @@
 	    <if test="submittime != null" >
 	      `submittime`,
 	    </if>
+		<if test="parentId != null" >
+		  `parent_id`
+		</if>
 	  </trim>
 	  <trim prefix="values (" suffix=")" suffixOverrides="," >
 	    <if test="classId != 0" >
@@ -95,6 +115,9 @@
 	    <if test="submittime != null" >
 	      #{submittime,jdbcType=TIMESTAMP},
 	    </if>
+		<if test="parentId != null" >
+		  #{parent_id,jdbcType=INTEGER},
+		</if>
 	  </trim>
 	</insert>
   
@@ -123,5 +146,5 @@
 	  </set>
 	  where `class_id` = #{classId,jdbcType=INTEGER}
 	</update>
-  
+
 </mapper>

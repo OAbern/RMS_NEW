@@ -24,14 +24,14 @@
   </resultMap>
   
   <resultMap type="com.cqupt.mis.rms.model.CQUPTRole" id="RolePurviewDynResultMap" extends="BaseResultMap">
-  	<collection property="rolePurviewDyns"  ofType="com.cqupt.mis.rms.model.RolePurviewDyn">
-  		
+  	<collection property="rolePurviewDyns" ofType="com.cqupt.mis.rms.model.RolePurviewDyn">
+		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="input" property="input" jdbcType="INTEGER"/>
 		<result column="manage" property="manage" jdbcType="INTEGER"/>
 		<result column="approve" property="approve" jdbcType="INTEGER"/>
 		<result column="statistics" property="statistics" jdbcType="INTEGER"/>
 		<association column = "class_id"  property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"></association>
-  	
+
   	</collection>
   </resultMap>
   
@@ -98,6 +98,7 @@
   	 cqupt_role.role_name,
   	 cqupt_role.role_level_id,
   	 cqupt_role.description,
+  	 role_purview_dynamic.id,
   	 role_purview_dynamic.input,
   	 role_purview_dynamic.manage,
   	 role_purview_dynamic.approve,
@@ -108,7 +109,8 @@
   	 research_class.class_remark,
   	 research_class.is_delete,
   	 research_class.order,
-  	 research_class.submittime
+  	 research_class.submittime,
+  	 research_class.parent_id
   	 from cqupt_role 
   	 left join role_purview_dynamic  on cqupt_role.role_id = role_purview_dynamic.role_id
   	 left join research_class on role_purview_dynamic.class_id = research_class.class_id

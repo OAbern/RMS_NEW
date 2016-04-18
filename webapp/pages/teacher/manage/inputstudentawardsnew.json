@@ -1,0 +1,78 @@
+﻿[
+   {
+      "description" : null,
+      "id" : 6,
+      "isDelete" : 0,
+      "isNull" : 0,
+      "name" : "参与时间",
+      "order" : 1,
+      "researchClass" :
+         {
+            "classDes" : null,
+            "classId" : 1,
+            "className" : "人文类",
+            "classRemark" : null,
+            "isDelete" : 0,
+            "order" : 1,
+            "submittime" : "2015-06-15T22:27:55.000"
+         },
+      "submittime" : "2015-06-26T16:20:04.000"
+   },
+   {
+      "description" : null,
+      "id" : 4,
+      "isDelete" : 0,
+      "isNull" : 0,
+      "name" : "名称",
+      "order" : 2,
+      "researchClass" :
+         {
+            "classDes" : null,
+            "classId" : 1,
+            "className" : "人文类",
+            "classRemark" : null,
+            "isDelete" : 0,
+            "order" : 1,
+            "submittime" : "2015-06-15T22:27:55.000"
+         },
+      "submittime" : "2015-06-26T16:20:04.000"
+   },
+   {
+      "description" : null,
+      "id" : 7,
+      "isDelete" : 0,
+      "isNull" : 0,
+      "name" : "备注",
+      "order" : 3,
+      "researchClass" :
+         {
+            "classDes" : null,
+            "classId" : 1,
+            "className" : "人文类",
+            "classRemark" : null,
+            "isDelete" : 0,
+            "order" : 1,
+            "submittime" : "2015-06-15T22:27:55.000"
+         },
+      "submittime" : "2015-06-26T16:20:04.000"
+   },
+   {
+      "description" : null,
+      "id" : 5,
+      "isDelete" : 0,
+      "isNull" : 0,
+      "name" : "参与者",
+      "order" : 4,
+      "researchClass" :
+         {
+            "classDes" : null,
+            "classId" : 1,
+            "className" : "人文类",
+            "classRemark" : null,
+            "isDelete" : 0,
+            "order" : 1,
+            "submittime" : "2015-06-15T22:27:55.000"
+         },
+      "submittime" : "2015-06-26T16:19:26.000"
+   }
+]

@@ -10,7 +10,7 @@ import java.util.List;
  * @author Welkin
  * */
 public class MenuInfo implements Serializable {
-	private static final long serialVersionUID = 6838692197212711550L;
+	private static final long serialVersionUID = 1L;
 	
 	// 一级菜单
 	private ResourceInfo first;

@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cqupt.mis.rms.utils.SessionConstant;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -62,6 +63,14 @@ public class AuthorityFilter implements Filter {
 		
 	}
 
+	/**
+	 *
+	 * @param servletRequest 请求
+	 * @param servletResponse 响应
+	 * @param chain 过滤器链
+	 * @throws IOException
+	 * @throws ServletException
+     */
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
 			FilterChain chain) throws IOException, ServletException {
 		
@@ -94,7 +103,7 @@ public class AuthorityFilter implements Filter {
 	
 	/**
 	 * 检测是否满足静态资源的权限
-	 * @param request
+	 * @param request 请求
 	 * @return
 	 */
 	public boolean decideFixed(HttpServletRequest request) {
@@ -113,8 +122,8 @@ public class AuthorityFilter implements Filter {
 	
 	/**
 	 * 检测是否为不进行拦截的URL
-	 * @param url
-	 * @return
+	 * @param url 待匹配的URL
+	 * @return 若为不拦截的URL返回true，否则返回false
 	 */
 	public boolean noIntercept(String url) {
 		if(noInterceptUrl.contains(url))
@@ -123,13 +132,15 @@ public class AuthorityFilter implements Filter {
 		return false;
 			
 	}
-	
+
 	/**
 	 * 检测是否满足动态资源的权限
-	 */
+	 * @param request 请求
+	 * @return 满足权限返回true，否则返回false
+     */
 	public boolean decideDynamic(HttpServletRequest request) {
 		String requestUrl = request.getRequestURI();
-		int roleId = (Integer) request.getSession().getAttribute("roleId");		//角色Id
+		int roleId = (Integer) request.getSession().getAttribute(SessionConstant.ROLEID);		//角色Id
 		
 		//获取不带参数的url、参数"classId"的值
 		int index1 = requestUrl.indexOf("?");

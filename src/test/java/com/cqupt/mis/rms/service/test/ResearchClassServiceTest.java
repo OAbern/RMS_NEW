@@ -24,7 +24,7 @@ import com.cqupt.mis.rms.utils.JSONUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
-@ContextConfiguration(locations={"classpath:config/spring-myBatis.xml"})  
+@ContextConfiguration(locations={"classpath:/spring-myBatis.xml"})
 public class ResearchClassServiceTest extends AbstractJUnit4SpringContextTests {
 	@Resource
 	ResearchClassService researchClassServiceImpl;

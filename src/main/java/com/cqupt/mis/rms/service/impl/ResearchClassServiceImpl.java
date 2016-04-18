@@ -30,9 +30,15 @@ public class ResearchClassServiceImpl implements ResearchClassService {
 	}
 
 	public boolean deleteClass(ResearchClass researchClass) {
-		boolean result1 = researchClassDao.delete(researchClass.getClassId());
-		
-		if(result1)
+		boolean result1 = false;
+		if(researchClass.getParentId() == 0) {	//删除同一大类
+			result1 = researchClassDao.deleteByPId(researchClass.getClassId());
+		}
+
+		boolean result2 = researchClassDao.deleteByClassId(researchClass.getClassId());
+
+		//删除成功后，重新排序
+		if(result1 && result2)
 			return sortDao.sortAfterDelete("research_class", researchClass.getOrder(), 0);
 			
 		return false;

@@ -42,6 +42,8 @@ public class LoginController {
 		List<CQUPTRole> roles = cquptRoleServiceImpl.findAll();
 		JSONUtils.toJSON(roles, response);
 	}
+
+
 	
 	/**
 	 * 登录校验
@@ -49,6 +51,15 @@ public class LoginController {
 	@RequestMapping("/check")
 	public ModelAndView loginCheck(HttpServletRequest request) {
 		ModelAndView view = new ModelAndView();
+
+		//TODO 方便测试代码，跳过登录检验
+		request.getSession().setAttribute(SessionConstant.USEID, "1");
+		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
+		view.setViewName("redirect:/login/menu.do");
+		if(true)
+			return view;
+		//TODO 方便测试代码，跳过登录检验
+
 		String userName = request.getParameter("userName");
         String userPwd = request.getParameter("userPwd");
         String check = request.getParameter("check");
@@ -96,6 +107,7 @@ public class LoginController {
 		
 		System.out.println(menu);
 		JSONUtils.toJSON(menu, response);
+		//TODO:
 	}
 	
 	

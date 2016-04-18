@@ -22,7 +22,7 @@ import com.cqupt.mis.rms.service.UserManagerService;
 import com.cqupt.mis.rms.utils.JSONUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:config/spring-mybatis.xml" })
+@ContextConfiguration(locations = {"classpath:/spring-mybatis.xml"})
 public class RoleTest {
 	
 	@Resource

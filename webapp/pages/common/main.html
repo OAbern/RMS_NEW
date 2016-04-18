@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>重庆邮电大学经管科研管理系统</title>
+	<link href="../../lib/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+	<link href="../../css/main_index.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div id="pageloading"></div>
+	<div id="topmenu" class="l-topmenu">
+		<div class="l-topmenu-logo">重庆邮电大学经管科研管理系统</div>
+		<div class="l-topmenu-welcome">
+			<a href="login.jsp" class="l-link2">首页</a>
+			<span class="space">|</span> 
+			<a href="downExcelModel.action?modelName=Document" class="l-link2">使用文档下载</a>
+			<span class="space" style="color: #666;">|</span>
+			<a href="logout.jsp" class="l-link2">退出</a>
+		</div>
+	</div>
+	<div id="layout1">
+		<div position="left" title="主菜单" id="accordion1">
+			
+		</div>
+		<div position="center" id="framecenter">
+			<div tabid="home" title="欢迎" style="height: 300px">
+				<iframe frameborder="0" name="home" id="home" src="welcome.html"></iframe>
+			</div>
+		</div>
+	</div>
+	<div style="height: 32px; line-height: 32px; text-align: center;">
+		Copyright © 2011-2012 重邮信管学生工作室</div>
+	<div style="display: none"></div>
+</body>
+
+<script src="../../js/jquery-1.4.4.min.js"></script>
+<script src="../../js/ligerui.min.js"></script>
+<script src="../../js/indexdata.js"></script>
+<script type="text/javascript">
+	var tab = null;
+	var accordion = null;
+	var tree = null;
+	$(function() {
+		//布局
+		$("#layout1").ligerLayout({
+			leftWidth : 190,
+			height : '100%',
+			heightDiff : -34,
+			space : 4,
+			onHeightChanged : f_heightChanged
+		});
+
+		var height = $(".l-layout-center").height();
+
+		//Tab
+		$("#framecenter").ligerTab({
+			height : height
+		});
+
+		//面板
+		$("#accordion1").ligerAccordion({
+			height : height - 24,
+			speed : null
+		});
+
+		$(".l-link").hover(function() {
+			$(this).addClass("l-link-over");
+		}, function() {
+			$(this).removeClass("l-link-over");
+		});
+		//树
+		$("#tree1").ligerTree({
+			data : indexdata,
+			checkbox : false,
+			slide : false,
+			nodeWidth : 120,
+			attribute : [ 'nodename', 'url' ],
+			onSelect : function(node) {
+				if (!node.data.url)
+					return;
+				var tabid = $(node.target).attr("tabid");
+				if (!tabid) {
+					tabid = new Date().getTime();
+					$(node.target).attr("tabid", tabid)
+				}
+				f_addTab(tabid, node.data.text, node.data.url);
+			}
+		});
+
+		tab = $("#framecenter").ligerGetTabManager();
+		accordion = $("#accordion1").ligerGetAccordionManager();
+		tree = $("#tree1").ligerGetTreeManager();
+		$("#pageloading").hide();
+
+	});
+	function f_heightChanged(options) {
+		if (tab)
+			tab.addHeight(options.diff);
+		if (accordion && options.middleHeight - 24 > 0)
+			accordion.setHeight(options.middleHeight - 24);
+	}
+	function f_addTab(tabid, text, url) {
+		tab.addTabItem({
+			tabid : tabid,
+			text : text,
+			url : url
+		});
+	}
+
+	//////////////////////////////////////////////////
+
+	var dataBase = [
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 7,
+            "resourceName": "管理教师用户",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 701,
+                "resourceName": "管理教师信息",
+                "resourceRemark": "manageTeacher",
+                "resourceUrl": "manageTeacher.action",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 702,
+                "resourceName": "批量导入教师信息",
+                "resourceRemark": "importuserinfo",
+                "resourceUrl": "pages/common/importuserinfo.jsp",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 4,
+            "resourceName": "审批科研信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "审批社科类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/approverecord.html?classId=4",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 5,
+            "resourceName": "查询统计科研信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "查询统计科创类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/statisticsrecord.html?classId=5",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 1,
+            "resourceName": "系统管理员功能",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 105,
+                "resourceName": "管理动态数据库字段",
+                "resourceRemark": "managedynamicdatafield",
+                "resourceUrl": "pages/system/managedynamicdatafield.jsp",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 103,
+                "resourceName": "删除批量导入时错误的EXCEL",
+                "resourceRemark": "deleteErrorExcel",
+                "resourceUrl": "deleteErrorExcel.action",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 101,
+                "resourceName": "角色权限管理",
+                "resourceRemark": "rolePurviewInfo",
+                "resourceUrl": "roleInfo.action",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 104,
+                "resourceName": "添加动态数据库字段",
+                "resourceRemark": "adddynamicdatafield",
+                "resourceUrl": "pages/system/adddynamicdatafield.jsp",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 102,
+                "resourceName": "用户角色管理",
+                "resourceRemark": "userRoleInfo",
+                "resourceUrl": "viewUserAndRole.action",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 6,
+            "resourceName": "管理个人信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 603,
+                "resourceName": "管理职称信息",
+                "resourceRemark": "viewTitles",
+                "resourceUrl": "viewTitles.action",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 604,
+                "resourceName": "管理职务信息",
+                "resourceRemark": "viewPositions",
+                "resourceUrl": "viewPositions.action",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 602,
+                "resourceName": "修改密码",
+                "resourceRemark": "t_modifypwd",
+                "resourceUrl": "pages/common/modifypassword.jsp",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 601,
+                "resourceName": "管理个人基本信息",
+                "resourceRemark": "t_manageUserInfo",
+                "resourceUrl": "manageUserInfo.action",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 8,
+            "resourceName": "批量导入科研信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 801,
+                "resourceName": "批量导入人文类科研信息",
+                "resourceRemark": "pages/teacher/inputexcel/inputhumexcel.jsp",
+                "resourceUrl": "pages/teacher/inputexcel/inputhumexcel.jsp",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 803,
+                "resourceName": "批量导入教学成果类信息",
+                "resourceRemark": "pages/teacher/inputexcel/inputachexcel.jsp",
+                "resourceUrl": "pages/teacher/inputexcel/inputachexcel.jsp",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 802,
+                "resourceName": "批量导入理工类科研信息",
+                "resourceRemark": "pages/teacher/inputexcel/inputtecexcel.jsp",
+                "resourceUrl": "pages/teacher/inputexcel/inputtecexcel.jsp",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 3,
+            "resourceName": "管理个人科研信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "管理社科类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/managerecord.html?classId=4",
+                "rolePurviews": []
+            }
+        ]
+    },
+    {
+        "first": {
+            "parentResourceinfo": null,
+            "resourceId": 2,
+            "resourceName": "录入科研信息",
+            "resourceRemark": null,
+            "resourceUrl": null,
+            "rolePurviews": []
+        },
+        "second": [
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "录入人文类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/inputrecord.html?classId=1",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "录入科创类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/inputrecord.html?classId=5",
+                "rolePurviews": []
+            },
+            {
+                "parentResourceinfo": null,
+                "resourceId": 0,
+                "resourceName": "录入社科类科研信息",
+                "resourceRemark": null,
+                "resourceUrl": "pages/record/inputrecord.html?classId=4",
+                "rolePurviews": []
+            }
+        ]
+    }
+]
+
+// 初始化
+var accordion1 = $('#accordion1');
+
+for( var i=0; i < dataBase.length; i++ ) { 
+
+	accordion1.append('<div class="resourceName'+i+'" title="'+dataBase[i].first.resourceName+'"><div style="height: 7px;"></div></div>');
+
+	var resourceName = $('.resourceName'+i);
+	var second = dataBase[i].second;
+	
+	for( var j=0; j < second.length; j++ ) {
+		
+ 		resourceName.append('<a class="l-link" href="javascript:f_addTab(\'\',\''+second[j].secondresourceName+'\',\''+second[j].resourceUrl+'\')">'+second[j].resourceName+'</a>');
+	}
+} 
+
+</script>
+
+</html>
