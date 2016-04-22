@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>重邮经管学院科研管理系统</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom Css -->
+    <link href="../../css/index.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- 导航条 -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="javascript:void(0)">重邮经管科研管理系统</a>
+        </div>
+        <!-- /.navbar-header -->
+
+        <!-- 导航条顶部链接 -->
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    首页
+                </a>
+            </li>
+
+            <!-- /.dropdown -->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    使用文档下载
+                </a>
+            </li>
+            <!-- /.dropdown -->
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="javascript:void(0);"><i class="fa fa-user fa-fw"></i>用户配置</a>
+                    </li>
+                    <li><a href="javascript:void(0);"><i class="fa fa-gear fa-fw"></i>设置</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>安全退出</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <!-- 菜单栏 -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
+                    <!-- 搜索框 -->
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </li>
+                    <!-- 主页菜单项 -->
+                    <li>
+                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>主页</a>
+                    </li>
+
+                    <!-- 菜单 -->
+                    <!--<li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="main.html">Flot Charts</a>
+                            </li>
+                            <li>
+                                <a href="../../login.html">Morris.js Charts</a>
+                            </li>
+                        </ul>
+                        &lt;!&ndash; /.nav-second-level&ndash;&gt;
+                    </li>-->
+
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- 主页 -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="content-frame">
+                        <iframe  frameborder="1" name="content" id="content" src="welcome.html" width="100%" height="100%" scrolling="no" onLoad="iFrameHeight();"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="../../js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../js/bootstrap-3.3.5/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/bower_components/metisMenu/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
+
+</body>
+<script>
+
+    //var data = [{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":1,"resourceName":"录入教学类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":1,"resourceName":"管理个人的教学类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":1,"parentResourceinfo":null,"resourceId":0,"resourceName":"管理个人的教学类1科研信息","resourceRemark":null,"resourceUrl":"pages/record/managerecord.html?classId=4","rolePurviews":[]},{"parentId":1,"parentResourceinfo":null,"resourceId":0,"resourceName":"管理个人的教学类2科研信息","resourceRemark":null,"resourceUrl":"pages/record/managerecord.html?classId=5","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":1,"resourceName":"审批教学类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":1,"parentResourceinfo":null,"resourceId":0,"resourceName":"审批教学类1科研信息","resourceRemark":null,"resourceUrl":"pages/record/approverecord.html?classId=4","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":1,"resourceName":"查询统计教学类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":1,"parentResourceinfo":null,"resourceId":0,"resourceName":"查询统计教学类2科研信息","resourceRemark":null,"resourceUrl":"pages/record/statisticsrecord.html?classId=5","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":3,"resourceName":"录入工商类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":3,"parentResourceinfo":null,"resourceId":0,"resourceName":"录入工商类1科研信息","resourceRemark":null,"resourceUrl":"pages/record/inputrecord.html?classId=6","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":3,"resourceName":"审批工商类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":3,"parentResourceinfo":null,"resourceId":0,"resourceName":"审批工商类1科研信息","resourceRemark":null,"resourceUrl":"pages/record/approverecord.html?classId=6","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":3,"resourceName":"查询统计工商类科研信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":3,"parentResourceinfo":null,"resourceId":0,"resourceName":"查询统计工商类1科研信息","resourceRemark":null,"resourceUrl":"pages/record/statisticsrecord.html?classId=6","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":1,"resourceName":"管理个人信息","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":0,"parentResourceinfo":null,"resourceId":3,"resourceName":"修改密码","resourceRemark":null,"resourceUrl":"changepw.html","rolePurviews":[]},{"parentId":0,"parentResourceinfo":null,"resourceId":2,"resourceName":"管理个人基本信息","resourceRemark":null,"resourceUrl":"http://localhost:8080/rms/pages/common/manageuserinfo.html","rolePurviews":[]}]},{"first":{"parentId":0,"parentResourceinfo":null,"resourceId":4,"resourceName":"系统管理员功能","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]},"second":[{"parentId":0,"parentResourceinfo":null,"resourceId":5,"resourceName":"角色权限管理","resourceRemark":null,"resourceUrl":null,"rolePurviews":[]}]}];
+
+    var menu = null;
+    //从后台获取菜单的json数据
+    $.ajax({
+        url:"/rms/login/menu.do",
+        type:"post",
+        dataType:"json",
+        contentType: "application/json; charset=utf-8",
+        async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+        success:function(data){
+            if(data == null) {
+                alert("获取菜单数据为空，请登录后重试！");
+            }else {
+                menu = data;
+            }
+        },
+        error:function() {
+            alert("ajax请求菜单数据异常，请登录后重试！");
+        }
+    });
+    createMenu(menu);
+
+    /**
+     * 根据json数据创建菜单
+     * @param menu 菜单的json数据
+     */
+    function createMenu(menu) {
+        for(var i=0; i<menu.length; i++) {
+            var first = menu[i].first;
+            var second = menu[i].second;
+
+            if(second.length == 0)  //如果二级菜单没有，直接跳过
+                continue;
+
+            //添加一级菜单
+            $("#side-menu").append('<li><a href="javascript:void(0);"><i class="fa fa-thumb-tack fa-fw"></i>'+first.resourceName+'<span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" id="seconed'+i+'"></ul></li>');
+
+            //添加二级菜单
+            for(var j=0; j<second.length; j++) {
+                var resource = second[j];
+                $("#seconed"+i).append('<li><a href="javascript:loadIframe(\''+resource.resourceUrl+'\')"><i class="fa fa-file-o fa-fw"></i>'+resource.resourceName+'</a></li>');
+            }
+        }
+    }
+
+    /**
+     * iframe自适应内容高度js
+     */
+    function iFrameHeight() {
+        var ifm= document.getElementById("content");
+        var subWeb = document.frames ? document.frames["content"].document : ifm.contentDocument;
+        if(ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+        }
+    }
+
+    /**
+     * 加载iframe内容
+     * @param url 需要被加载的url
+     */
+    function loadIframe(url) {
+        $("#content").attr("src",url);
+    }
+
+</script>
+</html>

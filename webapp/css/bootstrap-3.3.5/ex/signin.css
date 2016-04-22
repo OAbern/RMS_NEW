@@ -1,0 +1,73 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #333;
+}
+body {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+/* 输入框样式 */
+.form-signin input[type="username"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-signin input[type="code"] {
+  margin-bottom: 1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+}
+.mastfoot {
+  position: fixed;
+  bottom: 0;
+  alignment:center;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+#checkCode {
+  margin-bottom: 10px;
+}

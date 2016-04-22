@@ -52,13 +52,13 @@ public class LoginController {
 	public ModelAndView loginCheck(HttpServletRequest request) {
 		ModelAndView view = new ModelAndView();
 
-		//TODO 方便测试代码，跳过登录检验
+		//TODO： 方便测试代码，跳过登录检验
 		request.getSession().setAttribute(SessionConstant.USEID, "1");
 		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
 		view.setViewName("redirect:/login/menu.do");
 		if(true)
 			return view;
-		//TODO 方便测试代码，跳过登录检验
+		//TODO： 方便测试代码，跳过登录检验
 
 		String userName = request.getParameter("userName");
         String userPwd = request.getParameter("userPwd");
@@ -98,16 +98,24 @@ public class LoginController {
 	
 	@RequestMapping("/menu")
 	public void getMenu(HttpServletRequest request, HttpServletResponse response) {
-		Object object = request.getSession().getAttribute(SessionConstant.ROLEID);
-		if(object == null) {
-			return;
+		Object menuObj = request.getSession().getAttribute(SessionConstant.MENU_INFO);
+		if(menuObj == null) {		//从数据库获取数据
+			Object roleIdObj = request.getSession().getAttribute(SessionConstant.ROLEID);
+			if(roleIdObj == null) {
+				return;
+				//TODO: session 失效？
+			}
+			int roleId = Integer.parseInt(roleIdObj.toString());
+			List<MenuInfo> menu = menuServiceImpl.findMenuList(roleId);
+			if (menu.size() != 0) {
+				request.getSession().setAttribute(SessionConstant.MENU_INFO, menu);
+			}
+			System.out.println(menu);
+			JSONUtils.toJSON(menu, response);
+		}else {		//从session缓存获取数据
+			JSONUtils.toJSON(menuObj, response);
 		}
-		int roleId = Integer.parseInt(object.toString());
-		List<MenuInfo> menu = menuServiceImpl.findMenuList(roleId);
-		
-		System.out.println(menu);
-		JSONUtils.toJSON(menu, response);
-		//TODO:
+
 	}
 	
 	

@@ -17,5 +17,10 @@ public class SessionConstant {
 	 * 用于session中记录角色ID的变量名
 	 */
 	public static final String ROLEID = "roleId";
+
+	/**
+	 * 用于session中记录角色相关的菜单信息
+	 */
+	public static final String MENU_INFO = "menuInfo";
 	
 }
