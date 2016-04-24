@@ -1,5 +1,6 @@
 package com.cqupt.mis.rms.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cqupt.mis.rms.model.ResearchClass;
@@ -32,4 +33,12 @@ public interface ResearchClassDao extends BaseDao<ResearchClass, Integer> {
 	 * @return 一级动态资源信息列表
      */
 	public List<ResearchClass> selectFirstClass();
+
+	/**
+	 * 根据类别名字和parentId查找科研信息
+	 * @param className 待查找的类别名称
+	 * @param pId 待查找父类Id
+     * @return 查找结果
+     */
+	public ResearchClass selectByNameAndPid(@Param("className")String className, @Param("pId")int pId);
 }

@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>添加科研类别</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">添加科研类别</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <form role="form" action="#">
+                        <div class="form-group">
+                            <label>请选择</label>
+                            <div class="row">
+                                <label class="radio-inline">
+                                    <input type="radio" name="radio" id="radio1" value="option1" onclick="showForm(this)">添加一级科研类别
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="radio" id="radio2" value="option2" onclick="showForm(this)">添加二级科研项目
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.panel-heading -->
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <!-- 添加一级科研类别 -->
+                            <form id="first" role="form" hidden="true" action="/rms/class/add.do" method="post" onsubmit="return checkBeforeSubmit('firstTag')">
+                                <div class="form-group">
+                                    <label style="color: red">*请输入一级科研类别的名字</label>
+                                    <input class="form-control" name="className" id="classNameF" required>
+                                    <input class="form-control" name="parentId" value="0" type="hidden">    <!-- 一级科研类别的pId为0 -->
+                                    <input class="form-control" id="firstTag" value="-1" type="hidden">
+                                    <p class="help-block" style="color: green" id="fRemark">备注</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>请输入一级科研类别的描述信息</label>
+                                    <input class="form-control" name="classDes">
+                                    <p class="help-block" style="color: green">用于解释科研类别的分类信息</p>
+                                </div>
+                                <button type="submit" class="btn btn-default">提交</button>
+                                <button type="reset" class="btn btn-default">重置</button>
+                            </form>
+
+                            <!-- 添加二级科研项目 -->
+                            <form id="second" role="form" hidden="true" action="/rms/class/add.do" onsubmit="return checkBeforeSubmit('secondTag')">
+                                <div class="form-group">
+                                    <label style="color: red">*请选择一级科研类别</label>
+                                    <select class="form-control" id="select" name="parentId" required>
+                                        <!--<option>1</option>-->
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label style="color: red">*请输入二级科研项目的名字</label>
+                                    <input class="form-control" name="className" id="classNameS" required disabled>
+                                    <input class="form-control" id="secondTag" value="-1" type="hidden">
+                                    <p class="help-block" style="color: green" id="sRemark">请先选择一级科研类别</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>请输入二级科研项目的描述信息</label>
+                                    <input class="form-control" name="classDes">
+                                    <p class="help-block" style="color: green" >用于描述科研项目的类别信息</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>请输入二级科研项目的备注</label>
+                                    <input class="form-control" name="classRemark">
+                                    <p class="help-block" style="color: green" >填写的备注信息将会被展示在相应的页面上</p>
+                                </div>
+
+                                <button type="submit" class="btn btn-default">提交</button>
+                                <button type="reset" class="btn btn-default">重置</button>
+                            </form>
+                            <!-- /form -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- ./row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.pane; .panel-default -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <!-- jQuery -->
+    <script src="../../js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../js/bootstrap-3.3.5/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
+
+    <script>
+        var researchClassList = null;  //科研类别信息
+        $.ajax({       //获取当前系统中所有未删除的一级科研类别
+            url:"/rms/class/getAll.do",
+            type:"get",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+            success:function(data){
+                if(data == null) {
+                    alert("获取类别信息失败！");
+                }else {
+                    researchClassList = data;
+                }
+            },
+            error:function() {
+                alert("获取类别信息失败！");
+            }
+        });
+        var firstClassArray = new Array();  //一级科研类别
+        var fRemark = '同名的科研类别不能重复添加，已经存在的一级科研类别有：';
+        var secondClassArray = new Array(); //二级科研项目
+        for(var i=0; i<researchClassList.length; i++) {     //科研类别分类
+            var rClass = researchClassList[i];
+            if(rClass.parentId == 0) {
+                fRemark = fRemark + '<b>\'' +rClass.className + '\'</b>，  ';
+                firstClassArray.push(rClass);
+            }else {
+                secondClassArray.push(rClass);
+            }
+        }
+
+        /**
+         * 展示或隐藏相应的表单
+         * @param e 选中的按钮
+         */
+        function showForm(e) {
+            if(e.id == 'radio1') {
+                $('#first').show();
+                $('#second').hide();
+                $('#fRemark').empty().append(fRemark);
+            }else if(e.id == 'radio2') {
+                $('#second').show();
+                $('#first').hide();
+                $('#select').empty().append('<option value="0" selected>请选择</option>');
+                $('#sRemark').empty().append('请先选择一级科研类别！');
+                for(var i=0; i<firstClassArray.length; i++) {
+                    var fClass = firstClassArray[i];
+                    $('#select').append('<option value="'+fClass.classId+'">'+fClass.className+'</option>');
+                }
+            }
+            window.parent.iFrameHeight();   //iframe自适应高度
+        }
+
+        /**
+         * 展示添加二级科研项目时备注
+         */
+        $('#select').change(function() {
+            var pId = $(this).children('option:selected').val();
+            if(pId == 0) {   //'请选择'的选项
+                $('#sRemark').empty().append('请先选择一级科研类别！');
+                $('#classNameS').attr("disabled",true);
+                return;
+            }
+
+            $('#classNameS').removeAttr("disabled");
+            var secondRemark = '同名的科研项目不能重复添加，当前科研类别已经存在的二级科研项目有：';
+            for(var i=0; i<secondClassArray.length; i++) {
+                var sClass = secondClassArray[i];
+                if(sClass.parentId == pId) {
+                    secondRemark = secondRemark + '<b>\'' + sClass.className + '\'</b>，';
+                }
+                $('#sRemark').empty().append(secondRemark);
+            }
+        });
+
+        /**
+         * 检测一级科研类别名称是否重名
+         */
+        $('#classNameF').blur(function () {
+            if($(this).val()==null || $(this).val()=='') {
+                $('#fRemark').empty().append(fRemark);
+                return;
+            }
+
+            $.ajax({       //后台重名检测
+                url: "/rms/class/checkBeforeAdd.do",
+                type: "get",
+                data: {
+                    'className' : encodeURI($(this).val()),
+                    'pId' : 0
+                },
+                dataType:"json",
+                //contentType: "application/json; charset=utf-8",
+                success:function(data){
+                    if(data == false) {
+                        $('#fRemark').empty().append("'" + $('#classNameF').val() + "'这个类别已经存在请换个名字重试！");
+                        $('#firstTag').val(-1);
+                    }else{
+                        $('#fRemark').empty().append("'" + $('#classNameF').val() + "'验证通过!");
+                        $('#firstTag').val(1);
+                    }
+                },
+                error:function() {
+                    alert("后台检测失败，请检查网络或者重新登录！");
+                }
+            });
+        });
+
+        /**
+         * 检测二级科研项目名称是否重名
+         */
+        $('#classNameS').blur(function () {
+            if($(this).val()==null || $(this).val()=='') {
+                $('#sRemark').empty().append('必需字段');
+                return;
+            }
+
+            $.ajax({       //后台重名检测
+                url: "/rms/class/checkBeforeAdd.do",
+                type: "get",
+                data: {
+                    'className' : encodeURI($(this).val()),
+                    'pId' : $('#select').children('option:selected').val()
+                },
+                dataType:"json",
+                //contentType: "application/json; charset=utf-8",
+                success:function(data){
+                    if(data == false) {
+                        $('#sRemark').empty().append("'" + $('#classNameS').val() + "'这个项目已经存在请换个名字重试！");
+                        $('#secondTag').val(-1);
+                    }else{
+                        $('#sRemark').empty().append("'" + $('#classNameS').val() + "'验证通过!");
+                        $('#secondTag').val(1);
+                    }
+                },
+                error:function() {
+                    alert("后台检测失败，请检查网络或者重新登录！");
+                }
+            });
+        });
+
+        /**
+         * 提交表单之前校验
+         * @param id 待校验的标签id
+         */
+        function checkBeforeSubmit(id) {
+            var str = "'#"+id+"'";
+            var tag = $('#'+id).val();
+            if(tag == 1) {
+                return true;
+            }else {
+                alert('请检查科研类别或科研项目的名称是否有重名冲突！');
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

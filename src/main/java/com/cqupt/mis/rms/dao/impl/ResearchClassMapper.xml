@@ -43,6 +43,16 @@
 		where `is_delete` = 0 AND `parent_id` = 0
 		order by `order`
 	</select>
+
+	<!-- 根据类别名字和parentId查找科研信息 -->
+	<select id="selectByNameAndPid" resultMap="ResearchClass">
+		SELECT
+			<include refid="ColumnList"/>
+		FROM `research_class`
+		WHERE `is_delete`=0 AND `class_name`= #{className, jdbcType=VARCHAR} AND `parent_id`= #{pId, jdbcType=INTEGER}
+
+
+	</select>
 	
 	<!-- 根据主键删除记录 -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -116,7 +126,7 @@
 	      #{submittime,jdbcType=TIMESTAMP},
 	    </if>
 		<if test="parentId != null" >
-		  #{parent_id,jdbcType=INTEGER},
+		  #{parentId,jdbcType=INTEGER},
 		</if>
 	  </trim>
 	</insert>

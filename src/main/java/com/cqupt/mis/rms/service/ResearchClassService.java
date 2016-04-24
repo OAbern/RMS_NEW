@@ -3,6 +3,7 @@ package com.cqupt.mis.rms.service;
 import java.util.List;
 
 import com.cqupt.mis.rms.model.ResearchClass;
+import com.cqupt.mis.rms.vo.ResultInfo;
 
 /**
  * 处理科研类的服务接口层
@@ -16,7 +17,7 @@ public interface ResearchClassService {
 	 * @param researchClass
 	 * @return
 	 */
-	public boolean addClass(ResearchClass researchClass);
+	public ResultInfo<Object> addClass(ResearchClass researchClass);
 	
 	/**
 	 * 删除科研类别(假删除)

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
 import com.cqupt.mis.rms.dao.ResearchClassDao;
@@ -24,9 +25,15 @@ public class ResearchClassServiceImpl implements ResearchClassService {
 	@Resource
 	private SortDao sortDao;
 	
-	public boolean addClass(ResearchClass researchClass) {
-		sortDao.sortBeforeAdd("research_class", researchClass.getOrder(), 0);
-		return researchClassDao.add(researchClass);
+	public ResultInfo<Object> addClass(ResearchClass researchClass) {
+		//sortDao.sortBeforeAdd("research_class", researchClass.getOrder(), 0);
+		ResultInfo<Object> resultInfo = new ResultInfo<Object>();
+		ResearchClass classResult = researchClassDao.selectByNameAndPid(researchClass.getClassName(), researchClass.getParentId());
+		if(classResult != null) {
+			return new ResultInfo<Object>(false, "已经存在相同名字的科研类别或项目，请换个名字试试");
+		}
+		boolean result = researchClassDao.add(researchClass);
+		return new ResultInfo<Object>(result, null);
 	}
 
 	public boolean deleteClass(ResearchClass researchClass) {
