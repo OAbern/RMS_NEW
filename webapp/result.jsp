@@ -74,12 +74,18 @@
 
     <script type="javascript">
         //根据结果展示相应的结果面板
+        alert(1);
         var result = JSON.parse($('#result').val());
+        alert(2);
         if(result) {
+            alert(3);
             $('#success').show();
         }else {
+            alert(4);
             $('#failed').show();
         }
+        window.parent.iFrameHeight();
+        alert(5);
     </script>
 </body>
 </html>

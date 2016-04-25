@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.utils.ResearchConstant;
+import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
 import com.cqupt.mis.rms.dao.ResearchFiledDao;
@@ -24,9 +26,25 @@ public class ResearchFiledServiceImpl implements ResearchFiledService {
 	@Resource
 	private SortDao sortDao;
 
-	public boolean addFiled(ResearchFiled researchFiled) {
-		sortDao.sortBeforeAdd("research_filed", researchFiled.getOrder(), researchFiled.getResearchClass().getClassId());
-		return researchFiledDao.add(researchFiled);
+	public ResultInfo<Object> addFiled(ResearchFiled researchFiled) {
+		boolean result;
+		int classId = researchFiled.getResearchClass().getClassId();
+		//维护排序字段
+		sortDao.sortBeforeAdd(ResearchConstant.TABLE_R_FIELD, researchFiled.getOrder(), classId);
+
+		Object o1 = researchFiledDao.checkNameBeforeAdd(classId, researchFiled.getName());
+		Object o2 = researchFiledDao.checkDesBeforeAdd(classId, researchFiled.getDescription());
+		if(o1==null && o2==null) {		//没有重名
+			result = researchFiledDao.add(researchFiled);
+		}else {
+			return new ResultInfo<Object>(false, "重名冲突！请确认字段数据库名或字段的展示名没有与已存在的字段重复！");
+		}
+
+		if(result) {
+			return new ResultInfo<Object>(null, true);
+		}else {
+			return  new ResultInfo<Object>(false, "字段添加失败，请重新尝试！");
+		}
 	}
 
 	public boolean deleteFiled(ResearchFiled researchFiled) {

@@ -1,0 +1,24 @@
+HTML {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Tahoma, Verdana, "??"; TEXT-ALIGN: center
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Tahoma, Verdana, "??"; TEXT-ALIGN: center
+}
+A:link {
+	COLOR: #B61410; TEXT-DECORATION: none ; text-decoration:none;
+}
+A:visited {
+	COLOR: #B61410; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+#container {
+	MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}
+#maincolumn {
+	MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; HEIGHT: 80px; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}
+#footer {
+	FONT-SIZE: 12px; MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}

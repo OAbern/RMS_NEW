@@ -10,14 +10,14 @@
 		<result column="f_is_delete" property="isDelete" jdbcType="INTEGER" />
 		<result column="f_submittime" property="submittime" jdbcType="TIMESTAMP" />
 		<result column="f_order" property="order" jdbcType="INTEGER" />
-		<result column="is_null" property="isNull" jdbcType="TINYINT" />
+		<result column="is_null" property="isNull" jdbcType="INTEGER" />
 		
 		<association property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass" />
 	</resultMap>
 	
 	<!-- 数据表中所有字段,`research_filed`设置别名f，个别字段有别名-->
 	<sql id="ColumnList" >
-		f.`filed_id`, f.`class_id` AS `f_class_id`, `filed_name`, `filed_des`, f.`is_delete` AS `f_is_delete`, f.`submittime` AS `f_submittime`, f.`order` AS `f_order`, `is_null`
+		f.`field_id`, f.`class_id` AS `f_class_id`, `field_name`, `field_des`, f.`is_delete` AS `f_is_delete`, f.`submittime` AS `f_submittime`, f.`order` AS `f_order`, `is_null`
 	</sql>
 	
 	<!-- 根据classId查找所有未删除的科研字段 -->
@@ -36,9 +36,32 @@
 		SELECT 
 		<include refid="ColumnList"></include> ,
 		c.*
-		FROM `research_filed` f
+		FROM `research_field` f
 		LEFT JOIN `research_class` c ON	f.`class_id` = c.`class_id`
 		where `filed_id` = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 根据classId统计当前科研项目的字段数 -->
+	<select id="countByClassId" parameterType="java.lang.Integer" resultType="java.lang.Object">
+		SELECT max(`order`)
+		FROM `research_field`
+		WHERE `class_id` = #{classId, jdbcType=INTEGER} AND `is_delete`=0
+	</select>
+
+	<!-- 检测字段数据库名是否有重名 -->
+	<select id="checkNameBeforeAdd" resultMap="ResearchFiled">
+		SELECT
+			<include refid="ColumnList"></include>
+		FROM  `research_field` f
+		WHERE `class_id` = #{cId, jdbcType=INTEGER} AND `field_name`=#{name, jdbcType=VARCHAR} AND `is_delete`=0
+	</select>
+
+	<!-- 检测字段数据库名是否有重名 -->
+	<select id="checkDesBeforeAdd" resultMap="ResearchFiled">
+		SELECT
+		<include refid="ColumnList"></include>
+		FROM  `research_field` f
+		WHERE `class_id` = #{cId, jdbcType=INTEGER} AND `field_des`=#{des, jdbcType=VARCHAR} AND `is_delete`=0
 	</select>
 	
 	<!-- 根据主键假删除字段，设置`is_delete`为1，`order`为0 -->
@@ -50,25 +73,25 @@
   
   	<!-- 根据主键删除字段（真实删除，慎用!） -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-		delete from `research_filed`
+		delete from `research_field`
 		where `filed_id` = #{id,jdbcType=INTEGER}
 	</delete>
   
   	<!-- 插入一条记录 -->
 	<insert id="add" parameterType="com.cqupt.mis.rms.model.ResearchFiled" >
-		insert into `research_filed`
+		insert into `research_field`
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 		  <if test="id != 0" >
-		    `filed_id`,
+		    `field_id`,
 		  </if>
 		  <if test="researchClass.classId != 0" >
 		    `class_id`,
 		  </if>
 		  <if test="name != null" >
-		    `filed_name`,
+		    `field_name`,
 		  </if>
 		  <if test="description != null" >
-		    `filed_des`,
+		    `field_des`,
 		  </if>
 		  <if test="isDelete != 0" >
 		    `is_delete`,
@@ -78,6 +101,9 @@
 		  </if>
 		  <if test="order != 0" >
 		    `order`,
+		  </if>
+	  	  <if test="isNull != 0" >
+			`is_null`,
 		  </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -101,6 +127,9 @@
 		  </if>
 		  <if test="order != 0" >
 		    #{order,jdbcType=INTEGER},
+		  </if>
+		  <if test="isNull != 0" >
+		  	#{isNull,jdbcType=INTEGER},
 		  </if>
 		</trim>
 	</insert>

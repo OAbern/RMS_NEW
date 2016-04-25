@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>添加科研类别详细</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        .line-25-per {
+            padding: 10px;
+            width: 25%;
+            float: left;
+        }
+
+        .clear-left {
+            clear: left;
+        }
+
+    </style>
+
+</head>
+<body style="background-color: white">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">添加科研项目详细</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <form role="form" action="#">
+                        <div class="form-group">
+                            <label>科研项目详细字段添加</label>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.panel-heading -->
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <!-- 添加二级科研项目 -->
+                            <form id="second" role="form" action="/rms/filed/add.do" onsubmit="return checkBeforeSubmit()">
+                                <div class="form-group">
+                                    <label style="color: red">*请选择一级科研类别</label>
+                                    <select class="form-control" id="selectF" name="parentId" style="width:30%; display:inline; margin-right: 5%" required>
+                                        <option value="-1">请选择</option>
+                                    </select>
+
+                                    <label style="color: red">*请选择二级科研项目</label>
+                                    <select class="form-control" id="selectS" name="researchClass.classId" style="width:30%; display:inline;" required disabled>
+                                        <option value="-1">请先选择一级科研类别</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="line-25-per">
+                                        <label style="color: red">*请输入字段数据库名</label>
+                                        <input class="form-control" id="name" name="name" placeholder="限英文字母、下划线" required disabled>
+                                        <input id="nCheck" type="hidden" value="-1">
+                                        <p class="help-block" id="tips1" style="color: green" >提示</p>
+                                    </div>
+
+                                    <div class="line-25-per">
+                                        <label style="color: red">*请输入字段展示名</label>
+                                        <input class="form-control" name="description" id="description" required disabled>
+                                        <input id="dCheck" type="hidden" value="-1">
+                                        <p class="help-block" id="tips2" style="color: green" >提示</p>
+                                    </div>
+
+                                    <div class="line-25-per">
+                                        <label style="color: red">*请选择字段的展示顺序</label>
+                                        <select id="order" class="form-control" name="order" required disabled>
+                                            <!--<option>1</option>-->
+                                        </select>
+                                    </div>
+
+                                    <div class="line-25-per">
+                                        <label style="color: red">*请选择录入时是否允许字段为空</label>
+                                        <select class="form-control" name="isNull" required>
+                                            <option value="0">不允许为空</option>
+                                            <option value="1">允许为空</option>
+                                        </select>
+                                    </div>
+                                    <div class="clear-left"></div>
+                                </div>
+
+                                <button type="submit" class="btn btn-danger">提交</button>
+                                <button type="reset" class="btn btn-info">重置</button>
+                            </form>
+                            <!-- /form -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- ./row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.pane; .panel-default -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+<!-- jQuery -->
+<script src="../../js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../../js/bootstrap-3.3.5/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
+
+<script>
+    var researchClassList = null;  //科研类别信息
+    $.ajax({       //获取当前系统中所有未删除的一级科研类别
+        url:"/rms/class/getAll.do",
+        type:"get",
+        dataType:"json",
+        contentType: "application/json; charset=utf-8",
+        async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+        success:function(data){
+            if(data == null) {
+                alert("获取类别信息失败！");
+            }else {
+                researchClassList = data;
+            }
+        },
+        error:function() {
+            alert("获取类别信息失败！");
+        }
+    });
+    var firstClassArray = [];  //一级科研类别
+    var secondClassArray = []; //二级科研项目
+    for(var i=0; i<researchClassList.length; i++) {     //科研类别分类
+        var rClass = researchClassList[i];
+        if(rClass.parentId == 0) {
+            firstClassArray.push(rClass);
+            $('#selectF').append('<option value="'+rClass.classId+'">'+rClass.className+'</option>');
+        }else {
+            secondClassArray.push(rClass);
+        }
+    }
+    /********* do code by self end *************/
+
+
+    /********* event code *************/
+
+    /**
+     * 根据一级类别动态加载二级项目
+     */
+    $('#selectF').change(function() {
+        var pId = $(this).children('option:selected').val();
+        if(pId == -1) {
+            $("#selectS").empty().append('<option value="-1">请先选择一级科研类别</option>');
+            $("#selectS").attr("disabled",true);
+            $('#order').empty();
+            $('#order').attr("disabled",true);
+            $("#name").attr("disabled",true);
+            $("#description").attr("disabled",true);
+            return;
+        }
+
+        $('#selectS').removeAttr("disabled").empty();
+        $("#selectS").append('<option value="-1">请选择</option>');
+        var flag = false;       //标志当前科研类别是否含有科研项目
+
+        //添加二级项目
+        for(var i=0; i<secondClassArray.length; i++) {
+            var sClass = secondClassArray[i];
+            if(sClass.parentId == pId) {
+                flag = true;
+                $("#selectS").append('<option value="'+sClass.classId+'">'+sClass.className+'</option>');
+            }
+        }
+
+        if(!flag) {
+            alert("当前一级类别没有二级项目，请先添加二级项目！");
+            return;
+        }
+    });
+
+    /**
+     * 根据选择的二级科研项目动态加载顺序值
+     */
+    $('#selectS').change(function() {
+        var max = 0;
+        var classId = $(this).children('option:selected').val();
+        if(classId <= 0) {
+            $('#order').empty();
+            $("#order").attr("disabled",true);
+            $("#name").attr("disabled",true);
+            $("#description").attr("disabled",true);
+            return;
+        }
+
+        $('#name').removeAttr("disabled").empty();
+        $('#description').removeAttr("disabled").empty();
+        $('#order').removeAttr("disabled").empty();
+        $.ajax({       //获取
+            url:"/rms/filed/count.do",
+            data: {
+                "classId": classId
+            },
+            type:"get",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+            success:function(data){
+                if(data == null) {
+                    alert("获取顺序值信息失败！请重试");
+                }else {
+                   max = data;
+                }
+            },
+            error:function() {
+                alert("获取顺序值信息失败！请重试");
+            }
+        });
+
+        for(var i=1; i<max+1; i++) {
+            $('#order').append('<option value="'+i+'">'+i+'</option>');
+        }
+        max++;
+        $('#order').append('<option value="'+max+'" selected="selected">'+max+'</option>');
+    });
+
+    /**
+     * 数据库字段名重名检测
+     */
+    $('#name').blur(function() {
+        var name = $('#name').val();
+        if(name=='' || name==null) {
+            $('#tips1').empty();
+            $('#tips1').append('<p class="fa fa-times">必填</p>');
+            $('#nCheck').val(-1);
+            return;
+        }
+
+        var regex = new RegExp('^[a-zA-Z\_]+', 'g');
+        if(!regex.test(name)) {
+            $('#tips1').empty();
+            $('#tips1').append('<p class="fa fa-times">限英文字母、下划线</p>');
+            $('#nCheck').val(-1);
+            return;
+        }
+
+        $.ajax({       //获取
+            url:"/rms/filed/checkNameBeforeAdd.do",
+            data: {
+                "classId": $('#selectS').children('option:selected').val(),
+                "name": name
+            },
+            type:"get",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+            success:function(result){
+                $('#tips1').empty();
+                if(result) {
+                    $('#tips1').append('<p class="fa fa-check"></p>');
+                    $('#nCheck').val(1);
+                }else {
+                    $('#tips1').append('<p class="fa fa-times">重名：请换一个试试！</p>');
+                    $('#nCheck').val(-1);
+                }
+            },
+            error:function() {
+                alert("重名校验失败！");
+                $('#nCheck').val(-1);
+            }
+        });
+    });
+
+    /**
+     * 字段展示名重名检测
+     */
+    $('#description').blur(function() {
+        var des = $('#description').val();
+        if(des=='' || des==null) {
+            $('#tips2').empty();
+            $('#tips2').append('<p class="fa fa-times">必填</p>');
+            $('#dCheck').val(-1);
+            return;
+        }
+
+        $.ajax({       //获取
+            url:"/rms/filed/checkDesBeforeAdd.do",
+            data: {
+                "classId": $('#selectS').children('option:selected').val(),
+                "description": des
+            },
+            type:"get",
+            dataType:"json",
+            contentType: "application/json; charset=utf-8",
+            async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+            success:function(result){
+                $('#tips2').empty();
+                if(result) {
+                    $('#tips2').append('<p class="fa fa-check"></p>');
+                    $('#dCheck').val(1);
+                }else {
+                    $('#tips2').append('<p class="fa fa-times">重名：请换一个试试！</p>');
+                    $('#dCheck').val(-1);
+                }
+            },
+            error:function() {
+                alert("重名校验失败！");
+                $('#dCheck').val(-1);
+            }
+        });
+    });
+
+    /**
+     * 提交之前的检查
+     */
+    function checkBeforeSubmit() {
+        if($('#selectF').children('option:selected').val() == -1) {
+            alert('请检查是否选择"一级科研类别"');
+            return false;
+        }
+
+        if($('#selectS').children('option:selected').val() == -1) {
+            alert('请检查是否选择"二级科研项目"');
+            return false;
+        }
+
+        if($('#nCheck').val() == -1) {
+            alert('请检查是否填写"字段数据库名"');
+            return false;
+        }
+
+        if($('#dCheck').val() == -1) {
+            alert('请检查是否填写"字段展示名"');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</body>
+</html>

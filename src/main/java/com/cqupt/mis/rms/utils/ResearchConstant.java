@@ -25,6 +25,11 @@ public class ResearchConstant {
 	 * 查询统计科研信息的url
 	 */
 	public static final String STATISTICSURL = "pages/record/statisticsrecord.html";
+
+	/**
+	 * 科研字段数据库表名
+	 */
+	public static final String TABLE_R_FIELD = "research_field";
 	
 	/**
 	 * url的第一参数的key

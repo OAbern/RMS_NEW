@@ -3,6 +3,7 @@ package com.cqupt.mis.rms.service;
 import java.util.List;
 
 import com.cqupt.mis.rms.model.ResearchFiled;
+import com.cqupt.mis.rms.vo.ResultInfo;
 
 /**
  * 处理科研动态字段的逻辑层接口
@@ -15,7 +16,7 @@ public interface ResearchFiledService {
 	 * @param researchClass
 	 * @return
 	 */
-	public boolean addFiled(ResearchFiled researchFiled);
+	public ResultInfo<Object> addFiled(ResearchFiled researchFiled);
 	
 	/**
 	 * 删除科研动态字段(假删除)

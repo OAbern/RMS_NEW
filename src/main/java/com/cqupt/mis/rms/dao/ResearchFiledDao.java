@@ -2,6 +2,7 @@ package com.cqupt.mis.rms.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cqupt.mis.rms.model.ResearchFiled;
@@ -27,4 +28,27 @@ public interface ResearchFiledDao extends BaseDao<ResearchFiled, Integer>{
 	 * @return 操作结果
 	 */
 	public boolean delete(int filedId);
+
+	/**
+	 * 根据classId统计当前科研项目的字段数
+	 * @param classId 待查询的科研项目classId
+	 * @return 总共未删除的字段数
+     */
+	public Object countByClassId(int classId);
+
+	/**
+	 * 检测字段数据库名是否有重名
+	 * @param classId 字段所属类别
+	 * @param name 待检测字段数据名
+     * @return 查找结果，若无重名返回null，若有返回此字段
+     */
+	public ResearchFiled checkNameBeforeAdd(@Param("cId")int classId, @Param("name")String name);
+
+	/**
+	 * 检测字段展示名是否有重名
+	 * @param classId 字段所属类别
+	 * @param des 待检测字段展示名
+     * @return 查找结果，若无重名返回null，若有返回此字段
+     */
+	public ResearchFiled checkDesBeforeAdd(@Param("cId")int classId, @Param("des")String des);
 }
