@@ -4,9 +4,9 @@
 
 	<!-- 科研动态字段类的映射，"f_"开头的字段是别名 -->
 	<resultMap id="ResearchFiled" type="com.cqupt.mis.rms.model.ResearchFiled" >
-		<id column="filed_id" property="id" jdbcType="INTEGER" />
-		<result column="filed_name" property="name" jdbcType="VARCHAR" />
-		<result column="filed_des" property="description" jdbcType="VARCHAR" />
+		<id column="field_id" property="id" jdbcType="INTEGER" />
+		<result column="field_name" property="name" jdbcType="VARCHAR" />
+		<result column="field_des" property="description" jdbcType="VARCHAR" />
 		<result column="f_is_delete" property="isDelete" jdbcType="INTEGER" />
 		<result column="f_submittime" property="submittime" jdbcType="TIMESTAMP" />
 		<result column="f_order" property="order" jdbcType="INTEGER" />
@@ -25,7 +25,7 @@
 		SELECT 
 		<include refid="ColumnList"></include> ,
 		c.*
-		FROM `research_filed` f
+		FROM `research_field` f
 		LEFT JOIN `research_class` c ON	f.`class_id` = c.`class_id` 
 		WHERE f.`class_id` = #{classId, jdbcType=INTEGER} AND f.`is_delete` = 0
 		ORDER BY f.`order`	

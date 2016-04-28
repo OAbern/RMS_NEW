@@ -7,12 +7,14 @@ import com.cqupt.mis.rms.utils.JSONUtils;
 import com.cqupt.mis.rms.utils.RequestConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 处理科研动态段的控制器
@@ -28,6 +30,13 @@ public class ResearchFiledController {
 
     @Resource
     ResearchFiledDao researchFiledDao;
+
+    //TODO: 测试用
+    @RequestMapping("/find/{classId}")
+    public void findByClassIdForTest(@PathVariable int classId, HttpServletResponse response) {
+        List<ResearchFiled> filedList = researchFiledDao.findByClassId(classId);
+        JSONUtils.toJSON(filedList, response);
+    }
 
     /**
      * 统计指定科研项目的字段数

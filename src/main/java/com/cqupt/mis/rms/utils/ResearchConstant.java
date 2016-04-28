@@ -9,7 +9,7 @@ public class ResearchConstant {
 	/**
 	 * 录入科研信息的url
 	 */
-	public static final String INPUTURL = "pages/record/inputrecord.html";
+	public static final String INPUTURL = "../../record/input/";
 	
 	/**
 	 * 管理个人科研信息的url
@@ -35,6 +35,11 @@ public class ResearchConstant {
 	 * url的第一参数的key
 	 */
 	public static final String PARAM1 = "?classId=";
+
+	/**
+	 * 访问尾缀
+	 */
+	public static final String SUFFIX = ".do";
 	
 	/**
 	 * 获取录入科研信息的url
@@ -42,7 +47,7 @@ public class ResearchConstant {
 	 * @return url
 	 */
 	public static String getInputUrl(int classId) {
-		return INPUTURL + PARAM1 + classId;
+		return INPUTURL + classId + SUFFIX;
 	}
 	
 	/**
