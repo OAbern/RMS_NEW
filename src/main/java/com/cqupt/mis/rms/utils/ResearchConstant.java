@@ -40,6 +40,12 @@ public class ResearchConstant {
 	 * 访问尾缀
 	 */
 	public static final String SUFFIX = ".do";
+
+	/**
+	 * 旁证材料存储的根路径
+	 * TODO: 写在XML里面
+	 */
+	public static final String PROOF_STORE_PATH_ROOT = "E:/RMS旁证材料";
 	
 	/**
 	 * 获取录入科研信息的url

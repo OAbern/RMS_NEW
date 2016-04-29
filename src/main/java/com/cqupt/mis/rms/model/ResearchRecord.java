@@ -1,6 +1,7 @@
 package com.cqupt.mis.rms.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class ResearchRecord implements Serializable {
 	
 	private CQUPTUser submitUser;		//记录的提交者
 	private CQUPTUser approvedUser;		//记录的审核者
+	private Date submitTime;		//提交时间
 	
 	public String getId() {
 		return id;

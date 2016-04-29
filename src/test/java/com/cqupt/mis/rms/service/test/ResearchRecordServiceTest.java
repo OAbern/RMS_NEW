@@ -100,7 +100,7 @@ public class ResearchRecordServiceTest {
 		record.setProofs(proofs);
 		
 		//添加一条记录
-		researchRecordServiceImpl.add(record);
+		researchRecordServiceImpl.add(record, null);
 	}
 	
 	@Test

@@ -3,6 +3,8 @@ package com.cqupt.mis.rms.service;
 import java.util.List;
 
 import com.cqupt.mis.rms.model.ResearchRecord;
+import com.cqupt.mis.rms.vo.ResultInfo;
+import org.apache.commons.fileupload.FileItem;
 
 /**
  * 处理科研记录的逻辑层接口
@@ -13,10 +15,11 @@ public interface ResearchRecordService {
 	
 	/**
 	 * 添加一条记录（提交和保存共用）
-	 * @param record
+	 * @param record	待提交的记录
+	 * @param proofs	旁证材料源文件
 	 * @return 操作结果
 	 */
-	public boolean add(ResearchRecord record);
+	public ResultInfo<Object> add(ResearchRecord record, List<FileItem> proofs);
 	
 	/**
 	 * 根据科研记录Id查找一条完整的科研记录

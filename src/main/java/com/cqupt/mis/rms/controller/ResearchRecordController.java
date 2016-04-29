@@ -1,20 +1,27 @@
 package com.cqupt.mis.rms.controller;
 
 import com.cqupt.mis.rms.dao.ResearchFiledDao;
-import com.cqupt.mis.rms.model.ResearchFiled;
-import com.cqupt.mis.rms.model.ResearchRecord;
+import com.cqupt.mis.rms.model.*;
 import com.cqupt.mis.rms.service.ResearchRecordService;
+import com.cqupt.mis.rms.utils.GenerateUtils;
 import com.cqupt.mis.rms.utils.RequestConstant;
+import com.cqupt.mis.rms.utils.ResearchConstant;
+import com.cqupt.mis.rms.utils.SessionConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * 处理科研信息的controller 
@@ -55,11 +62,133 @@ public class ResearchRecordController {
      * @return
      */
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public ModelAndView inputRecord(@RequestParam(value="record", required=false)ResearchRecord record, @RequestParam(value="proofs", required=false) MultipartFile[] proofs, HttpServletRequest request) {
-        //TODO:
-        System.out.println(record);
-        System.out.println(request.getParameter("record.researchClass.classId"));
-        System.out.println(request.getParameter(""));
-        return null;
+    public ModelAndView inputRecord(HttpServletRequest request) throws FileUploadException, UnsupportedEncodingException {
+        //TODO： FileUploadException 处理
+        //通过commons-fileupload的包获取表单数据
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        ServletFileUpload upload = new ServletFileUpload(factory);
+        List<FileItem> proofs = new ArrayList<FileItem>();
+        List<FileItem> itemList = upload.parseRequest(request);
+        Map<String, String> param = new HashMap<String, String>();
+        for(FileItem fileItem : itemList){
+            if(fileItem.isFormField()) {    //判断是否是表单数据
+                param.put(fileItem.getFieldName(), fileItem.getString("utf-8"));//如果你页面编码是utf-8的
+            }else {
+                proofs.add(fileItem);
+            }
+        }
+
+        int classId = Integer.parseInt(param.get(CLASSID));     //TODO: NumberFormatException
+        List<ResearchFiled> filedList = researchFiledDao.findByClassId(classId);
+
+        //拼装ResearchRecord对象
+        ResearchRecord researchRecord = new ResearchRecord();
+
+        //设置唯一的记录id
+        researchRecord.setId(GenerateUtils.getID());
+
+        //设置提交用户
+        CQUPTUser user = new CQUPTUser();
+        user.setUserId((String)request.getSession().getAttribute(SessionConstant.USERID));
+        researchRecord.setSubmitUser(user);
+
+        ResearchClass researchClass = new ResearchClass();
+        researchClass.setClassId(classId);      //设置类别ID
+        researchRecord.setResearchClass(researchClass);
+
+        researchRecord.setStatus(Integer.parseInt(param.get(STATUS)));     //设置状态码  权限？判断<2???  //TODO: NumberFormatException
+
+        //解析科研记录动态字段的值
+        researchRecord.setFields(parseResearchDatas(param, filedList));      //设置科研记录动态字段的值
+
+        //解析相关人员信息
+        int count = (param.size()-filedList.size()-2)/3;
+        researchRecord.setPersons(parseResearchPersons(param, count));      //设置相关人员信息
+
+        //持久化
+        ResultInfo<Object> result  = researchRecordServiceImpl.add(researchRecord, proofs);
+
+        request.setAttribute(RequestConstant.RESULT, result);
+//        request.setAttribute(RequestConstant.RESULT, null);
+        return new ModelAndView("result.jsp");
     }
+
+    /**
+     * 解析相关人员的信息
+     * @param param form-data解析出来的参数Map
+     * @param count 相关人员组数
+     * @return List<ResearchPerson> 相关人员列表
+     */
+    private List<ResearchPerson> parseResearchPersons(Map<String, String> param, int count) {
+        List<ResearchPerson> personList = new ArrayList<ResearchPerson>();
+        for(int i=0; i<count; i++) {
+            ResearchPerson person = new ResearchPerson();
+            String pName = param.get(PERSON_NAME+i);
+            String pRemark = param.get(PERSON_REMARKS+i);
+            String orderStr = param.get(PERSON_ORDER+i);
+
+            if(pName!=null && !pName.equals("")) {      //如果没有姓名，后面的字段无意义
+                person.setName(pName);
+            }else {
+                continue;
+            }
+
+            if(pRemark!=null && !pRemark.equals(""))
+                person.setRemarks(pRemark);
+
+            if(orderStr!=null && !orderStr.equals("")) {
+
+                person.setOrder(Integer.parseInt(orderStr));        //TODO: NumberFormatException
+            }
+
+            personList.add(person);
+        }
+        return personList;
+    }
+
+    /**
+     * 解析出动态字段
+     * @param param form-data解析出来的参数Map
+     * @param filedList 动态字段列表
+     * @return Set<ResearchData> 返回动态字段和字段的值
+     */
+    private Set<ResearchData> parseResearchDatas(Map<String, String> param, List<ResearchFiled> filedList) {
+        Set<ResearchData> dataSet = new HashSet<ResearchData>();
+        for(ResearchFiled filed : filedList) {
+            String value = param.get(filed.getName());
+            if(value!=null && !value.equals("")) {
+                ResearchData researchData = new ResearchData();
+                researchData.setFiled(filed);
+                researchData.setValue(value);
+                dataSet.add(researchData);
+            }
+        }
+        return dataSet;
+    }
+
+    /**
+     * classId 所属类别id的参数名
+     */
+    private static final String CLASSID = "classId";
+
+    /**
+     * 状态码的参数名
+     */
+    private static final String STATUS = "status";
+
+    /**
+     * 成员姓名的参数名
+     */
+    private static final String PERSON_NAME = "pName";
+
+    /**
+     * 成员备注的参数名
+     */
+    private static final String PERSON_REMARKS = "pRemark";
+
+    /**
+     * 成员排名的参数名
+     */
+    private static final String PERSON_ORDER = "pOrder";
+
 }

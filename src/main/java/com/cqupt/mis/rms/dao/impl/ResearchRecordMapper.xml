@@ -11,6 +11,8 @@
 		
 		<result column="submit_user_id" property="submitUserId" jdbcType="VARCHAR" />
 		<result column="approved_user_id" property="approvedUserId" jdbcType="VARCHAR" />
+		<result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
+
 	</resultMap>
 	
 	<!-- 科研记录的结果映射 -->
@@ -22,8 +24,9 @@
 		<!-- <result column="class_id" property="classId" jdbcType="INTEGER" />
 		<result column="submit_user_id" property="submitUserId" jdbcType="VARCHAR" />
 		<result column="approved_user_id" property="approvedUserId" jdbcType="VARCHAR" /> -->
-	
-		<association column="r_class_id" property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"></association>
+		<result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
+
+		<association column="r_class_id" property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"/>
 		<association column="u1_id" property="submitUser" javaType="com.cqupt.mis.rms.model.CQUPTUser">
 			<id column="u1_id" property="userId"/>
 			<result column="u1_name" property="userName"/>
@@ -36,7 +39,7 @@
 	
 	<!-- 所有字段的集合 -->
 	<sql id="ColumnList" >
-		`record_id`, r.`class_id` AS `r_class_id`, `return_reason`, `status`, `submit_user_id`, `approved_user_id`
+		`record_id`, r.`class_id` AS `r_class_id`, `return_reason`, `status`, `submit_user_id`, `approved_user_id`, `submit_time`
 	</sql>
   	
   	<!-- 删除一条记录（级联删除所有信息） -->

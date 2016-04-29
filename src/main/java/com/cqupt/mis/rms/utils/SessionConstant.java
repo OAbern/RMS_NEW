@@ -11,7 +11,7 @@ public class SessionConstant {
 	/**
 	 * 用于session中记录用户名的变量名
 	 */
-	public static final String USEID = "useId";
+	public static final String USERID = "userId";
 	
 	/**
 	 * 用于session中记录角色ID的变量名

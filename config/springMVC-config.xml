@@ -14,13 +14,13 @@
 	<!-- 自动扫描(自动注入) -->
 	<context:component-scan base-package = "com.cqupt.mis.rms.controller"/>
 
-	<!--&lt;!&ndash; 配置 文件上传的支持 &ndash;&gt;-->
-	<!--<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-		<!--<property name="defaultEncoding" value="UTF-8"/>-->
-		<!--<property name="maxUploadSize" value="52428800"/>&lt;!&ndash; 单位Bytes,所传文件之和50M &ndash;&gt;-->
-		<!--<property name="resolveLazily" value="true"/>-->
-		<!--<property name="maxInMemorySize" value="4096"/>&lt;!&ndash; 单位Bytes,所传文件在内存中最多占4K，超过直接存硬盘 &ndash;&gt;-->
-	<!--</bean>-->
+	<!-- 配置 文件上传的支持 -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="maxUploadSize" value="52428800"/><!-- 单位Bytes,所传文件之和50M -->
+		<property name="resolveLazily" value="true"/>
+		<property name="maxInMemorySize" value="4096"/><!-- 单位Bytes,所传文件在内存中最多占4K，超过直接存硬盘 -->
+	</bean>
 
 	<!-- 配置视图解析器 将视图逻辑名解析为/*.jsp -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

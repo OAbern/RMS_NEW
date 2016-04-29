@@ -1,15 +1,16 @@
 package com.cqupt.mis.rms.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.utils.GenerateUtils;
+import com.cqupt.mis.rms.utils.ResearchConstant;
+import com.cqupt.mis.rms.vo.ResultInfo;
+import org.apache.commons.fileupload.FileItem;
 import org.springframework.stereotype.Service;
 
 import com.cqupt.mis.rms.dao.ProofDao;
@@ -23,6 +24,7 @@ import com.cqupt.mis.rms.model.ResearchFiled;
 import com.cqupt.mis.rms.model.ResearchPerson;
 import com.cqupt.mis.rms.model.ResearchRecord;
 import com.cqupt.mis.rms.service.ResearchRecordService;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 处理科研记录的逻辑层实现
@@ -42,18 +44,76 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 	@Resource
 	private ResearchFiledDao researchFiledDao;		//	科研字段类的Dao
 	
-	public boolean add(ResearchRecord record) {
-		boolean result1 = researchRecordDao.add(record);
-		boolean result2 = researchDataDao.addSet(record.getFields(), record.getId());
-		boolean result3 = researchPersonDao.addList(record.getPersons(), record.getId());
-		boolean result4 = proofDao.addList(record.getProofs(), record.getId());
+	public ResultInfo<Object> add(ResearchRecord record, List<FileItem> proofFiles) {
+		//TODO： 失败回滚操作
+
+
+		if(CollectionUtils.isEmpty(record.getFields()))
+			return new ResultInfo<Object>(false, "添加科研记录异常，没有字段数据！");
+
+		boolean result = researchRecordDao.add(record);
+		if(!result)
+			return new ResultInfo<Object>(false, "添加主记录失败！");
+
+		result = researchDataDao.addSet(record.getFields(), record.getId());
+		if(!result)
+			return new ResultInfo<Object>(false, "添加动态字段数据失败！");
+
+		if(!CollectionUtils.isEmpty(record.getPersons())) {		//仅当人员信息非空时进行插入，否则略过
+			result = researchPersonDao.addList(record.getPersons(), record.getId());
+			if(!result)
+				return new ResultInfo<Object>(false, "添加相关人员信息失败！");
+		}
+
+		if(!CollectionUtils.isEmpty(proofFiles)) {
+			//存储文件
+			List<Proof> proofList = parseAndStoreProofs(proofFiles);
+			result = proofDao.addList(proofList, record.getId());
+			if(!result)
+				return new ResultInfo<Object>(false, "添加旁证材料失败！");
+		}
 		
-		//TODO 存储旁证材料文件
-		
-		if(result1 && result2 && result3 && result4)
-			return true;
-		
-		return false;
+		return new ResultInfo<Object>(null, true);
+	}
+
+	/**
+	 * 解析并且保存旁证材料的文件
+	 * @param proofFiles List<FileItem> form-data中获取的源数据
+	 * @return	List<Proof> 旁证材料的数据信息
+     */
+	private List<Proof> parseAndStoreProofs(List<FileItem> proofFiles) {
+		//检查根目录文件夹是否存在
+		File dir = new File(ResearchConstant.PROOF_STORE_PATH_ROOT);
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
+
+		List<Proof> proofList = new ArrayList<Proof>();
+		for(FileItem fileItem : proofFiles) {
+			Proof proof = new Proof();
+			String originalName = fileItem.getName();
+			String genName = GenerateUtils.generateFileName(originalName);
+			String storePath = ResearchConstant.PROOF_STORE_PATH_ROOT+"/"+ genName;
+
+			//设置旁证材料值
+			proof.setUploadProofName(originalName);
+			proof.setUploadRealName(genName);
+			proof.setProofPath(storePath);
+			proof.setUploadContentType(fileItem.getContentType());
+			proof.setTimeProofUpload(new Date());
+			proofList.add(proof);
+
+			File file = new File(storePath);
+			try {
+				file.createNewFile();
+				fileItem.write(file);
+			}catch (IOException e) {		//TODO：文件读写异常处理？
+				e.getStackTrace();
+			}catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
+		return proofList;
 	}
 
 	public ResearchRecord findOneById(String recordId) {

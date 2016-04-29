@@ -18,7 +18,7 @@
 	
 	<!-- 添加一组数据 -->
 	<insert id="addSet" >
-		insert into `research_data` (`record_id`, `filed_id`, `value`)
+		insert into `research_data` (`record_id`, `field_id`, `value`)
 		values 
 		<foreach collection="datas" item="d" index="i" separator=",">
 			(	#{rId, jdbcType=VARCHAR}, #{d.filed.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	)

@@ -1,6 +1,7 @@
 package com.cqupt.mis.rms.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 科研记录类的值对象
@@ -17,8 +18,14 @@ public class ResearchRecordVO implements Serializable {
 	private int status;		//记录的状态
 	private String submitUserId;		//记录的提交者的id
 	private String approvedUserId;		//记录的审核者的id
-	
-	
+	private Date submitTime;		//提交时间
+
+	public Date getSubmitTime() {
+		return submitTime;
+	}
+	public void setSubmitTime(Date submitTime) {
+		this.submitTime = submitTime;
+	}
 	public int getClassId() {
 		return classId;
 	}

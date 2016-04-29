@@ -43,6 +43,10 @@
             border: 3px double blueviolet;
             width: 95%;
         }
+
+        .btn-margin {
+            margin-right: 20px;
+        }
     </style>
 
 </head>
@@ -70,8 +74,9 @@
             <!--  /.panel-heading  -->
 
             <div class="panel-body">
-                <form action="record/add.do" method="post" enctype="multipart/form-data" name="record" id="record">
-                    <input type="hidden" name="record.researchClass.classId" id="classId">
+                <%--<form action="record/add.do" method="post" >--%>
+                <form action="record/add.do" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="classId" id="classId">
 
                     <div class="panel-group" id="accordion">
 
@@ -131,19 +136,19 @@
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>相关成员姓名</label>
-                                            <input class="form-control" name="record.persons[0].name">
+                                            <input class="form-control" name="pName0">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 
                                         <div class="line-25-per">
                                             <label>备注</label>
-                                            <input class="form-control" name="record.persons[0].remarks">
+                                            <input class="form-control" name="pRemark0">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 
                                         <div class="line-25-per">
                                             <label>排名</label>
-                                            <input class="form-control" name="record.persons[0].order">
+                                            <input class="form-control" name="pOrder0">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 
@@ -172,7 +177,7 @@
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>旁证材料上传</label>
-                                            <input type="file" name="proofs">
+                                            <input type="file" name="proof">
                                         </div>
                                         <div class="clear-left"></div>
                                     </div>
@@ -187,9 +192,11 @@
                     </div>
                     <!-- /#accordion -->
 
+                    <input type="hidden" value="" name="status" id="status">
                     <div style="text-align: center">
-                        <button type="submit" class="btn btn-danger">提交</button>
-                        <button type="reset" class="btn btn-info">重置</button>
+                        <button type="submit" class="btn btn-warning btn-margin" onclick="setStatus(0)">保存</button>
+                        <button type="submit" class="btn btn-danger btn-margin" onclick="setStatus(1)">提交审核</button>
+                        <button type="reset" class="btn btn-info btn-margin">重置</button>
                     </div>
                 </form>
             </div>
@@ -223,21 +230,23 @@
     for(var i=0; i<filedsList.length;) {    //加载记录的动态字段
         var filed = filedsList[i];
         if(filed.isNull == 0) {     //不可以为null
-            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'" required><p class="help-block text-info" id="tips1">提示</p> </div>');
+            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
         }else {         //不可以为null
-            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'"><p class="help-block text-info" id="tips1">提示</p> </div>');
+            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'"><p class="help-block text-info" id="tips1">可选填</p> </div>');
         }
 
         if(++i/3 == 0)      //换行
             $('#recordFiled').append('<div class="clear-left"></div>');
     }
 
+    var personCount = 0;        //成员计数器，全局作用域
     /**
      * 增加相关人员
      */
     $('#addPerson').click(function() {
         //$('#a-person').click();
-        $('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteParentEle(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="researchPerson.name"><p class="help-block text-info">可选填</p> </div><div class="line-25-per"><label>备注</label><input class="form-control" name="researchPerson.remark"> <p class="help-block text-info">可选填</p></div><div class="line-25-per"><label>排名</label><input class="form-control" name="researchPerson.order"> <p class="help-block text-info">可选填</p></div><div class="clear-left"></div></div><!-- /.form-group -->');
+        personCount++;
+        $('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deletePerson(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName'+personCount+'"><p class="help-block text-info">可选填</p> </div><div class="line-25-per"><label>备注</label><input class="form-control" name="pRemark'+personCount+'"> <p class="help-block text-info">可选填</p></div><div class="line-25-per"><label>排名</label><input class="form-control" name="pOrder'+personCount+'"> <p class="help-block text-info">可选填</p></div><div class="clear-left"></div></div><!-- /.form-group -->');
         window.parent.iFrameHeight();   //iframe自适应高度
     });
 
@@ -246,19 +255,37 @@
      */
     $('#addProof').click(function() {
         //$('#a-proof').click();
-        $('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteParentEle(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>旁证材料上传</label><input type="file" name="proof"> </div><div class="clear-left"></div></div><!-- /.form-group -->');
+        $('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteProof(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>旁证材料上传</label><input type="file" name="proof"> </div><div class="clear-left"></div></div><!-- /.form-group -->');
         window.parent.iFrameHeight();   //iframe自适应高度
     });
 
     /**
-     * 删除相应的元素
+     * 删除材料
      * @param ref
      */
-    function deleteParentEle(ref) {
+    function deletePerson(ref) {
+        personCount--;
+
         ref.closest('.form-group').remove();
         window.parent.iFrameHeight();   //iframe自适应高度
     }
 
+    /**
+     * 删除材料
+     * @param ref
+     */
+    function deleteProof(ref) {
+        ref.closest('.form-group').remove();
+        window.parent.iFrameHeight();   //iframe自适应高度
+    }
+
+    /**
+     * 设置提交状态值
+     * @param status
+     */
+    function setStatus(status) {
+        $('#status').val(status);
+    }
 </script>
 </body>
 </html>

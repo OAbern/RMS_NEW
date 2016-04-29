@@ -21,12 +21,12 @@
 	
 	<!-- 添加一组数据  -->
 	<insert id="addList" >
-	    insert into proofs (`record_id`, `time_proof_upload`, `desc_proof`, `proof_path`,
+	    insert into proofs (`record_id`, `time_proof_upload`, `proof_path`,
 	     					`upload_proof_name`, `upload_real_name`, `upload_content_type`)
 	    values 
 	    <foreach collection="proofs" item="p" separator=",">
-	     (	#{rId, jdbcType=VARCHAR}, #{p.timeProofUpload, jdbcType=TIMESTAMP}, 
-	      	#{p.descProof, jdbcType=VARCHAR}, #{p.proofPath, jdbcType=VARCHAR}, #{p.uploadProofName, jdbcType=VARCHAR}, 
+	     (	#{rId, jdbcType=VARCHAR}, #{p.timeProofUpload, jdbcType=DATE},
+	      	#{p.proofPath, jdbcType=VARCHAR}, #{p.uploadProofName, jdbcType=VARCHAR},
 	      	#{p.uploadRealName, jdbcType=VARCHAR}, #{p.uploadContentType, jdbcType=VARCHAR}	)
 	    </foreach>
   	</insert>

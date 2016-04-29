@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,7 +52,7 @@ public class LoginController {
 		ModelAndView view = new ModelAndView();
 
 		//TODO： 方便测试代码，跳过登录检验
-		request.getSession().setAttribute(SessionConstant.USEID, "1");
+		request.getSession().setAttribute(SessionConstant.USERID, "1");
 		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
 		view.setViewName("redirect:/login/menu.do");
 		if(true)
@@ -78,7 +77,7 @@ public class LoginController {
      			boolean result = userManagerServiceImpl.findUNameAndUPass(userName,userPwd);
      			if (result) {	// 角色和登录类型匹配，判断用户名和密码是否正确
      				// 用户名和密码正确,则保存登录名和用户角色信息——因为后面很多地方会使用到这两个参数，所以存放在session里面
-     				request.getSession().setAttribute(SessionConstant.USEID, userName);
+     				request.getSession().setAttribute(SessionConstant.USERID, userName);
      				request.getSession().setAttribute(SessionConstant.ROLEID, role.getRoleId());
      				view.setViewName("redirect:/pages/common/main.html");
      			} else {
