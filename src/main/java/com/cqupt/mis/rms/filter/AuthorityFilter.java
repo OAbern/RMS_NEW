@@ -165,13 +165,13 @@ public class AuthorityFilter implements Filter {
 			return false;
 		}
 		
-		if(ResearchConstant.INPUTURL.equals(urlNoParam)) {	//验证是否有<录入科研记录>的权限
+		if(ResearchConstant.INPUT_URL.equals(urlNoParam)) {	//验证是否有<录入科研记录>的权限
 			return rolePurviewDyn.isInput();
-		} else if(ResearchConstant.MANAGEURL.equals(urlNoParam)) {	//验证是否有<管理个人科研记录>的权限
+		} else if(ResearchConstant.MANAGE_URL.equals(urlNoParam)) {	//验证是否有<管理个人科研记录>的权限
 			return rolePurviewDyn.isManage();
-		} else if(ResearchConstant.APPROVEURL.equals(urlNoParam)) {	//验证是否有<审批科研记录>的权限
+		} else if(ResearchConstant.APPROVE_URL.equals(urlNoParam)) {	//验证是否有<审批科研记录>的权限
 			return rolePurviewDyn.isApprove();
-		} else if(ResearchConstant.STATISTICSURL.equals(urlNoParam)) {	//验证是否有<查询统计科研记录>的权限
+		} else if(ResearchConstant.STATISTICS_URL.equals(urlNoParam)) {	//验证是否有<查询统计科研记录>的权限
 			return rolePurviewDyn.isStatistics();
 		}
 		

@@ -30,7 +30,7 @@
 		<result column="manage" property="manage" jdbcType="INTEGER"/>
 		<result column="approve" property="approve" jdbcType="INTEGER"/>
 		<result column="statistics" property="statistics" jdbcType="INTEGER"/>
-		<association column = "class_id"  property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"></association>
+		<association column = "class_id"  property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"/>
 
   	</collection>
   </resultMap>

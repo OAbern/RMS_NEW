@@ -1,7 +1,3 @@
-
-
-
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -22,11 +18,11 @@ import com.cqupt.mis.rms.service.UserManagerService;
 import com.cqupt.mis.rms.utils.JSONUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/spring-mybatis.xml"})
+@ContextConfiguration(locations = {"classpath:/spring-myBatis.xml"})
 public class RoleTest {
 	
 	@Resource
-	private CQUPTRoleDao cquptRoleMapper;
+	private CQUPTRoleDao CQUPTRoleDao;
 	@Resource
 	private UserManagerService userManagerService;
 	
@@ -52,7 +48,7 @@ public class RoleTest {
 	public void test_02() {
 		
 		Set resourceInfoList = new HashSet<ResourceInfo>();
-		 CQUPTRole cquptRole = cquptRoleMapper.findRolePurviewByRoleId(1);
+		 CQUPTRole cquptRole = CQUPTRoleDao.findRolePurviewByRoleId(1);
 		resourceInfoList = cquptRole.getRolePurviews();
 		Iterator<RolePurview> it =	resourceInfoList.iterator();
 			while(it.hasNext()){
@@ -65,7 +61,7 @@ public class RoleTest {
 	@Test
 	public void test_03(){
 		CQUPTRole cquptRole = new CQUPTRole();
-		cquptRole = cquptRoleMapper.selectByPrimaryKey(4);
+		cquptRole = CQUPTRoleDao.selectByPrimaryKey(4);
 		System.out.println(cquptRole.getRoleName());
 		
 	}
@@ -80,7 +76,7 @@ public class RoleTest {
 	@Test
 	public void test_05(){
 		CQUPTRole cquptRole = new CQUPTRole();
-		cquptRole = cquptRoleMapper.findRolePurviewDynRoleId(2);
+		cquptRole = CQUPTRoleDao.findRolePurviewDynRoleId(2);
 		String json = JSONUtils.toJSONString(cquptRole);
 		System.out.println(json);
 		
@@ -89,7 +85,7 @@ public class RoleTest {
 	@Test
 	public void test_06(){
 		CQUPTRole cquptRole = new CQUPTRole();
-		cquptRole = cquptRoleMapper.findRolePurviewByRoleIdAndParent(2, 11);
+		cquptRole = CQUPTRoleDao.findRolePurviewByRoleIdAndParent(2, 11);
 		String json = JSONUtils.toJSONString(cquptRole);
 		System.out.println(json);
 		

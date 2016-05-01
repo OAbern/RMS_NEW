@@ -11,7 +11,7 @@ public class ResearchData implements Serializable {
 	private static final long serialVersionUID = -8250804688789695187L;
 	
 	private String recordId;		//记录
-	private ResearchFiled filed;		//字段
+	private ResearchField field;		//字段
 	private String value;		//字段的值
 	
 	
@@ -19,7 +19,7 @@ public class ResearchData implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = result * prime + ((filed == null) ? 0 : filed.getId());
+		result = result * prime + ((field == null) ? 0 : field.getId());
 		return result;
 	}
 	
@@ -35,11 +35,11 @@ public class ResearchData implements Serializable {
 		if(getClass() != obj.getClass())
 			return false;
 		ResearchData other = (ResearchData) obj;
-		if(this.filed == null)
+		if(this.field == null)
 			return false;
-		if(other.filed == null)
+		if(other.field == null)
 			return false;
-		if(this.filed.getId() == other.filed.getId()) {
+		if(this.field.getId() == other.field.getId()) {
 			return true;
 		} else {
 			return false;
@@ -55,14 +55,6 @@ public class ResearchData implements Serializable {
 		this.recordId = recordId;
 	}
 
-	public ResearchFiled getFiled() {
-		return filed;
-	}
-
-	public void setFiled(ResearchFiled filed) {
-		this.filed = filed;
-	}
-
 	public String getValue() {
 		return value;
 	}
@@ -70,5 +62,12 @@ public class ResearchData implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
+	public ResearchField getField() {
+		return field;
+	}
+
+	public void setField(ResearchField field) {
+		this.field = field;
+	}
 }

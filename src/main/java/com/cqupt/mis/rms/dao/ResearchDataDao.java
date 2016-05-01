@@ -17,7 +17,7 @@ import com.cqupt.mis.rms.model.ResearchData;
 public interface ResearchDataDao {
 	/**
 	 * 添加一组科研信息的数据
-	 * @param fileds 添加的科研数据
+	 * @param datas 添加的科研数据
 	 * @param recordId 添加科研记录的记录id
 	 * @return
 	 */

@@ -1,6 +1,6 @@
 <%@ page import="com.cqupt.mis.rms.utils.RequestConstant" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.cqupt.mis.rms.model.ResearchFiled" %>
+<%@ page import="com.cqupt.mis.rms.model.ResearchField" %>
 <%@ page import="com.cqupt.mis.rms.utils.JSONUtils" %><%--
   Created by IntelliJ IDEA.
   User: Bern
@@ -24,6 +24,8 @@
     <link href="css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Bern Custom CSS -->
+    <link href="css/ifram-common.css" rel="stylesheet">
 
     <style type="text/css">
         .line-25-per {
@@ -50,16 +52,16 @@
     </style>
 
 </head>
-<body style="background-color: white">
+<body>
 <%
-    List<ResearchFiled> filedList = (List<ResearchFiled>) request.getAttribute(RequestConstant.ALL_FIELD_LIST);
-    String json = JSONUtils.toJSONString(filedList);
+    List<ResearchField> fieldList = (List<ResearchField>) request.getAttribute(RequestConstant.ALL_FIELD_LIST);
+    String json = JSONUtils.toJSONString(fieldList);
 %>
-<textarea id="filedsJson" hidden><%=json %></textarea>
+<textarea id="fieldsJson" hidden><%=json %></textarea>
 
 <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header">录入科研信息</h2>
+        <h2 class="page-header">录入<label id="className"></label>科研信息</h2>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -88,7 +90,7 @@
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
-                                <div class="panel-body" id="recordFiled">
+                                <div class="panel-body" id="recordField">
                                     <%-- 动态字段模板
                                     <div class="form-group">
                                         <div class="line-25-per">
@@ -219,24 +221,25 @@
 
 <script>
     //加载记录的动态字段
-    var filedsList = JSON.parse($('#filedsJson').val());
-    var classRemark = filedsList[0].researchClass.classRemark;
-    $('#classId').val(filedsList[0].researchClass.classId);     //设置classId的值
+    var fieldsList = JSON.parse($('#fieldsJson').val());
+    var classRemark = fieldsList[0].researchClass.classRemark;
+    $('#className').append(fieldsList[0].researchClass.className);
+    $('#classId').val(fieldsList[0].researchClass.classId);     //设置classId的值
     if(classRemark!=null && classRemark!="") {      //在面板头填写类备注
         $('#classRemark').empty();
         $('#classRemark').append(classRemark);
     }
 
-    for(var i=0; i<filedsList.length;) {    //加载记录的动态字段
-        var filed = filedsList[i];
-        if(filed.isNull == 0) {     //不可以为null
-            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
-        }else {         //不可以为null
-            $('#recordFiled').append('<div class="line-25-per"><label class="text-danger">'+filed.description+'</label><input class="form-control" name="'+filed.name+'"><p class="help-block text-info" id="tips1">可选填</p> </div>');
+    for(var i=0; i<fieldsList.length;) {    //加载记录的动态字段
+        var field = fieldsList[i];
+        if(field.isNull == 0) {     //不可以为null
+            $('#recordField').append('<div class="line-25-per"><label class="text-danger">'+field.description+'</label><input class="form-control" name="'+field.name+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
+        }else {         //可以为null
+            $('#recordField').append('<div class="line-25-per"><label>'+field.description+'</label><input class="form-control" name="'+field.name+'"><p class="help-block text-info" id="tips1">可选填</p> </div>');
         }
 
         if(++i/3 == 0)      //换行
-            $('#recordFiled').append('<div class="clear-left"></div>');
+            $('#recordField').append('<div class="clear-left"></div>');
     }
 
     var personCount = 0;        //成员计数器，全局作用域

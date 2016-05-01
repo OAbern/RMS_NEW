@@ -29,12 +29,20 @@ public interface ResearchRecordService {
 	public ResearchRecord findOneById(String recordId);
 	
 	/**
-	 * 查找指定用户、指定类别下所有的记录
+	 * 查找指定用户、指定类别下所有的记录(包含全部信息)
 	 * @param userId 指定用户的Id
 	 * @param classId 指定类别
-	 * @return 符合条件的结果
+	 * @return 返回的记录中有全部详细的信息
 	 */
 	public List<ResearchRecord> findListByUserAndClass(String userId, int classId);
+
+	/**
+	 * 查找指定用户、指定类别下所有的记录(不包含详细的字段，相关人员，旁证材料信息)
+	 * @param userId 指定用户的Id
+	 * @param classId 指定类别
+     * @return 返回的记录中只有简单信息(不包含详细的字段，相关人员，旁证材料信息)
+     */
+	public List<ResearchRecord> findSimpleListByUserAndClass(String userId, int classId);
 	
 	/**
 	 * 查找指定类别下的所有待审核记录

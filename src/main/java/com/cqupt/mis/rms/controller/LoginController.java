@@ -97,8 +97,14 @@ public class LoginController {
 	
 	@RequestMapping("/menu")
 	public void getMenu(HttpServletRequest request, HttpServletResponse response) {
+		//TODO： 方便测试代码，跳过登录检验
+		request.getSession().setAttribute(SessionConstant.USERID, "1");
+		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
+		//TODO: 方便测试代码，跳过登录检验
+
 		Object menuObj = request.getSession().getAttribute(SessionConstant.MENU_INFO);
-		if(menuObj == null) {		//从数据库获取数据
+		//if(menuObj == null) {		//从数据库获取数据
+		if(true) {		//TODO: 方便测试
 			Object roleIdObj = request.getSession().getAttribute(SessionConstant.ROLEID);
 			if(roleIdObj == null) {
 				return;
@@ -109,7 +115,6 @@ public class LoginController {
 			if (menu.size() != 0) {
 				request.getSession().setAttribute(SessionConstant.MENU_INFO, menu);
 			}
-			System.out.println(menu);
 			JSONUtils.toJSON(menu, response);
 		}else {		//从session缓存获取数据
 			JSONUtils.toJSON(menuObj, response);

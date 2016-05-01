@@ -3,17 +3,17 @@
 <mapper namespace="com.cqupt.mis.rms.dao.ResearchDataDao" >
 	<!-- 科研数据结果集 -->
 	<resultMap id="ResearchData" type="com.cqupt.mis.rms.model.ResearchData" >
-		<id column="filed_id" property="filed.id" />
+		<id column="field_id" property="field.id" />
 		<id column="record_id" property="recordId" jdbcType="VARCHAR" />
 		<result column="value" property="value" jdbcType="VARCHAR" />
 		
-		<association property="filed"  resultMap="com.cqupt.mis.rms.dao.ResearchFiledDao.ResearchFiled" />
+		<association property="field"  resultMap="com.cqupt.mis.rms.dao.ResearchFieldDao.ResearchField" />
 		
 	</resultMap>
 	
 	<!-- 字段集 -->
 	<sql id="ColumnList" >
-		`record_id`, d.`filed_id` AS `f_id`, `value`
+		`record_id`, d.`field_id` AS `f_id`, `value`
 	</sql>
 	
 	<!-- 添加一组数据 -->
@@ -21,8 +21,8 @@
 		insert into `research_data` (`record_id`, `field_id`, `value`)
 		values 
 		<foreach collection="datas" item="d" index="i" separator=",">
-			(	#{rId, jdbcType=VARCHAR}, #{d.filed.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	)
-			<!-- (	'1', #{d.filed.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	) -->
+			(	#{rId, jdbcType=VARCHAR}, #{d.field.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	)
+			<!-- (	'1', #{d.field.id, jdbcType=INTEGER}, #{d.value, jdbcType=VARCHAR}	) -->
 		</foreach>
 	</insert>
 	
@@ -31,17 +31,17 @@
 	<select id="findList1" resultMap="ResearchData" >
 		select 
 		`record_id`, `value`,
-		<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
+		<include refid="com.cqupt.mis.rms.dao.ResearchFieldDao.ColumnList"/>
 		from `research_data` d
-		RIGHT JOIN `research_filed` f ON f.`filed_id` = d.`filed_id` AND d.`record_id` = #{rId,jdbcType=VARCHAR} 
+		RIGHT JOIN `research_field` f ON f.`field_id` = d.`field_id` AND d.`record_id` = #{rId,jdbcType=VARCHAR}
 		where f.`class_id` = #{cId,jdbcType=INTEGER} AND f.`is_delete` = 0 
 		
 		<!-- 
 			SELECT
 			d.`record_id`, d.`value`,
-			<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
-			FROM `research_filed` f
-			LEFT JOIN `research_data` d ON f.`filed_id` = d.`filed_id` AND d.`record_id` = '20150619094333245'
+			<include refid="com.cqupt.mis.rms.dao.ResearchFieldDao.ColumnList"/>
+			FROM `research_field` f
+			LEFT JOIN `research_data` d ON f.`field_id` = d.`field_id` AND d.`record_id` = '20150619094333245'
 			WHERE f.`class_id` = 1 AND f.`is_delete` = 0
 		 -->
 	</select>
@@ -50,9 +50,9 @@
 	<select id="findList2" resultMap="ResearchData" >
 		select 
 		`record_id`, `value`,
-		<include refid="com.cqupt.mis.rms.dao.ResearchFiledDao.ColumnList"></include>
+		<include refid="com.cqupt.mis.rms.dao.ResearchFieldDao.ColumnList"/>
 		from `research_data` d
-		RIGHT JOIN `research_filed` f ON f.`filed_id` = d.`filed_id` 
+		RIGHT JOIN `research_field` f ON f.`field_id` = d.`field_id`
 			AND d.`record_id` IN (<foreach collection="rIds" item="i" separator=","> #{i,jdbcType=VARCHAR}  </foreach>)
 		where f.`class_id` = #{cId,jdbcType=INTEGER} AND f.`is_delete` = 0 
 	</select>

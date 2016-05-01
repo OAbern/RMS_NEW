@@ -104,8 +104,7 @@
 		LEFT JOIN `cqupt_user` u2 ON r.`approved_user_id` = u2.`user_id`
 		WHERE r.`class_id` = #{cId, jdbcType=INTEGER} AND `status` = 1
 	</select>
-	
-	
+
 	
 	
 	

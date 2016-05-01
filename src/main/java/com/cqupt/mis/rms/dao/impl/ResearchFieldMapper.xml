@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cqupt.mis.rms.dao.ResearchFiledDao" >
+<mapper namespace="com.cqupt.mis.rms.dao.ResearchFieldDao" >
 
 	<!-- 科研动态字段类的映射，"f_"开头的字段是别名 -->
-	<resultMap id="ResearchFiled" type="com.cqupt.mis.rms.model.ResearchFiled" >
+	<resultMap id="ResearchField" type="com.cqupt.mis.rms.model.ResearchField" >
 		<id column="field_id" property="id" jdbcType="INTEGER" />
 		<result column="field_name" property="name" jdbcType="VARCHAR" />
 		<result column="field_des" property="description" jdbcType="VARCHAR" />
@@ -15,13 +15,13 @@
 		<association property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass" />
 	</resultMap>
 	
-	<!-- 数据表中所有字段,`research_filed`设置别名f，个别字段有别名-->
+	<!-- 数据表中所有字段,`research_field`设置别名f，个别字段有别名-->
 	<sql id="ColumnList" >
 		f.`field_id`, f.`class_id` AS `f_class_id`, `field_name`, `field_des`, f.`is_delete` AS `f_is_delete`, f.`submittime` AS `f_submittime`, f.`order` AS `f_order`, `is_null`
 	</sql>
 	
 	<!-- 根据classId查找所有未删除的科研字段 -->
-	<select id="findByClassId" parameterType="java.lang.Integer" resultMap="ResearchFiled">
+	<select id="findByClassId" parameterType="java.lang.Integer" resultMap="ResearchField">
 		SELECT 
 		<include refid="ColumnList"></include> ,
 		c.*
@@ -32,13 +32,13 @@
 	</select>
 	
 	<!-- 根据主键查找字段 -->
-	<select id="selectByPrimaryKey" resultMap="ResearchFiled" parameterType="java.lang.Integer" >
+	<select id="selectByPrimaryKey" resultMap="ResearchField" parameterType="java.lang.Integer" >
 		SELECT 
 		<include refid="ColumnList"></include> ,
 		c.*
 		FROM `research_field` f
 		LEFT JOIN `research_class` c ON	f.`class_id` = c.`class_id`
-		where `filed_id` = #{id,jdbcType=INTEGER}
+		where `field_id` = #{id,jdbcType=INTEGER}
 	</select>
 
 	<!-- 根据classId统计当前科研项目的字段数 -->
@@ -49,7 +49,7 @@
 	</select>
 
 	<!-- 检测字段数据库名是否有重名 -->
-	<select id="checkNameBeforeAdd" resultMap="ResearchFiled">
+	<select id="checkNameBeforeAdd" resultMap="ResearchField">
 		SELECT
 			<include refid="ColumnList"></include>
 		FROM  `research_field` f
@@ -57,7 +57,7 @@
 	</select>
 
 	<!-- 检测字段数据库名是否有重名 -->
-	<select id="checkDesBeforeAdd" resultMap="ResearchFiled">
+	<select id="checkDesBeforeAdd" resultMap="ResearchField">
 		SELECT
 		<include refid="ColumnList"></include>
 		FROM  `research_field` f
@@ -66,19 +66,19 @@
 	
 	<!-- 根据主键假删除字段，设置`is_delete`为1，`order`为0 -->
 	<update id="delete" parameterType="java.lang.Integer">
-		update `research_filed`
+		update `research_field`
 		set `is_delete` = 1,	`order` = 0
-		where `filed_id` = #{filedId, jdbcType=INTEGER}
+		where `field_id` = #{fieldId, jdbcType=INTEGER}
 	</update>
   
   	<!-- 根据主键删除字段（真实删除，慎用!） -->
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
 		delete from `research_field`
-		where `filed_id` = #{id,jdbcType=INTEGER}
+		where `field_id` = #{id,jdbcType=INTEGER}
 	</delete>
   
   	<!-- 插入一条记录 -->
-	<insert id="add" parameterType="com.cqupt.mis.rms.model.ResearchFiled" >
+	<insert id="add" parameterType="com.cqupt.mis.rms.model.ResearchField" >
 		insert into `research_field`
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 		  <if test="id != 0" >
@@ -135,17 +135,17 @@
 	</insert>
   
 	<!-- 根据主键修改字段 -->
-	<update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchFiled" >
-		update `research_filed`
+	<update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchField" >
+		update `research_field`
 		<set >
 		  <if test="researchClass.classId != 0" >
 		    `class_id` = #{researchClass.classId,jdbcType=INTEGER},
 		  </if>
 		  <if test="name != null" >
-		    `filed_name` = #{name,jdbcType=VARCHAR},
+		    `field_name` = #{name,jdbcType=VARCHAR},
 		  </if>
 		  <if test="description != null" >
-		    `filed_des` = #{description,jdbcType=VARCHAR},
+		    `field_des` = #{description,jdbcType=VARCHAR},
 		  </if>
 		  <if test="isDelete != 0" >
 		    `is_delete` = #{isDelete,jdbcType=INTEGER},
@@ -157,7 +157,7 @@
 		    `order` = #{order,jdbcType=INTEGER},
 		  </if>
 		</set>
-		where `filed_id` = #{id,jdbcType=INTEGER}
+		where `field_id` = #{id,jdbcType=INTEGER}
 	</update>
   
 </mapper>

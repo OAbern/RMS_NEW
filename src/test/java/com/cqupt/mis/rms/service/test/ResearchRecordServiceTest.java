@@ -23,10 +23,10 @@ import com.cqupt.mis.rms.model.CQUPTUser;
 import com.cqupt.mis.rms.model.Proof;
 import com.cqupt.mis.rms.model.ResearchClass;
 import com.cqupt.mis.rms.model.ResearchData;
-import com.cqupt.mis.rms.model.ResearchFiled;
+import com.cqupt.mis.rms.model.ResearchField;
 import com.cqupt.mis.rms.model.ResearchPerson;
 import com.cqupt.mis.rms.model.ResearchRecord;
-import com.cqupt.mis.rms.service.ResearchFiledService;
+import com.cqupt.mis.rms.service.ResearchFieldService;
 import com.cqupt.mis.rms.service.ResearchRecordService;
 import com.cqupt.mis.rms.utils.GenerateUtils;
 import com.cqupt.mis.rms.utils.JSONUtils;
@@ -38,7 +38,7 @@ public class ResearchRecordServiceTest {
 	@Resource
 	ResearchRecordService researchRecordServiceImpl;
 	@Resource
-	ResearchFiledService researchFiledServiceImpl;
+	ResearchFieldService researchFieldServiceImpl;
 	@Resource
 	ResearchDataDao researchDataDao;
 	
@@ -74,12 +74,12 @@ public class ResearchRecordServiceTest {
 		record.setId(GenerateUtils.getID());
 		record.setStatus(1);
 		
-		List<ResearchFiled> fileds = researchFiledServiceImpl.findByClassId(1);
+		List<ResearchField> fields = researchFieldServiceImpl.findByClassId(1);
 		Set<ResearchData> datas = new HashSet<ResearchData>();
-		for(ResearchFiled filed : fileds) {
+		for(ResearchField field : fields) {
 			ResearchData data = new ResearchData();
-			data.setFiled(filed);
-			data.setValue("测试值"+filed.getOrder());
+			data.setField(field);
+			data.setValue("测试值"+field.getOrder());
 			datas.add(data);
 		}
 		

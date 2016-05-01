@@ -14,5 +14,10 @@ public class RequestConstant {
     /**
      * 指定ClassId的所有未删除的字段列表
      */
-    public static final String ALL_FIELD_LIST = "filedList";
+    public static final String ALL_FIELD_LIST = "fieldList";
+
+    /**
+     * 指定classId和userId的记录列表
+     */
+    public static final String RECORD_LIST = "recordList";
 }

@@ -72,7 +72,7 @@ public class MenuServiceImpl implements MenuService {
 			if(rolePurviewDyn.isManage()){	//判断是否有管理个人权限，并转换为ResourceInfo
 				ResourceInfo info = new ResourceInfo();
 				info.setParentId(parentId);
-				info.setResourceUrl(ResearchConstant.getManageUrl(classId));
+				info.setResourceUrl(ResearchConstant.getViewManageListUrl(classId));
 				info.setResourceName(ResearchConstant.getManageName(className));
 				manage.add(info);
 			}

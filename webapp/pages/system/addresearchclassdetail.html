@@ -19,6 +19,9 @@
     <!-- Custom Fonts -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Bern Custom CSS -->
+    <link href="../../css/ifram-common.css" rel="stylesheet">
+
     <style type="text/css">
         .line-25-per {
             padding: 10px;
@@ -33,7 +36,7 @@
     </style>
 
 </head>
-<body style="background-color: white">
+<body>
 
     <div class="row">
         <div class="col-lg-12">
@@ -55,7 +58,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <!-- 添加二级科研项目 -->
-                            <form id="second" role="form" action="/rms/filed/add.do" onsubmit="return checkBeforeSubmit()">
+                            <form id="second" role="form" action="/rms/field/add.do" onsubmit="return checkBeforeSubmit()">
                                 <div class="form-group">
                                     <label style="color: red">*请选择一级科研类别</label>
                                     <select class="form-control" id="selectF" name="parentId" style="width:30%; display:inline; margin-right: 5%" required>
@@ -213,7 +216,7 @@
         $('#description').removeAttr("disabled").empty();
         $('#order').removeAttr("disabled").empty();
         $.ajax({       //获取
-            url:"/rms/filed/count.do",
+            url:"/rms/field/count.do",
             data: {
                 "classId": classId
             },
@@ -261,7 +264,7 @@
         }
 
         $.ajax({       //获取
-            url:"/rms/filed/checkNameBeforeAdd.do",
+            url:"/rms/field/checkNameBeforeAdd.do",
             data: {
                 "classId": $('#selectS').children('option:selected').val(),
                 "name": name
@@ -300,7 +303,7 @@
         }
 
         $.ajax({       //获取
-            url:"/rms/filed/checkDesBeforeAdd.do",
+            url:"/rms/field/checkDesBeforeAdd.do",
             data: {
                 "classId": $('#selectS').children('option:selected').val(),
                 "description": des

@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.cqupt.mis.rms.dao.ProofDao;
 import com.cqupt.mis.rms.dao.ResearchDataDao;
-import com.cqupt.mis.rms.dao.ResearchFiledDao;
+import com.cqupt.mis.rms.dao.ResearchFieldDao;
 import com.cqupt.mis.rms.dao.ResearchPersonDao;
 import com.cqupt.mis.rms.dao.ResearchRecordDao;
 import com.cqupt.mis.rms.model.Proof;
 import com.cqupt.mis.rms.model.ResearchData;
-import com.cqupt.mis.rms.model.ResearchFiled;
+import com.cqupt.mis.rms.model.ResearchField;
 import com.cqupt.mis.rms.model.ResearchPerson;
 import com.cqupt.mis.rms.model.ResearchRecord;
 import com.cqupt.mis.rms.service.ResearchRecordService;
@@ -42,7 +42,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 	@Resource
 	private ProofDao proofDao;		//旁证材料类的Dao
 	@Resource
-	private ResearchFiledDao researchFiledDao;		//	科研字段类的Dao
+	private ResearchFieldDao researchFieldDao;		//	科研字段类的Dao
 	
 	public ResultInfo<Object> add(ResearchRecord record, List<FileItem> proofFiles) {
 		//TODO： 失败回滚操作
@@ -163,6 +163,10 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		return findListByRecords(records);
 	}
 
+	public List<ResearchRecord> findSimpleListByUserAndClass(String userId, int classId) {
+		return researchRecordDao.findListByUserAndClass(userId, classId);
+	}
+
 	public List<ResearchRecord> findListByClassForApprove(int classId) {
 		//TODO 权限验证
 		List<ResearchRecord> records = researchRecordDao.findListByClassForApprove(classId);
@@ -193,7 +197,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		List<ResearchPerson> persons = researchPersonDao.findListByRecordIds(recordIds);
 		List<Proof> proofs = proofDao.findListByRecordIds(recordIds);
 		//获取相应类别下的所有字段
-		List<ResearchFiled> fileds = researchFiledDao.findByClassId(classId);
+		List<ResearchField> fields = researchFieldDao.findByClassId(classId);
 		
 		//按recordId对科研各种信息进行分类
 		Map<String, List<ResearchData>> dataMap = convertMap(datas);
@@ -205,9 +209,9 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 			String recordId = r.getId();
 			Set<ResearchData> dataSet = new HashSet<ResearchData>(dataMap.get(recordId));
 			//将相应字段为空的数据加入Set集合
-			for(ResearchFiled f : fileds) {
+			for(ResearchField f : fields) {
 				ResearchData data = new ResearchData();
-				data.setFiled(f);
+				data.setField(f);
 				dataSet.add(data);
 			}
 			
