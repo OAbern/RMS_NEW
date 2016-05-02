@@ -4,7 +4,7 @@
 <%@ page import="com.cqupt.mis.rms.utils.JSONUtils" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Administrator
+  User: Bern
   Date: 2016/5/1
   Time: 13:49
   To change this template use File | Settings | File Templates.
@@ -103,9 +103,6 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
 
-<!-- DataTables JavaScript -->
-<script src="js/SB-admin-2-1.0.8/bower_components/datatables/media/jquery.dataTables.min.js"></script>
-<script src="js/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.min.js"></script>
 <script>
     var json = $('#recordJson').val();
     var recordList = JSON.parse(json);

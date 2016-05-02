@@ -1,11 +1,10 @@
+<%@ page import="com.cqupt.mis.rms.model.ResearchRecord" %>
 <%@ page import="com.cqupt.mis.rms.utils.RequestConstant" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.cqupt.mis.rms.model.ResearchField" %>
 <%@ page import="com.cqupt.mis.rms.utils.JSONUtils" %><%--
   Created by IntelliJ IDEA.
   User: Bern
-  Date: 2016/4/27
-  Time: 16:30
+  Date: 2016/5/2
+  Time: 15:22
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,7 +15,7 @@
 <html>
 <base href="<%=basePath%>">
 <head>
-    <title>录入科研信息</title>
+    <title>查看个人科研信息列表</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
@@ -30,14 +29,13 @@
 </head>
 <body>
 <%
-    List<ResearchField> fieldList = (List<ResearchField>) request.getAttribute(RequestConstant.ALL_FIELD_LIST);
-    String json = JSONUtils.toJSONString(fieldList);
+    ResearchRecord record = (ResearchRecord) request.getAttribute(RequestConstant.RECORD_DETAIL);
+    String recordJson = JSONUtils.toJSONString(record);
 %>
-<textarea id="fieldsJson" hidden><%=json %></textarea>
-
+<textarea id="recordJson" hidden><%=recordJson %></textarea>
 <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header">录入<label id="className"></label>科研信息</h2>
+        <h2 class="page-header">查看个人<label id="className"></label>科研详细信息</h2>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -52,9 +50,9 @@
             <!--  /.panel-heading  -->
 
             <div class="panel-body">
-                <%--<form action="record/add.do" method="post" >--%>
-                <form action="record/add.do" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="classId" id="classId">
+                <h4 id="statusDes" style="color: red">当前科研记录的状态为：</h4>
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="recordId" id="recordId">
 
                     <div class="panel-group" id="accordion">
 
@@ -110,7 +108,7 @@
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse in">
                                 <div class="panel-body" id="person">
-
+                                    <!--
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>相关成员姓名</label>
@@ -131,8 +129,9 @@
                                         </div>
 
                                         <div class="clear-left"></div>
-                                    </div>
+                                    </div>-->
                                     <!-- /.form-group -->
+
                                 </div>
                                 <!-- /.panel-body -->
                             </div>
@@ -152,6 +151,7 @@
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse in">
                                 <div class="panel-body" id="proof">
+                                    <!--
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>旁证材料上传</label>
@@ -159,7 +159,9 @@
                                         </div>
                                         <div class="clear-left"></div>
                                     </div>
+                                    -->
                                     <!-- /.form-group -->
+
                                 </div>
                                 <!-- /.panel-body -->
                             </div>
@@ -199,26 +201,77 @@
 <script src="js/record-CRUD.js"></script>
 
 <script>
-    //加载记录的动态字段
-    var fieldsList = JSON.parse($('#fieldsJson').val());
-    var classRemark = fieldsList[0].researchClass.classRemark;
-    $('#className').append(fieldsList[0].researchClass.className);
-    $('#classId').val(fieldsList[0].researchClass.classId);     //设置classId的值
+    var record = JSON.parse($('#recordJson').val());        //科研记录详细信息
+    var fieldsList = record.fields;      //科研记录字段数据信息列表
+    var rClass = record.researchClass;      //科研记录所属科研类别
+    var personsList = record.persons;        //相关成员信息列表
+    var proofsList = record.proofs;         //旁证材料信息列表
+    var status = record.status;         //科研记录的审批状态
+    var operatorInfo = '； 您可以对当前信息进行修改！';
+    if(status==1 || status==2)
+        operatorInfo = '； 您不可以对当前信息进行修改！';
+
+    var classRemark = rClass.classRemark;
+    $('#className').append(rClass.className);      //设置标题头
+    $('#recordId').val(record.id);     //设置recordId的值
+    $('#statusDes').append(record.statusDes + operatorInfo);       //设置科研记录状态描述信息
     if(classRemark!=null && classRemark!="") {      //在面板头填写类备注
         $('#classRemark').empty();
         $('#classRemark').append(classRemark);
     }
 
-    for(var i=0; i<fieldsList.length;) {    //加载记录的动态字段
-        var field = fieldsList[i];
+    //加载记录的动态字段
+    for(var i=0; i<fieldsList.length;) {
+        var fieldData = fieldsList[i];
+        var field = fieldData.field;
+        var value = fieldData.value;
+        if(value == null)
+                value = "";
+
         if(field.isNull == 0) {     //不可以为null
-            $('#recordField').append('<div class="line-25-per"><label class="text-danger">'+field.description+'</label><input class="form-control" name="'+field.name+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
+            $('#recordField').append('<div class="line-25-per"><label class="text-danger">'+field.description+'</label><input class="form-control" name="'+field.name+'" value="'+value+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
         }else {         //可以为null
-            $('#recordField').append('<div class="line-25-per"><label>'+field.description+'</label><input class="form-control" name="'+field.name+'"><p class="help-block text-info" id="tips1">可选填</p> </div>');
+            $('#recordField').append('<div class="line-25-per"><label>'+field.description+'</label><input class="form-control" name="'+field.name+'" value="'+value+'"><p class="help-block text-info" id="tips1">可选填</p> </div>');
         }
 
         if(++i/3 == 0)      //换行
             $('#recordField').append('<div class="clear-left"></div>');
+    }
+
+    //加载相关人员信息
+    for(var i=0; i<personsList.length; i++) {
+        var p = personsList[i];
+        var name= p.name, order= p.order, remarks= p.remarks;
+
+        if(name == null)
+                name = "";
+
+        if(order == null)
+                order = "";
+
+        if(remarks == null)
+                remarks = "";
+
+        $('#person').append('<div class="form-group"><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName0" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark0" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名</label> <input class="form-control" name="pOrder0" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
+    }
+
+    //加载旁证材料的数据
+    for(var i=0; i<proofsList.length; i++) {
+        var p = proofsList[i];
+        var pPath = p.proofPath;
+        var pName = p.uploadProofName;
+        if(pPath == null)
+            pPath = "javascript:void(0)";
+
+        if(pName == null)
+            pName = p.uploadRealName;
+
+        $('#proof').append('<div class="form-group"><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><div class="clear-left"></div></div>');
+    }
+
+    if(status==1 || status==2) {        //科研记录状态为‘待审核’ 或 ‘审核通过’时，记录处于不可编辑的状态
+        $('input').attr("disabled", true);
+        $('button').attr("disabled", true);
     }
 
 </script>

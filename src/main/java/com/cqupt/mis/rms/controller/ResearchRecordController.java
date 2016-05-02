@@ -7,6 +7,7 @@ import com.cqupt.mis.rms.utils.GenerateUtils;
 import com.cqupt.mis.rms.utils.RequestConstant;
 import com.cqupt.mis.rms.utils.SessionConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -121,6 +122,17 @@ public class ResearchRecordController {
         String userId = (String) request.getSession().getAttribute(SessionConstant.USERID);
         List<ResearchRecord> recordList = researchRecordServiceImpl.findSimpleListByUserAndClass(userId, classId);
         return new ModelAndView("pages/record/viewrecordlist.jsp", RequestConstant.RECORD_LIST, recordList);
+    }
+
+    /**
+     *  查看个人提交科研信息详细
+     * @param recordId 科研信息类别
+     * @return 定向到查看个人科研信息详细界面
+     */
+    @RequestMapping("/viewdetail/{recordId}")
+    public ModelAndView viewRecordDetail(@PathVariable("recordId")String recordId) {
+        ResearchRecord record = researchRecordServiceImpl.findOneById(recordId);
+        return  new ModelAndView("pages/record/viewdetail.jsp", RequestConstant.RECORD_DETAIL, record);
     }
 
     /**

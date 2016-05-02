@@ -20,4 +20,9 @@ public class RequestConstant {
      * 指定classId和userId的记录列表
      */
     public static final String RECORD_LIST = "recordList";
+
+    /**
+     * 指定recordId的科研详细信息
+     */
+    public static final String RECORD_DETAIL = "recordDetail";
 }

@@ -1,3 +1,26 @@
 body {
     background-color: white;
 }
+
+/*inputrecord.jsp viewdetail.jsp*/
+.line-25-per {
+    padding: 10px;
+    margin-left: 4%;
+    margin-right: 4%;
+    width: 25%;
+    float: left;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.hr-double {
+    border: 3px double blueviolet;
+    width: 95%;
+}
+
+.btn-margin {
+    margin-right: 20px;
+}
+/*inputrecord.jsp viewdetail.jsp*/
