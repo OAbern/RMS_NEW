@@ -20,7 +20,7 @@ public interface ResearchRecordDao extends BaseDao<ResearchRecord, String> {
 	 * @param status 要更改的记录状态
 	 * @return 操作结果
 	 */
-	public boolean modifyStatus(String id, int status);
+	public boolean modifyStatus(@Param("rId")String id, @Param("status")int status);
 	
 	/**
 	 * 更改记录的状态为2，添加审批者

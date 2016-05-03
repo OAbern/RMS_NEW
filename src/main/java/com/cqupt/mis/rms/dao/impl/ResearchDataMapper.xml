@@ -57,7 +57,11 @@
 		where f.`class_id` = #{cId,jdbcType=INTEGER} AND f.`is_delete` = 0 
 	</select>
 
-
+	<!-- 根据记录Id删除相应的动态字段数据信息 -->
+	<delete id="deleteByRecordId">
+		DELETE FROM `research_data`
+		WHERE record_id = #{rId, jdbcType=VARCHAR}
+	</delete>
 
 
 

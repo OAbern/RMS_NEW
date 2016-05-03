@@ -51,7 +51,8 @@
 
             <div class="panel-body">
                 <h4 id="statusDes" style="color: red">当前科研记录的状态为：</h4>
-                <form action="#" method="post" enctype="multipart/form-data">
+                <form action="record/modify.do" method="post" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit();">
+                    <input type="hidden" name="classId" id="classId">
                     <input type="hidden" name="recordId" id="recordId">
 
                     <div class="panel-group" id="accordion">
@@ -214,6 +215,7 @@
     var classRemark = rClass.classRemark;
     $('#className').append(rClass.className);      //设置标题头
     $('#recordId').val(record.id);     //设置recordId的值
+    $('#classId').val(rClass.classId);      //设置科研类别Id
     $('#statusDes').append(record.statusDes + operatorInfo);       //设置科研记录状态描述信息
     if(classRemark!=null && classRemark!="") {      //在面板头填写类备注
         $('#classRemark').empty();
@@ -252,7 +254,8 @@
         if(remarks == null)
                 remarks = "";
 
-        $('#person').append('<div class="form-group"><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName0" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark0" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名</label> <input class="form-control" name="pOrder0" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
+        //$('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deletePerson(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName'+i+'" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark'+i+'" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名情况</label> <input class="form-control" name="pOrder'+i+'" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
+        $('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deletePerson(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName[]" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark[]" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名情况</label> <input class="form-control" name="pOrder[]" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
     }
 
     //加载旁证材料的数据
@@ -266,7 +269,8 @@
         if(pName == null)
             pName = p.uploadRealName;
 
-        $('#proof').append('<div class="form-group"><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><div class="clear-left"></div></div>');
+        //$('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteProof(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><input type="hidden" name="fixedProof['+i+']" value="'+ p.proofId+'"><div class="clear-left"></div></div>');
+        $('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteProof(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><input type="hidden" name="fixedProof[]" value="'+ p.proofId+'"><div class="clear-left"></div></div>');
     }
 
     if(status==1 || status==2) {        //科研记录状态为‘待审核’ 或 ‘审核通过’时，记录处于不可编辑的状态
@@ -274,6 +278,16 @@
         $('button').attr("disabled", true);
     }
 
+    personCount = proofsList.length;        //全局作用域,借用record-CRUD.js里面的变量
+
+    //fixedProofCount
+
+    /**
+     * 提交之前用户确认，并且设置不变的旁证材料计数值
+     */
+    function checkBeforeSubmit() {
+        return confirm("是否确认修改这条信息？");
+    }
 </script>
 </body>
 </html>

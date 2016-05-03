@@ -105,7 +105,12 @@
 		WHERE r.`class_id` = #{cId, jdbcType=INTEGER} AND `status` = 1
 	</select>
 
-	
+	<!-- 更新记录状态 -->
+	<update id="modifyStatus">
+		UPDATE `research_record`
+		SET status = #{status, jdbcType=INTEGER}
+		WHERE record_id = #{rId, jdbcType=VARCHAR}
+	</update>
 	
 	
 	

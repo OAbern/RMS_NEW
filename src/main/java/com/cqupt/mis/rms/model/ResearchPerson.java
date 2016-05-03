@@ -15,7 +15,7 @@ public class ResearchPerson implements Serializable {
 	private String userId;		//Id
 	private String name;		//成员姓名
 	private String remarks;		//备注
-	private int order;		//排名
+	private String order;		//排名情况
 	
 	public int getId() {
 		return id;
@@ -41,10 +41,10 @@ public class ResearchPerson implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getOrder() {
+	public String getOrder() {
 		return order;
 	}
-	public void setOrder(int order) {
+	public void setOrder(String order) {
 		this.order = order;
 	}
 	public String getRecordId() {

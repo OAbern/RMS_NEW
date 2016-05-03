@@ -7,7 +7,7 @@
 		<result column="record_id" property="recordId" jdbcType="VARCHAR" />
 		<result column="member_id" property="userId" jdbcType="VARCHAR" />
 		<result column="member_name" property="name" jdbcType="VARCHAR" />
-		<result column="orders" property="order" jdbcType="INTEGER" />
+		<result column="orders" property="order" jdbcType="VARCHAR" />
 		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
 	</resultMap>
 	
@@ -22,7 +22,7 @@
 		values 
 		<foreach collection="persons" item="p" separator=",">
 			(	#{rId, jdbcType=VARCHAR}, #{p.userId, jdbcType=VARCHAR}, 
-				#{p.name, jdbcType=VARCHAR}, #{p.order, jdbcType=INTEGER}, 
+				#{p.name, jdbcType=VARCHAR}, #{p.order, jdbcType=VARCHAR},
 				#{p.remarks, jdbcType=VARCHAR}
 			)
 		</foreach>
@@ -48,8 +48,12 @@
 			</foreach>
 		)
 	</select>
-	
-	
+
+	<!-- 根据记录ID删除一组科研记录相关人员 -->
+	<delete id="deleteByRecordId">
+		DELETE FROM `research_person`
+		WHERE record_id = #{rId, jdbcType=VARCHAR}
+	</delete>
 	
 	
 	
@@ -85,7 +89,7 @@
         member_name = #{memberName,jdbcType=VARCHAR},
       </if>
       <if test="orders != null" >
-        orders = #{orders,jdbcType=INTEGER},
+        orders = #{orders,jdbcType=VARCHAR},
       </if>
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=VARCHAR},
@@ -99,7 +103,7 @@
     set record_id = #{recordId,jdbcType=VARCHAR},
       member_id = #{memberId,jdbcType=VARCHAR},
       member_name = #{memberName,jdbcType=VARCHAR},
-      orders = #{orders,jdbcType=INTEGER},
+      orders = #{orders,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

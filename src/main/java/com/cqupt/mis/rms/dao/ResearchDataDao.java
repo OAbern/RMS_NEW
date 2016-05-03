@@ -19,7 +19,7 @@ public interface ResearchDataDao {
 	 * 添加一组科研信息的数据
 	 * @param datas 添加的科研数据
 	 * @param recordId 添加科研记录的记录id
-	 * @return
+	 * @return 操作结果
 	 */
 	public boolean addSet(@Param("datas")Set<ResearchData> datas, @Param("rId")String recordId);
 	
@@ -38,5 +38,12 @@ public interface ResearchDataDao {
 	 * @return 符合条件的科研数据
 	 */
 	public List<ResearchData> findList2(@Param("rIds")List<String> recordIds, @Param("cId")int classId);
+
+	/**
+	 * 根据记录Id删除相应的动态字段数据信息
+	 * @param recordId 待删除的记录ID
+	 * @return 操作结果
+     */
+	public boolean deleteByRecordId(@Param("rId")String recordId);
 	
 }

@@ -65,7 +65,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 				return new ResultInfo<Object>(false, "添加相关人员信息失败！");
 		}
 
-		if(!CollectionUtils.isEmpty(proofFiles)) {
+		if(!CollectionUtils.isEmpty(proofFiles)) {		//仅当旁证材料非空时进行插入，否则略过
 			//存储文件
 			List<Proof> proofList = parseAndStoreProofs(proofFiles);
 			result = proofDao.addList(proofList, record.getId());
@@ -140,13 +140,44 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 	public boolean deleteById(String recordId) {
 		//TODO	删除旁证材料的文件
 		//TODO	验证旁证材料的状态？
+		researchPersonDao.deleteByRecordId(recordId);		//删除相关人员信息
+		researchDataDao.deleteByRecordId(recordId);		//删除动态字段数据信息
+		List<Proof> proofList = proofDao.findListByRecordId(recordId);		//查找旁证材料信息
+		deleteProofs(proofList, recordId, null);		//删除旁证材料信息(数据库信息 以及 服务器存储的文件)
 		
 		return researchRecordDao.deleteByPrimaryKey(recordId);
 	}
 
-	public boolean modify(ResearchRecord record) {
-		// TODO Auto-generated method stub
-		return false;
+	public ResultInfo<Object> modify(ResearchRecord record, List<FileItem> proofFiles, List<Integer> fixedProofIdList) {
+		if(CollectionUtils.isEmpty(record.getFields()))		//如果动态字段数据为空
+			return new ResultInfo<Object>(false, "修改科研记录异常，没有字段数据！");
+
+		researchPersonDao.deleteByRecordId(record.getId());		//删除相关人员信息
+		researchDataDao.deleteByRecordId(record.getId());		//删除动态字段数据信息
+		List<Proof> proofList = proofDao.findListByRecordId(record.getId());		//查找旁证材料信息
+		deleteProofs(proofList, record.getId(), fixedProofIdList);		//删除旁证材料信息(数据库信息 以及 服务器存储的文件)
+
+		boolean result = researchDataDao.addSet(record.getFields(), record.getId());
+		if(!result)
+			return new ResultInfo<Object>(false, "修改动态字段数据失败！");
+
+		if(!CollectionUtils.isEmpty(record.getPersons())) {		//仅当人员信息非空时进行插入，否则略过
+			result = researchPersonDao.addList(record.getPersons(), record.getId());
+			if(!result)
+				return new ResultInfo<Object>(false, "修改相关人员信息失败！");
+		}
+
+		if(!CollectionUtils.isEmpty(proofFiles)) {		//仅当旁证材料非空时进行插入，否则略过
+			//存储文件
+			List<Proof> proofs = parseAndStoreProofs(proofFiles);
+			result = proofDao.addList(proofs, record.getId());
+			if(!result)
+				return new ResultInfo<Object>(false, "修改旁证材料失败！");
+		}
+
+		researchRecordDao.modifyStatus(record.getId(), record.getStatus());		//修改状态
+
+		return new ResultInfo<Object>(null, true);
 	}
 
 	public boolean accept(ResearchRecord record, String approvedUserId) {
@@ -228,7 +259,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 	 * @param list
 	 * @return 分类结果
 	 */
-	public <V> Map<String, List<V>> convertMap(List<V> list) {
+	private <V> Map<String, List<V>> convertMap(List<V> list) {
 		Map<String, List<V>> map;
 		if(list.size() == 0) {
 			return null;
@@ -273,5 +304,41 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		return map;
 	}
 
+	/**
+	 * 删除旁证材料信息(数据库信息 以及 服务器存储的文件)
+	 * @param proofs 待删除的旁证材料列表
+	 * @param recordId 待删除的记录Id
+	 * @param notDeleteProofIdList 不删除的旁证材料id列表(如果没有请置null)
+	 * @return 操作结果
+     */
+	private boolean deleteProofs(List<Proof> proofs, String recordId, List<Integer> notDeleteProofIdList) {
+		if(CollectionUtils.isEmpty(notDeleteProofIdList))	//如果集合中没有元素，则置null
+			notDeleteProofIdList = null;
+
+		proofDao.deleteByRecordId(recordId, notDeleteProofIdList);
+		for(Proof p : proofs) {
+			boolean delFlag = true;
+			if(notDeleteProofIdList != null) {
+				for(int notDelPId : notDeleteProofIdList) {
+					if(p.getProofId() == notDelPId) {
+						delFlag = false;
+						break;		//终止内层for循环
+					}
+				}
+			}
+
+			if(!delFlag)		//如果删除标志为false,则跳过
+				continue;
+
+			String pPath = p.getProofPath();
+			if(pPath!=null && !"".equals(pPath)) {
+				File file = new File(pPath);
+				if(file.exists()) {
+					file.delete();
+				}
+			}
+		}
+		return true;
+	}
 
 }

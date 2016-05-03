@@ -23,7 +23,7 @@ public interface ResearchRecordService {
 	
 	/**
 	 * 根据科研记录Id查找一条完整的科研记录
-	 * @param recordId
+	 * @param recordId 待查找的记录Id
 	 * @return 查找记录
 	 */
 	public ResearchRecord findOneById(String recordId);
@@ -53,22 +53,24 @@ public interface ResearchRecordService {
 	
 	/**
 	 * 根据科研记录Id删除一条科研记录
-	 * @param recordId
+	 * @param recordId 待删除的记录id
 	 * @return 操作结果
 	 */
 	public boolean deleteById(String recordId);
 	
 	/**
 	 * 修改一条科研记录
-	 * @param record
+	 * @param record 待修改的记录文件
+	 * @param proofFiles 旁证材料源文件
+	 * @param fixedProofIdList 未修改的旁证材料id列表
 	 * @return 操作结果
 	 */
-	public boolean modify(ResearchRecord record);
+	public ResultInfo<Object> modify(ResearchRecord record, List<FileItem> proofFiles, List<Integer> fixedProofIdList);
 	
 	/**
 	 * 审核通过一条科研记录
 	 * 仅修改审核者，记录状态
-	 * @param record
+	 * @param record 待审核的科研记录
 	 * @return 操作结果
 	 */
 	public boolean accept(ResearchRecord record, String approvedUserId);
@@ -76,7 +78,7 @@ public interface ResearchRecordService {
 	/**
 	 * 审核拒绝一条科研记录
 	 * 仅修改审核者，记录状态，拒绝原因
-	 * @param record
+	 * @param record 待审核的科研记录
 	 * @return 操作结果
 	 */
 	public boolean refuse(ResearchRecord record, String approvedUserId);

@@ -114,19 +114,19 @@
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>相关成员姓名</label>
-                                            <input class="form-control" name="pName0">
+                                            <input class="form-control" name="pName[]">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 
                                         <div class="line-25-per">
                                             <label>备注</label>
-                                            <input class="form-control" name="pRemark0">
+                                            <input class="form-control" name="pRemark[]">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 
                                         <div class="line-25-per">
-                                            <label>排名</label>
-                                            <input class="form-control" name="pOrder0">
+                                            <label>排名情况</label>
+                                            <input class="form-control" name="pOrder[]">
                                             <p class="help-block text-info">可选填</p>
                                         </div>
 

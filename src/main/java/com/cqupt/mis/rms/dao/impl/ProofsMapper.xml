@@ -51,6 +51,18 @@
 	    )
   	</select>
 
+    <!-- 根据记录Id删除一组旁证材料信息(不删除proofId在PIds列表中的值) -->
+    <delete id="deleteByRecordId">
+        DELETE FROM `proofs`
+        WHERE record_id = #{rId, jdbcType=VARCHAR}
+        <if test="pIds != null">
+            AND proof_id NOT IN (
+            <foreach collection="pIds" item="pId" separator=",">
+              #{pId, jdbcType=VARCHAR}
+            </foreach>
+            )
+        </if>
+    </delete>
 
 
 
