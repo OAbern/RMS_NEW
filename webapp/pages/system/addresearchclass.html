@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -129,7 +129,7 @@
     <script>
         var researchClassList = null;  //科研类别信息
         $.ajax({       //获取当前系统中所有未删除的一级科研类别
-            url:"/rms/class/getAll.do",
+            url:"../../class/getAll.do",
             type:"get",
             dataType:"json",
             contentType: "application/json; charset=utf-8",
