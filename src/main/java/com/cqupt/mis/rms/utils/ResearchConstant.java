@@ -20,6 +20,11 @@ public class ResearchConstant {
 	 * 查看管理个人科研信息列表的url
 	 */
 	public static final String VIEW_MANAGE_LIST_URL = "../../record/viewrecordlist/";
+
+	/**
+	 * 查看管理科研信息列表的url
+	 */
+	public static final String VIEW_APPROVE_LIST_URL = "../../pubrecord/viewrecordlist/";
 	
 	/**
 	 * 审批科研信息的url
@@ -82,6 +87,15 @@ public class ResearchConstant {
 	 */
 	public static String getViewManageListUrl(int classId) {
 		return VIEW_MANAGE_LIST_URL + classId + SUFFIX;
+	}
+
+	/**
+	 * 获取管理个人科研信息的url
+	 * @param classId 相应的科研类别id，用作url的参数
+	 * @return url
+	 */
+	public static String getViewApproveListUrl(int classId) {
+		return VIEW_APPROVE_LIST_URL + classId + SUFFIX;
 	}
 	
 	/**

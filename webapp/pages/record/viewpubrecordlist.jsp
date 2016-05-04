@@ -37,29 +37,10 @@
     List<ResearchRecord> recordList = (List<ResearchRecord>) request.getAttribute(RequestConstant.RECORD_LIST);
     String recordListJson = JSONUtils.toJSONString(recordList);
 %>
-<!-- Modal -->
-<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h5 class="modal-title" id="myModalLabel"><label class="text-danger">警告：</label>您正在执行一个毁灭性的操作！</h5>
-            </div>
-            <div class="modal-body">
-                <p class="text-info">删除的记录将不可恢复！请确认是否删除该条记录:<p id="delContent" class="text-danger"></p></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">不删除</button>
-                <a id="deleteHref" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">确认删除</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <textarea id="recordJson" hidden><%=recordListJson %></textarea>
 <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header">管理个人<label id="className"></label>科研信息</h2>
+        <h2 class="page-header">审核<label id="className"></label>科研信息</h2>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -83,8 +64,6 @@
                             <th>提交时间</th>
                             <th>提交人</th>
                             <th>审批人</th>
-                            <th>审批拒绝原因</th>
-                            <th>操作</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -130,10 +109,11 @@
         var className = recordList[0].researchClass.className;
         $('#className').append(className);
     }
-    //添加个人科研信息
+
+    //添加科研记录
     for(var i=0; i<recordList.length;) {
         var r = recordList[i++];
-        var detailURL = 'record/viewdetail/'+ r.id+'.do';
+        var detailURL = 'pubrecord/viewdetail/'+ r.id+'.do';
         var approveUserName, submitUserName;
         if(r.approvedUser != null) {
             approveUserName = r.approvedUser.userName;
@@ -151,26 +131,11 @@
             r.returnReason = '';
         }
 
-        if(r.status==1 || r.status==2) {        //待审批状态 或 审批通过状态
-            $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td><td><a href="'+detailURL+'">查看详细</a></td><td></td></tr>');
-        }else {
-            $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td><td><a href="'+detailURL+'">查看详细</a></td><td><a href="javascript:void(0)" onclick="confirmDelete(\''+r.id+'\')">删除</a></td></tr>');
-        }
+        $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td><a href="'+detailURL+'">查看详细</a></td></tr>');
+
     }
 
     window.parent.iFrameHeight();   //iframe自适应高度，最后执行
-
-    /**
-     * 确认删除模态框
-     * @param recordId      删除的记录ID
-     */
-    function confirmDelete(recordId) {
-        var delURL = 'record/delete/'+recordId+'.do';
-        $('#deleteHref').attr('href', delURL);
-        $('#delContent').empty();
-        $('#delContent').append('<b>'+recordId+'</b>');
-        $('#deleteConfirm').modal();
-    }
 </script>
 </body>
 </html>

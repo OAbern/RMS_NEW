@@ -90,12 +90,15 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 
 		List<Proof> proofList = new ArrayList<Proof>();
 		for(FileItem fileItem : proofFiles) {
-			Proof proof = new Proof();
 			String originalName = fileItem.getName();
+			if(originalName==null || "".equals(originalName))
+				continue;
+
 			String genName = GenerateUtils.generateFileName(originalName);
 			String storePath = ResearchConstant.PROOF_STORE_PATH_ROOT+"/"+ genName;
 
 			//设置旁证材料值
+			Proof proof = new Proof();
 			proof.setUploadProofName(originalName);
 			proof.setUploadRealName(genName);
 			proof.setProofPath(storePath);
@@ -137,15 +140,30 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		return record;
 	}
 
-	public boolean deleteById(String recordId) {
-		//TODO	删除旁证材料的文件
-		//TODO	验证旁证材料的状态？
+	public ResultInfo<Integer> deleteById(String recordId) {
+		ResearchRecord record = researchRecordDao.selectByPrimaryKey(recordId);
+		int classId = -1;
+		if(record != null) {		//验证旁证材料的状态
+			if(record.getStatus()==1 || record.getStatus()==2) {
+				return new ResultInfo<Integer>(false, "删除操作异常，您不可以删除状态为‘待审批’ 或 ‘审批通过’的科研记录");
+			}
+			if(record.getResearchClass() != null)
+				classId = record.getResearchClass().getClassId();
+		}else {
+			return new ResultInfo<Integer>(false, "删除操作异常！获取记录id为‘"+recordId+"’的科研记录失败！");
+		}
+
 		researchPersonDao.deleteByRecordId(recordId);		//删除相关人员信息
 		researchDataDao.deleteByRecordId(recordId);		//删除动态字段数据信息
 		List<Proof> proofList = proofDao.findListByRecordId(recordId);		//查找旁证材料信息
 		deleteProofs(proofList, recordId, null);		//删除旁证材料信息(数据库信息 以及 服务器存储的文件)
 		
-		return researchRecordDao.deleteByPrimaryKey(recordId);
+		boolean result = researchRecordDao.deleteByPrimaryKey(recordId);
+		if(result) {
+			return new ResultInfo<Integer>(classId, true);
+		}else {
+			return new ResultInfo<Integer>(false, "删除主记录异常！");
+		}
 	}
 
 	public ResultInfo<Object> modify(ResearchRecord record, List<FileItem> proofFiles, List<Integer> fixedProofIdList) {
@@ -200,8 +218,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 
 	public List<ResearchRecord> findListByClassForApprove(int classId) {
 		//TODO 权限验证
-		List<ResearchRecord> records = researchRecordDao.findListByClassForApprove(classId);
-		return findListByRecords(records);
+		return researchRecordDao.findListByClassForApprove(classId);
 	}
 	
 	/**

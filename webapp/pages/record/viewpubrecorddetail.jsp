@@ -15,7 +15,7 @@
 <html>
 <base href="<%=basePath%>">
 <head>
-    <title>查看个人科研信息列表</title>
+    <title>审核科研信息</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
@@ -32,10 +32,53 @@
     ResearchRecord record = (ResearchRecord) request.getAttribute(RequestConstant.RECORD_DETAIL);
     String recordJson = JSONUtils.toJSONString(record);
 %>
+<!-- Modal -->
+<div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title"><label class="text-danger">警告：</label>您正在执行一个严肃的操作！</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-info">审批通过的记录将不能在系统中进行修改或审批！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">再看看</button>
+                <a id="acceptHref" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">直接通过</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="refuse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title"><label class="text-danger">警告：</label>您正在执行一个严肃的操作！</h5>
+            </div>
+            <form id="refuseAction" action="javascript:void(0)">
+                <div class="modal-body">
+                    <p class="text-info">审批拒绝的操作将返还给提交者进行其他处理！</p>
+                    <label>拒绝原因</label>
+                    <input class="form-control" name="r" required>
+                    <input class="form-control" name="s" value="3" type="hidden">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">再看看</button>
+                    <button type="submit" class="btn btn-danger">确认拒绝</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <textarea id="recordJson" hidden><%=recordJson %></textarea>
 <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header">查看个人<label id="className"></label>科研详细信息</h2>
+        <h2 class="page-header">审核<label id="className"></label>科研详细信息</h2>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -50,10 +93,20 @@
             <!--  /.panel-heading  -->
 
             <div class="panel-body">
+                <div style="text-align: center">
+                    <a class="btn btn-warning btn-normal active btn-margin" href="javascript:void(0)" onclick="approve(2)">审核通过</a>
+                    <a class="btn btn-danger btn-normal active btn-margin" href="javascript:void(0)" onclick="approve(3)">审核拒绝</a>
+                </div>
+                <br>
+
                 <div class="alert alert-success">
                     <h4 id="recordIdShow" style="color: red">当前科研记录的ID为：</h4>
                 </div>
                 <div class="alert alert-success">
+                    <h4 id="submitUser" style="color: red">当前科研记录的提交人为：</h4>
+                </div>
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4 id="statusDes" style="color: red">当前科研记录的状态为：</h4>
                 </div>
                 <div id="returnReasonDIV" class="alert alert-warning" hidden="hidden">
@@ -61,8 +114,7 @@
                     <h4 id="returnReason" style="color: red">当前科研记录的拒绝原因为：</h4>
                 </div>
 
-                <form action="record/modify.do" method="post" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit();">
-                    <input type="hidden" name="classId" id="classId">
+                <form id="formData">
                     <input type="hidden" name="recordId" id="recordId">
 
                     <div class="panel-group" id="accordion">
@@ -110,16 +162,13 @@
                         <!-- 相关成员 -->
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h4 class="panel-title" style="float: left">
+                                <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" id="a-person">相关人员信息</a>
                                 </h4>
-                                <div style="text-align: right">
-                                    <button type="button" id="addPerson" class="btn btn-default btn-sm" style="align-items: right;" onclick="addPerson()">增加人员</button>
-                                </div>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse in">
                                 <div class="panel-body" id="person">
-                                    <!--
+                                    <%--
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>相关成员姓名</label>
@@ -140,7 +189,8 @@
                                         </div>
 
                                         <div class="clear-left"></div>
-                                    </div>-->
+                                    </div>
+                                    --%>
                                     <!-- /.form-group -->
 
                                 </div>
@@ -153,16 +203,13 @@
                         <!-- 旁证材料 -->
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h4 class="panel-title" style="float: left">
+                                <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" id="a-proof">旁证材料</a>
                                 </h4>
-                                <div style="text-align: right">
-                                    <button type="button" id="addProof" class="btn btn-default btn-sm" style="align-items: right;">增加材料</button>
-                                </div>
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse in">
                                 <div class="panel-body" id="proof">
-                                    <!--
+                                    <%--
                                     <div class="form-group">
                                         <div class="line-25-per">
                                             <label>旁证材料上传</label>
@@ -170,7 +217,7 @@
                                         </div>
                                         <div class="clear-left"></div>
                                     </div>
-                                    -->
+                                    --%>
                                     <!-- /.form-group -->
 
                                 </div>
@@ -179,17 +226,15 @@
                             <!-- /#collapseThree -->
                         </div>
                         <!-- /.panel panel-info -->
-
                     </div>
                     <!-- /#accordion -->
-
-                    <input type="hidden" value="" name="status" id="status">
-                    <div style="text-align: center">
-                        <button type="submit" class="btn btn-warning btn-margin" onclick="setStatus(0)">保存</button>
-                        <button type="submit" class="btn btn-danger btn-margin" onclick="setStatus(1)">提交审核</button>
-                        <button type="reset" class="btn btn-info btn-margin">重置</button>
-                    </div>
                 </form>
+
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4 style="color: red">审核按钮在页面顶部哦！</h4>
+                </div>
+
             </div>
             <!-- /.panel-body -->
         </div>
@@ -218,25 +263,23 @@
     var personsList = record.persons;        //相关成员信息列表
     var proofsList = record.proofs;         //旁证材料信息列表
     var status = record.status;         //科研记录的审批状态
-    var operatorInfo = '； 您可以对当前信息进行修改！';
-    if(status==1 || status==2)
-        operatorInfo = '； 您不可以对当前信息进行修改！';
-
+    var classRemark = rClass.classRemark;   //科研类别备注
     var returnReason = record.returnReason;     //审批拒绝原因
-    var classRemark = rClass.classRemark;
 
     $('#className').append(rClass.className);      //设置标题头
     $('#recordId').val(record.id);     //设置recordId的值
     $('#classId').val(rClass.classId);      //设置科研类别Id
-    $('#statusDes').append(record.statusDes + operatorInfo);       //设置科研记录状态描述信息
-    $('#recordIdShow').append(record.id);
-    if(classRemark!=null && classRemark!="") {      //在面板头填写类备注
-        $('#classRemark').empty();
-        $('#classRemark').append(classRemark);
-    }
+    $('#statusDes').append(record.statusDes);       //设置科研记录状态描述信息
+    $('#recordIdShow').append(record.id);       //设置记录id
+    $('#submitUser').append(record.submitUser.userName);    //设置提交用户
     if(returnReason!=null && returnReason!="") {
         $('#returnReasonDIV').attr("hidden",false);
         $('#returnReason').append(returnReason);
+    }
+
+    if(classRemark!=null && classRemark!="") {      //在面板头填写类备注
+        $('#classRemark').empty();
+        $('#classRemark').append(classRemark);
     }
 
     //加载记录的动态字段
@@ -245,7 +288,7 @@
         var field = fieldData.field;
         var value = fieldData.value;
         if(value == null)
-                value = "";
+            value = "";
 
         if(field.isNull == 0) {     //不可以为null
             $('#recordField').append('<div class="line-25-per"><label class="text-danger">'+field.description+'</label><input class="form-control" name="'+field.name+'" value="'+value+'" required><p class="help-block text-info" id="tips1">必填</p> </div>');
@@ -263,16 +306,15 @@
         var name= p.name, order= p.order, remarks= p.remarks;
 
         if(name == null)
-                name = "";
+            name = "";
 
         if(order == null)
-                order = "";
+            order = "";
 
         if(remarks == null)
-                remarks = "";
+            remarks = "";
 
-        //$('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deletePerson(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName'+i+'" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark'+i+'" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名情况</label> <input class="form-control" name="pOrder'+i+'" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
-        $('#person').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deletePerson(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName[]" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark[]" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名情况</label> <input class="form-control" name="pOrder[]" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
+        $('#person').append('<div class="form-group"><hr class="hr-double"><div class="clear-left"></div><div class="line-25-per"><label>相关成员姓名</label><input class="form-control" name="pName[]" value="'+name+'"> <p class="help-block text-info">可选填</p> </div> <div class="line-25-per"> <label>备注</label> <input class="form-control" name="pRemark[]" value="'+remarks+'"><p class="help-block text-info">可选填</p></div><div class="line-25-per"> <label>排名情况</label> <input class="form-control" name="pOrder[]" value="'+order+'"> <p class="help-block text-info">可选填</p> </div>\<div class="clear-left"></div> </div>');
     }
 
     //加载旁证材料的数据
@@ -286,24 +328,27 @@
         if(pName == null)
             pName = p.uploadRealName;
 
-        //$('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteProof(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><input type="hidden" name="fixedProof['+i+']" value="'+ p.proofId+'"><div class="clear-left"></div></div>');
-        $('#proof').append('<div class="form-group"><hr class="hr-double"><button type="button" class="btn btn-warning btn-xs" onclick="deleteProof(this)">删除</button><div class="clear-left"></div><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><input type="hidden" name="fixedProof[]" value="'+ p.proofId+'"><div class="clear-left"></div></div>');
+        $('#proof').append('<div class="form-group"><hr class="hr-double"><div class="clear-left"></div><div class="line-25-per"><label>'+pName+'</label><br><a href="'+pPath+'">点击下载旁证材料</a></div><input type="hidden" name="fixedProof[]" value="'+ p.proofId+'"><div class="clear-left"></div></div>');
     }
 
-    if(status==1 || status==2) {        //科研记录状态为‘待审核’ 或 ‘审核通过’时，记录处于不可编辑的状态
-        $('form').find('input').attr("disabled", true);
-        $('form').find('button').attr("disabled", true);
-    }
-
-    personCount = proofsList.length;        //全局作用域,借用record-CRUD.js里面的变量
+    //科研记录处于不可编辑的状态
+    $('#formData').find('input').attr("disabled", true);
+    $('#formData').find('button').attr("disabled", true);
 
     window.parent.iFrameHeight();   //iframe自适应高度，最后执行
 
     /**
-     * 提交之前用户确认，并且设置不变的旁证材料计数值
+     * 审核操作
+     * @param status 状态
      */
-    function checkBeforeSubmit() {
-        return confirm("是否确认修改这条信息？");
+    function approve(status) {
+        if(status == 2) {       //审核通过
+            $('#acceptHref').attr('href', 'pubrecord/approve/'+record.id+'.do?s='+status);
+            $('#accept').modal({backdrop: 'static', keyboard: false});
+        }else if(status == 3){      //审核拒绝
+            $('#refuseAction').attr('action', 'pubrecord/approve/'+record.id+'.do');
+            $('#refuse').modal({backdrop: 'static', keyboard: false});
+        }
     }
 </script>
 </body>

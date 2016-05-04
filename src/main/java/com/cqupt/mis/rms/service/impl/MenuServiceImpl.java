@@ -79,7 +79,7 @@ public class MenuServiceImpl implements MenuService {
 			if(rolePurviewDyn.isApprove()){	//判断是否有审批权限，并转换为ResourceInfo
 				ResourceInfo info = new ResourceInfo();
 				info.setParentId(parentId);
-				info.setResourceUrl(ResearchConstant.getApproveUrl(classId));
+				info.setResourceUrl(ResearchConstant.getViewApproveListUrl(classId));
 				info.setResourceName(ResearchConstant.getApproveName(className));
 				approve.add(info);
 			}

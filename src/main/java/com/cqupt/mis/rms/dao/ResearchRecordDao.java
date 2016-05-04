@@ -24,16 +24,16 @@ public interface ResearchRecordDao extends BaseDao<ResearchRecord, String> {
 	
 	/**
 	 * 更改记录的状态为2，添加审批者
-	 * @param record
-	 * @param approvedUserId
+	 * @param record 待审批的记录
+	 * @param approvedUserId 审批人id
 	 * @return	操作结果
 	 */
 	public boolean accept(@Param("record")ResearchRecord record, @Param("userId")String approvedUserId);
 	
 	/**
 	 * 更改记录的状态为3，添加审批者，添加拒绝原因
-	 * @param record
-	 * @param approvedUserId
+	 * @param record 待审批的记录
+	 * @param approvedUserId 审批人id
 	 * @return
 	 */
 	public boolean refuse(@Param("record")ResearchRecord record, @Param("userId")String approvedUserId);

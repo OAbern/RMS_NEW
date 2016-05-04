@@ -54,9 +54,9 @@ public interface ResearchRecordService {
 	/**
 	 * 根据科研记录Id删除一条科研记录
 	 * @param recordId 待删除的记录id
-	 * @return 操作结果
+	 * @return 操作结果，如果操作成功，返回classId；如果操作失败，返回失败信息
 	 */
-	public boolean deleteById(String recordId);
+	public ResultInfo<Integer> deleteById(String recordId);
 	
 	/**
 	 * 修改一条科研记录

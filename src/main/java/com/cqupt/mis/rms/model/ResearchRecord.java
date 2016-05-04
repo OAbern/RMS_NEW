@@ -114,7 +114,7 @@ public class ResearchRecord implements Serializable {
 			statusDes = "已保存";
 			break;
 		case 1:
-			statusDes = "未审批";
+			statusDes = "待审批";
 			break;
 		case 2:
 			statusDes = "审批通过";

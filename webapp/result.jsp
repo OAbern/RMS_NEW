@@ -24,8 +24,10 @@
     <link href="css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet">
 
+    <!-- Bern Custom CSS -->
+    <link href="css/ifram-common.css" rel="stylesheet">
 </head>
 <body>
     <%
@@ -40,7 +42,7 @@
     <div id="success" class="container-fluid" hidden="true">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header" style="color: green">操作成功</h1>
+                <h2 class="page-header" style="color: green">恭喜您，操作成功^_^</h2>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -51,41 +53,36 @@
     <div id="failed" class="container-fluid" hidden="true">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header" style="color: red">操作失败</h1>
+                <h2 class="page-header text-danger">我们对此感到遗憾，但是您操作失败了！</h2>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
 
-        <div class="row">
-            <p class="help-block" style="color: red" id="fRemark"><b><%=result.getFailedReason() %></b></p>
+        <div class="alert alert-danger">
+            <h4 class="help-block text-danger" id="fRemark"><b><%=result.getFailedReason() %></b></h4>
         </div>
     </div>
     <!-- /.container-fluid -->
 
-    <!-- jQuery -->
-    <script src="js/jquery-1.12.3/jquery-1.12.3.min.js" type="javascript"></script>
+<!-- jQuery -->
+<script src="js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap-3.3.5/bootstrap.min.js" type="javascript"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap-3.3.5/bootstrap.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="js/SB-admin-2-1.0.8/sb-admin-2.js" type="javascript"></script>
+<!-- Custom Theme JavaScript -->
+<script src="js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
 
-    <script type="javascript">
-        //根据结果展示相应的结果面板
-        alert(1);
-        var result = JSON.parse($('#result').val());
-        alert(2);
-        if(result) {
-            alert(3);
-            $('#success').show();
-        }else {
-            alert(4);
-            $('#failed').show();
-        }
-        window.parent.iFrameHeight();
-        alert(5);
-    </script>
+<script>
+    //根据结果展示相应的结果面板
+    var result = JSON.parse($('#result').val());
+    if(result) {
+        $('#success').show();
+    }else {
+        $('#failed').show();
+    }
+    window.parent.iFrameHeight();
+</script>
 </body>
 </html>

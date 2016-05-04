@@ -221,6 +221,7 @@
             $('#recordField').append('<div class="clear-left"></div>');
     }
 
+    window.parent.iFrameHeight();   //iframe自适应高度，最后执行
 </script>
 </body>
 </html>
