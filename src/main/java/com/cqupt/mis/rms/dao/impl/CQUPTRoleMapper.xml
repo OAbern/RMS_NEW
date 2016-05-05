@@ -39,8 +39,9 @@
     role_id, role_name, role_level_id, description
   </sql>
   
-  	<!-- ************************************************************** -->
-  	
+  	<!-- *****************************SQL********************************* -->
+
+	<!--根据角色id查找角色-->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -55,13 +56,15 @@
 	WHERE user_role.`user_id` = #{userId,jdbcType=VARCHAR} AND `user_role`.`role_id` = #{roleLevelId,jdbcType=INTEGER} 
 			AND r.`role_id` = user_role.`role_id`
   </select>
-  
+
+	<!--查找所有角色-->
   <select id="findAll" resultMap="BaseResultMap">
   	 select 
     <include refid="Base_Column_List" />
     from cqupt_role
   </select>
-  
+
+	<!--根据角色Id查找静态资源权限-->
   <select id="findRolePurviewByRoleId" resultMap="RolePurviewResultMap" parameterType="java.lang.Integer">
   	select
   	 <include refid="Base_Column_List" />,
@@ -76,7 +79,7 @@
   	 where role_id = #{roleId,jdbcType=INTEGER}
   </select>
   
-  <!-- 根据角色Id和父类资源查找静态资源 -->
+  <!-- 根据角色Id和父类资源查找静态资源权限 -->
   <select id="findRolePurviewByRoleIdAndParent" resultMap="RolePurviewResultMap" parameterType="java.lang.Integer">
   	select
   	 <include refid="Base_Column_List" />,
@@ -91,7 +94,8 @@
   	 where role_id = #{roleId,jdbcType=INTEGER}
   	 and   resource_info.parentId = #{parentId,jdbcType=INTEGER}
   </select>
-  
+
+	<!--根据角色Id查找角色动态权限-->
   <select id="findRolePurviewDynRoleId" resultMap="RolePurviewDynResultMap" parameterType="java.lang.Integer">
   	select
   	 cqupt_role.role_id,
@@ -116,26 +120,36 @@
   	 left join research_class on role_purview_dynamic.class_id = research_class.class_id
   	 where cqupt_role.role_id = #{roleId,jdbcType=INTEGER}
   </select>
-  
-  	<!-- ************************************************************** -->
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from cqupt_role
-    where role_id = #{roleId,jdbcType=INTEGER}
-  </delete>
-  
-  
-  <insert id="add" parameterType="com.cqupt.mis.rms.model.CQUPTRole" >
-    insert into cqupt_role (role_id, role_name, role_level_id,description)
-    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleLevel.id,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR})
-  </insert>
 
-  
-  <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.CQUPTRole" >
-    update cqupt_role
-    set role_name = #{roleName,jdbcType=VARCHAR},
-      role_level_id = #{roleLevelId,jdbcType=INTEGER},
-      description = #{description,jdbcType=VARCHAR}
-    where role_id = #{roleId,jdbcType=INTEGER}
-  </update>
+	<!--添加角色信息-->
+	<insert id="add" parameterType="com.cqupt.mis.rms.model.CQUPTRole" >
+		insert into `cqupt_role` (`role_name`, `description`)
+		values (#{roleName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+	</insert>
+
+	<!--根据角色名字查找角色信息-->
+	<select id="findByName" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM `cqupt_role`
+		WHERE `role_name` = #{rName, jdbcType=VARCHAR}
+	</select>
+
+	<!--删除角色信息-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		delete from cqupt_role
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</delete>
+
+	<!--修改角色信息-->
+	<update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.CQUPTRole" >
+		update cqupt_role
+		set role_name = #{roleName,jdbcType=VARCHAR},
+		<if test="roleLevel != null">
+			role_level_id = #{roleLevel.id,jdbcType=INTEGER},
+		</if>
+		description = #{description,jdbcType=VARCHAR}
+		where role_id = #{roleId,jdbcType=INTEGER}
+	</update>
+
+
 </mapper>

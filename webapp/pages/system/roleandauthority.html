@@ -29,40 +29,97 @@
     <link href="../../css/ifram-common.css" rel="stylesheet">
 </head>
 <body>
-<!-- Modal -->
+<!-- 新增角色的 Modal -->
 <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><label class="text-info">新增角色</label></h4>
+                <h4 class="modal-title"><label class="text-info">新增角色</label></h4>
             </div>
+            <form action="../../roleandauth/addrole.do" onsubmit="return $('#roleNameFlag1').val()==1;">
             <div class="modal-body">
-                <form action="">
                     <div class="form-group">
                         <label>角色名称</label>
-                        <input class="form-group" name="roleName" id="roleName" required>
-                        <p class="help-block text-info">必填</p>
+                        <input class="form-control" name="roleName" id="roleName1" onblur="checkRoleName(1)" required>
+                        <input class="form-control" id="roleNameFlag1" type="hidden" value="0" required>
+                        <p class="help-block text-info" id="remark1">必填</p>
                     </div>
-                    <!-- TODO: -->
+
                     <div class="form-group">
                         <label>角色描述信息</label>
-                        <input class="form-control" name="des">
+                        <input class="form-control" name="description">
                         <p class="help-block text-info">可选填</p>
                     </div>
-                </form>
             </div>
             <!-- /.modal-body -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">算了</button>
-                <a id="" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">确认添加</a>
+                <button type="button" class="btn btn-info" data-dismiss="modal">算了</button>
+                <button type="submit" class="btn btn-danger">确认添加</button>
             </div>
+            </form>
         </div>
         <!-- /.modal-header -->
     </div>
     <!--./modal-dialog-->
 </div>
 <!--/.modal -->
+
+<!-- 修改角色的 Modal -->
+<div class="modal fade" id="modifyRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><label class="text-info">修改角色</label></h4>
+            </div>
+            <form action="../../roleandauth/modifyrole.do" onsubmit="return $('#roleNameFlag2').val()==1;">
+                <input class="form-control" name="roleId" id="roleId2" type="hidden" required>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>角色名称</label>
+                        <input class="form-control" name="roleName" id="roleName2" onblur="checkRoleName(2)" required>
+                        <input class="form-control" id="roleNameFlag2" type="hidden" value="0" required>
+                        <p class="help-block text-info" id="remark2">必填</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>角色描述信息</label>
+                        <input class="form-control" name="description" id="des2">
+                        <p class="help-block text-info">可选填</p>
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">算了</button>
+                    <button type="submit" class="btn btn-danger">确认修改</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-header -->
+    </div>
+    <!--./modal-dialog-->
+</div>
+<!--/.modal -->
+
+<!-- 删除确认的 Modal -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title"><label class="text-danger">警告：</label>您正在执行一个毁灭性的操作！</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-info">删除的角色将不可恢复！请确认是否删除这个角色:<p id="delContent" class="text-danger"></p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">不删除</button>
+                <a id="deleteHref" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">确认删除</a>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -156,14 +213,136 @@
         if(des==null)
             des = "";
 
-        $('tbody').append('<tr class="odd gradeA"><td>'+rId+'</td><td>'+r.roleName+'</td><td>'+des+'</td> <td class="center"><a class="fa fa-pencil-square" href="">修改角色</a></td> <td class="center"><a class="fa fa-key" href="">授权</a></td> <td class="center"><a class="fa fa-times-circle" href="">删除角色</a></td> </tr>');
+        $('tbody').append('<tr class="odd gradeA"><td>'+rId+'</td><td>'+r.roleName+'</td><td>'+des+'</td> <td class="center"><a class="fa fa-pencil-square" href="javascript:void(0)" onclick="showModifyModal('+rId+',\''+r.roleName+'\',\''+des+'\')">修改角色</a></td> <td class="center"><a class="fa fa-key" href="">授权</a></td> <td class="center"><a class="fa fa-times-circle" href="javascript:void(0)" onclick="confirmDelete(\''+r.roleName+'\','+rId+')">删除角色</a></td> </tr>');
     }
 
+    //加载dataTables
     $('#dataTables-user-role').DataTable({
-        responsive: true
+        "language": {       //配置dataTables的提示信息为中文
+            "sProcessing":   "处理中...",
+            "sLengthMenu":   "显示 _MENU_ 项结果",
+            "sZeroRecords":  "没有匹配结果",
+            "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+            "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix":  "",
+            "sSearch":       "搜索:",
+            "sUrl":          "",
+            "sEmptyTable":     "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands":  ",",
+            "oPaginate": {
+                "sFirst":    "首页",
+                "sPrevious": "上页",
+                "sNext":     "下页",
+                "sLast":     "末页"
+            },
+            "oAria": {
+                "sSortAscending":  ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        },
+        "responsive": true
     });
 
     window.parent.iFrameHeight();   //iframe自适应高度
+
+
+    /*************************************************************/
+
+    //添加角色时的重名检测
+    $('#roleName1').blur(function() {
+        var roleName = $(this).val();
+        $('#remark1').empty();
+        if(roleName==null || ""==roleName) {
+            $('#roleNameFlag1').val(0);
+            $('#remark1').append('<p class="fa fa-times">必填</p>');
+            return;
+        }
+        $.ajax({       //后台校验
+            url:"../../roleandauth/checkrolename.do",
+            type:"get",
+            dataType:"json",
+            data: {'roleName':roleName},
+            contentType: "application/json; charset=utf-8",
+            success:function(result){       //返回boolean
+                if(result) {
+                    $('#roleNameFlag1').val(1);
+                    $('#remark1').append('<p class="fa fa-check"></p>');
+                }else {
+                    $('#roleNameFlag1').val(0);
+                    $('#remark1').append('<p class="fa fa-times">重名：请换一个试试！</p>');
+                }
+            },
+            error:function() {
+                $('#roleNameFlag1').val(0);
+                alert("校验角色名字是否重名失败！");
+            }
+        });
+    });
+
+    var originRoleName = null;      //全局变量
+    //修改名字时，检测是否重名
+    $('#roleName2').blur(function() {
+        var roleName = $('#roleName2').val();
+        $('#remark2').empty();
+        if(roleName==null || ""==roleName) {
+            $('#roleNameFlag2').val(0);
+            $('#remark2').append('<p class="fa fa-times">必填</p>');
+            return;
+        }
+        if(roleName == originRoleName) {
+            $('#roleNameFlag2').val(1);
+            $('#remark2').append('<p class="fa fa-check">没有改变名字</p>');
+            return;
+        }
+        $.ajax({       //后台校验
+            url:"../../roleandauth/checkrolename.do",
+            type:"get",
+            dataType:"json",
+            data: {'roleName':roleName},
+            contentType: "application/json; charset=utf-8",
+            success:function(result){       //返回boolean
+                if(result) {
+                    $('#roleNameFlag2').val(1);
+                    $('#remark2').append('<p class="fa fa-check"></p>');
+                }else {
+                    $('#roleNameFlag2').val(0);
+                    $('#remark2').append('<p class="fa fa-times">重名：请换一个试试！</p>');
+                }
+            },
+            error:function() {
+                $('#roleNameFlag2').val(0);
+                alert("校验角色名字是否重名失败！");
+            }
+        });
+    });
+
+    /**
+     * 确认删除模态框
+     * @param roleName 待删除的角色名称
+     */
+    function confirmDelete(roleName, roleId) {
+        var delURL = '../../roleandauth/deleterole/'+roleId+'.do';
+        $('#deleteHref').attr('href', delURL);
+        $('#delContent').empty();
+        $('#delContent').append('<b>'+roleName+'</b>');
+        $('#deleteConfirm').modal();
+    }
+
+    /**
+     * 修改角色信息的模态框
+     * @param roleStr 待修改的角色信息
+     */
+    function showModifyModal(rId, rName, des) {
+        originRoleName = rName;     //记录修改前的角色名字
+        $('#roleId2').val(rId);     //设置角色Id
+        $('#des2').val(des);        //设置角色描述信息
+        $('#roleNameFlag2').val(0);     //设置提交标志位为0
+        $('#remark2').empty();      //设置备注
+        $('#remark2').append('必填');
+        $('#modifyRole').modal();
+    }
 </script>
 </body>
 </html>

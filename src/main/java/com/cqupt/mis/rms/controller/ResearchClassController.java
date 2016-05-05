@@ -34,7 +34,7 @@ public class ResearchClassController {
 
 	/**
 	 * 获取全部科研类别
-	 * @param response
+	 * @param response HttpServletResponse
      */
 	@RequestMapping("/getAll")
 	public void get(HttpServletResponse response) {
@@ -54,8 +54,8 @@ public class ResearchClassController {
 
 	/**
 	 * 添加科研类别之前的检查
-	 * @param rClass 待检查的科研类别
-	 * @param response
+	 * @param className 待检查的科研类别名称
+	 * @param response HttpServletResponse
      */
 	@RequestMapping("/checkBeforeAdd")
 	public void checkBeforeAdd(String className, int pId, HttpServletResponse response) {
