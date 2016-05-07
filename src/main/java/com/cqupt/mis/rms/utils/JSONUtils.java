@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONArray;
@@ -89,6 +91,16 @@ public class JSONUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * 将json字符串转换为java对象
+	 * <p>原生态，未添加任何的操作，只是简单的封装
+	 * @param text 要转换的json文本
+	 * @return 转换后的对象
+	 */
+	public static JSONObject parseObject(String text) {
+		return JSON.parseObject(text);
 	}
 
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cqupt.mis.rms.dao.ResourceInfoDao" >
-<!--资源简单结果映射  -->
+  <!--资源简单结果映射  -->
   <resultMap id="BaseResultMap" type="com.cqupt.mis.rms.model.ResourceInfo" >
     <id column="resourceId" property="resourceId" jdbcType="INTEGER" />
     <result column="resourceName" property="resourceName" jdbcType="VARCHAR" />
     <result column="resourceUrl" property="resourceUrl" jdbcType="VARCHAR" />
     <result column="resourceRemark" property="resourceRemark" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentId" jdbcType="INTEGER" />
     <association column="parentId" property="parentResourceinfo" javaType="com.cqupt.mis.rms.model.ResourceInfo" />
   </resultMap>
   

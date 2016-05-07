@@ -18,7 +18,7 @@
 		`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`, `parent_id`
 	</sql>
 	
-	<!-- 查找所有记录 -->
+	<!-- 查找所有科研类别（不包括已经删除的） -->
 	<select id="findAll" resultMap="ResearchClass" parameterType="java.lang.Integer" >
 		select 
 		<include refid="ColumnList" />

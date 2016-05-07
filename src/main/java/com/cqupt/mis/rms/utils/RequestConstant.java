@@ -25,4 +25,9 @@ public class RequestConstant {
      * 指定recordId的科研详细信息
      */
     public static final String RECORD_DETAIL = "recordDetail";
+
+    /**
+     * 获取
+     */
+    public static final String ROLE = "role";
 }

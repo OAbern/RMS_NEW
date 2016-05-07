@@ -14,6 +14,17 @@
 		<association column="rp_role_id" property="roleInfo" resultMap="com.cqupt.mis.rms.dao.CQUPTRoleDao.BaseResultMap" />
 		<association column="rp_class_id" property="researchClass" resultMap="com.cqupt.mis.rms.dao.ResearchClassDao.ResearchClass"/>
 	</resultMap>
+
+	<!-- 简单动态权限类的结果集 -->
+	<resultMap id="SimpleRolePurviewDyn" type="com.cqupt.mis.rms.model.RolePurviewDyn" >
+		<id column="rp_role_id" property="roleInfo.roleId" />
+		<id column="rp_class_id" property="researchClass.classId"/>
+
+		<result column="input" property="input" jdbcType="BOOLEAN"/>
+		<result column="manage" property="manage" jdbcType="BOOLEAN"/>
+		<result column="approve" property="approve"  jdbcType="BOOLEAN"/>
+		<result column="statistics" property="statistics"  jdbcType="BOOLEAN"/>
+	</resultMap>
 	
 	<!-- 所有的字段集合 -->
 	<sql id="ColumnList">
@@ -26,6 +37,13 @@
 		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime` 
 		FROM `role_purview_dynamic` rp, `research_class` c
 		WHERE rp.`class_id` = c.`class_id` AND rp.`role_id` = #{rId, jdbcType=INTEGER}
+	</select>
+
+	<!-- 根据角色ID查找动态权限 -->
+	<select id="findSimpleByRoleId" resultMap="SimpleRolePurviewDyn">
+		SELECT <include refid="ColumnList"></include>
+		FROM `role_purview_dynamic` rp
+		WHERE  rp.`role_id` = #{rId, jdbcType=INTEGER}
 	</select>
 	
 	<!-- 查找所有的记录 -->
@@ -45,5 +63,28 @@
   			#{item.input,jdbcType=BOOLEAN},#{item.manager,jdbcType=BOOLEAN},
   			#{item.approve,jdbcType=BOOLEAN},#{item.statistics,jdbcType=BOOLEAN})
 		</foreach>
+	</insert>
+
+	<select id="findSimpleByRoleIdAndClassId" resultMap="SimpleRolePurviewDyn">
+		SELECT <include refid="ColumnList"></include>
+		FROM role_purview_dynamic rp
+		WHERE rp.`role_id` = #{rId, jdbcType=INTEGER} AND rp.class_id = #{cId, jdbcType=INTEGER}
+	</select>
+
+	<update id="updateByRoleIdAndClassId">
+		UPDATE `role_purview_dynamic`
+		SET `input` = #{map.input, jdbcType=INTEGER},
+		`manage` = #{map.manage, jdbcType=INTEGER},
+		`approve` = #{map.approve, jdbcType=INTEGER},
+		`statistics` = #{map.statistics, jdbcType=INTEGER}
+		WHERE `role_id` = #{rId, jdbcType=INTEGER} AND class_id = #{map.classId, jdbcType=INTEGER}
+	</update>
+
+	<insert id="addOne">
+		INSERT INTO `role_purview_dynamic` (`role_id`, `class_id`, `input`, `manage`, `approve`, `statistics`) values
+			(#{rId,jdbcType=INTEGER},#{map.classId, jdbcType=VARCHAR},
+			#{map.input, jdbcType=BOOLEAN},#{map.manage, jdbcType=BOOLEAN},
+			#{map.approve, jdbcType=BOOLEAN},#{map.statistics, jdbcType=BOOLEAN})
+
 	</insert>
 </mapper>

@@ -213,7 +213,7 @@
         if(des==null)
             des = "";
 
-        $('tbody').append('<tr class="odd gradeA"><td>'+rId+'</td><td>'+r.roleName+'</td><td>'+des+'</td> <td class="center"><a class="fa fa-pencil-square" href="javascript:void(0)" onclick="showModifyModal('+rId+',\''+r.roleName+'\',\''+des+'\')">修改角色</a></td> <td class="center"><a class="fa fa-key" href="">授权</a></td> <td class="center"><a class="fa fa-times-circle" href="javascript:void(0)" onclick="confirmDelete(\''+r.roleName+'\','+rId+')">删除角色</a></td> </tr>');
+        $('tbody').append('<tr class="odd gradeA"><td>'+rId+'</td><td>'+r.roleName+'</td><td>'+des+'</td> <td class="center"><a class="fa fa-pencil-square" href="javascript:void(0)" onclick="showModifyModal('+rId+',\''+r.roleName+'\',\''+des+'\')">修改角色</a></td> <td class="center"><a class="fa fa-key" href="../../roleandauth/togrant/'+rId+'.do">授权</a></td> <td class="center"><a class="fa fa-times-circle" href="javascript:void(0)" onclick="confirmDelete(\''+r.roleName+'\','+rId+')">删除角色</a></td> </tr>');
     }
 
     //加载dataTables
