@@ -50,6 +50,13 @@ public interface ResearchRecordService {
 	 * @return 符合条件的数据
 	 */
 	public List<ResearchRecord> findListByClassForApprove(int classId);
+
+	/**
+	 * 查找指定类别下的所有审核完成记录
+	 * @param classId 指定类别
+	 * @return 符合条件的数据
+	 */
+	public List<ResearchRecord> findListByClassForStatistics(int classId);
 	
 	/**
 	 * 根据科研记录Id删除一条科研记录
@@ -82,4 +89,11 @@ public interface ResearchRecordService {
 	 * @return 操作结果
 	 */
 	public boolean refuse(ResearchRecord record, String approvedUserId);
+
+	/**
+	 * 根据类别Id统计该类别下所有记录的状态情况
+	 * @param classId 类别ID
+	 * @return 统计结果
+     */
+	public List<Object> statisticsStauts(int classId);
 }

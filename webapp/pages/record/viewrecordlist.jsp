@@ -81,14 +81,14 @@
                         <thead>
                         <tr>
                             <th>No.</th>
+                            <th>操作</th>
+                            <th>操作</th>
                             <th>记录id</th>
                             <th>记录状态</th>
                             <th>提交时间</th>
                             <th>提交人</th>
                             <th>审批人</th>
                             <th>审批拒绝原因</th>
-                            <th>操作</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody id="record">
@@ -159,9 +159,9 @@
         }
 
         if(r.status==1 || r.status==2) {        //待审批状态 或 审批通过状态
-            $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td><td><a href="'+detailURL+'">查看详细</a></td><td></td></tr>');
+            $('#record').append('<tr><td>'+i+'</td><td><a href="'+detailURL+'">查看详细</a></td><td></td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td></tr>');
         }else {
-            $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td><td><a href="'+detailURL+'">查看详细</a></td><td><a href="javascript:void(0)" onclick="confirmDelete(\''+r.id+'\')">删除</a></td></tr>');
+            $('#record').append('<tr><td>'+i+'</td><td><a href="'+detailURL+'">查看详细</a></td><td><a href="javascript:void(0)" onclick="confirmDelete(\''+r.id+'\')">删除</a></td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td>'+r.returnReason+'</td></tr>');
         }
     }
 
@@ -191,7 +191,10 @@
                 "sSortDescending": ": 以降序排列此列"
             }
         },
-        "responsive": true
+        "responsive": true,
+        "sScrollX": "100%",
+        "sScrollXInner": "110%",
+        "bScrollCollapse": true
     });
 
     window.parent.iFrameHeight();   //iframe自适应高度，最后执行

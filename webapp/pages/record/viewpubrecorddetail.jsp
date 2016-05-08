@@ -7,6 +7,7 @@
   Time: 15:22
   To change this template use File | Settings | File Templates.
 --%>
+<%-- 此jsp页面为审批查看详情 和查询统计查看详情 共用！共用！共用！--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -93,7 +94,7 @@
             <!--  /.panel-heading  -->
 
             <div class="panel-body">
-                <div style="text-align: center">
+                <div style="text-align: center" id="approveButton" hidden>
                     <a class="btn btn-warning btn-normal active btn-margin" href="javascript:void(0)" onclick="approve(2)">审核通过</a>
                     <a class="btn btn-danger btn-normal active btn-margin" href="javascript:void(0)" onclick="approve(3)">审核拒绝</a>
                 </div>
@@ -230,7 +231,7 @@
                     <!-- /#accordion -->
                 </form>
 
-                <div class="alert alert-danger">
+                <div class="alert alert-danger" id="approveRemark" hidden>
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4 style="color: red">审核按钮在页面顶部哦！</h4>
                 </div>
@@ -265,6 +266,11 @@
     var status = record.status;         //科研记录的审批状态
     var classRemark = rClass.classRemark;   //科研类别备注
     var returnReason = record.returnReason;     //审批拒绝原因
+
+    if(status == 1) {       //表示是审批界面
+        $('#approveRemark').removeAttr("hidden");
+        $('#approveButton').removeAttr("hidden");
+    }
 
     $('#className').append(rClass.className);      //设置标题头
     $('#recordId').val(record.id);     //设置recordId的值

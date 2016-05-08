@@ -140,6 +140,7 @@ public class RoleAndAuthorityContoller {
     public ModelAndView grant(@RequestParam("json")String changedAuthJson) {
         JSONObject jsonObject = JSONUtils.parseObject(changedAuthJson);
         ResultInfo<Object> result = grantServiceImpl.grant(jsonObject);
+        //TODO：权限修改成功更新权限检查列表
         return new ModelAndView("result.jsp", RequestConstant.RESULT, result);
     }
 }

@@ -43,7 +43,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h2 class="page-header">审核<label id="className"></label>科研信息</h2>
+        <h2 class="page-header">查询统计<label id="className"></label>科研信息</h2>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -57,17 +57,35 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+                <div class="alert alert-info" id="hidden-column">
+                    点击相应的字段名你可以 <b>隐藏/显示</b> 相应的列:<br><br>
+                    <a data-column="0" href="javascript:void(0)" onclick="hiddenColumn(this)">No.</a>
+                    <->
+                    <a data-column="1" href="javascript:void(0)" onclick="hiddenColumn(this)">操作</a>
+                    <->
+                    <a data-column="2" href="javascript:void(0)" onclick="hiddenColumn(this)">记录id</a>
+                    <->
+                    <a data-column="3" href="javascript:void(0)" onclick="hiddenColumn(this)">记录状态</a>
+                    <->
+                    <a data-column="4" href="javascript:void(0)" onclick="hiddenColumn(this)">提交时间</a>
+                    <->
+                    <a data-column="5" href="javascript:void(0)" onclick="hiddenColumn(this)">提交人</a>
+                    <->
+                    <a data-column="6" href="javascript:void(0)" onclick="hiddenColumn(this)">审批人</a>
+
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover" id="dataTables-record-list">
                         <thead>
-                        <tr>
+                        <tr id="table-title">
                             <th>No.</th>
+                            <th>操作</th>
                             <th>记录id</th>
                             <th>记录状态</th>
                             <th>提交时间</th>
                             <th>提交人</th>
                             <th>审批人</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody id="record">
@@ -96,11 +114,31 @@
 </div>
 <!-- /.row -->
 
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            系统中当前科研类别下记录状态统计
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="flot-chart">
+                <div class="flot-chart-content" id="flot-pie-chart"></div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-6 -->
+
 <!-- jQuery -->
 <script src="js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap-3.3.5/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="js/SB-admin-2-1.0.8/bower_components/metisMenu/metisMenu.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
@@ -109,12 +147,30 @@
 <script src="js/SB-admin-2-1.0.8/bower_components/datatables/media/jquery.dataTables.min.js"></script>
 <script src="js/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.min.js"></script>
 
+<!-- Flot Charts JavaScript -->
+<%--<script src="js/SB-admin-2-1.0.8/bower_components/flot/excanvas.min.js"></script>--%>
+<script src="js/SB-admin-2-1.0.8/bower_components/flot/jquery.flot.js"></script>
+<script src="js/SB-admin-2-1.0.8/bower_components/flot/jquery.flot.pie.js"></script>
+<%--<script src="js/SB-admin-2-1.0.8/bower_components/flot/jquery.flot.resize.js"></script>--%>
+<%--<script src="js/SB-admin-2-1.0.8/bower_components/flot/jquery.flot.time.js"></script>--%>
+<script src="js/SB-admin-2-1.0.8/bower_components/flot.tooltip/jquery.flot.tooltip.min.js"></script>
+
 <script>
     var json = $('#recordJson').val();
     var recordList = JSON.parse(json);
+    var classId;
     if(recordList!=null && recordList.length!=0) {
         var className = recordList[0].researchClass.className;
         $('#className').append(className);
+        classId = recordList[0].researchClass.classId;
+
+        var fieldList = recordList[0].fields;
+        for(var i=0; i<fieldList.length; i++) {
+            var data = fieldList[i];
+            $('#table-title').append('<th>'+data.field.description+'</th>');
+            var columnNum = i+7;
+            $('#hidden-column').append('<-> <a data-column="'+columnNum+'" href="javascript:void(0)" onclick="hiddenColumn(this)"> '+data.field.description+'</a> ');
+        }
     }
 
     //添加科研记录
@@ -138,12 +194,23 @@
             r.returnReason = '';
         }
 
-        $('#record').append('<tr><td>'+i+'</td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td><td><a href="'+detailURL+'">查看详细</a></td></tr>');
+        var innerHtmlCode = '<tr><td>'+i+'</td><td><a href="'+detailURL+'">查看详细</a></td><td>'+r.id+'</td><td>'+r.statusDes+'</td><td>'+r.submitTimeString+'</td><td>'+submitUserName+'</td><td>'+approveUserName+'</td>';
 
+        var dataList = r.fields;
+        for(var j=0; j<dataList.length; j++) {
+            var data = dataList[j];
+            var value = data.value;
+            if(typeof(value) == "undefined") {
+                value = '';
+            }
+            innerHtmlCode += '<td>'+value+'</td>';
+        }
+        innerHtmlCode += '</tr>';
+        $('#record').append(innerHtmlCode);
     }
 
     //加载dataTables
-    $('#dataTables-record-list').DataTable({
+    var table = $('#dataTables-record-list').DataTable({
         "language": {       //配置dataTables的提示信息为中文
             "sProcessing":   "处理中...",
             "sLengthMenu":   "显示 _MENU_ 项结果",
@@ -168,10 +235,76 @@
                 "sSortDescending": ": 以降序排列此列"
             }
         },
-        "responsive": true
+        "responsive": true,
+        "sScrollX": "100%",
+        "sScrollXInner": "110%",
+        "bScrollCollapse": true
+    });
+
+    $.ajax({       //后台获取统计状态的数据
+        url: "pubrecord/statistics/status/"+classId+".do",
+        type: "get",
+        dataType:"json",
+        contentType: "application/json; charset=utf-8",
+        success:function(data){
+            //画饼图
+            var plotObj = $.plot($("#flot-pie-chart"), data, {
+                series: {
+                    pie: {
+                        show: true
+                    }
+                },
+                grid: {
+                    hoverable: true
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                }
+            });
+        },
+        error:function() {
+        }
     });
 
     window.parent.iFrameHeight();   //iframe自适应高度，最后执行
+
+    //隐藏相应的列
+    $('#hidden-column a').on('click', function (e) {
+        e.preventDefault();
+
+        // Get the column API object
+        var column = table.column( $(this).attr('data-column') );
+        if(column.visible()) {
+            $(this).attr("style", "color:red; font-weight:bold; font-style:italic;");
+        }else {
+            $(this).removeAttr("style");
+        }
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+
+
+//    var data = [{
+//        label: "Series 0",
+//        data: 1
+//    }, {
+//        label: "Series 1",
+//        data: 3
+//    }, {
+//        label: "Series 2",
+//        data: 9
+//    }, {
+//        label: "Series 3",
+//        data: 20
+//    }];
+
+
 </script>
 </body>
 </html>

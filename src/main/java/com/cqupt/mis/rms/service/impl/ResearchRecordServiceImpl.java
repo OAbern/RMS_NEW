@@ -206,6 +206,47 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		return researchRecordDao.refuse(record, approvedUserId);
 	}
 
+	public List<Object> statisticsStauts(int classId) {
+		List<ResearchRecord> recordList = researchRecordDao.findListByClassId(classId);
+		int status_0=0, status_1=0, status_2=0, status_3=0;
+		for(ResearchRecord record : recordList) {
+			int status = record.getStatus();
+			if(status == 0) {
+				status_0++;
+			}else if(status == 1){
+				status_1++;
+			}else if(status == 2){
+				status_2++;
+			}else if(status == 3){
+				status_3++;
+			}
+		}
+
+		//拼装前台所需的数据
+		List<Object> result = new ArrayList<Object>();
+		Map<String, Object> map0 = new HashMap<String, Object>();
+		map0.put("label", ResearchConstant.STATUS_0);
+		map0.put("data", status_0);
+
+		Map<String, Object> map1 = new HashMap<String, Object>();
+		map1.put("label", ResearchConstant.STATUS_1);
+		map1.put("data", status_1);
+
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("label", ResearchConstant.STATUS_2);
+		map2.put("data", status_2);
+
+		Map<String, Object> map3 = new HashMap<String, Object>();
+		map3.put("label", ResearchConstant.STATUS_3);
+		map3.put("data", status_3);
+
+		result.add(map0);
+		result.add(map1);
+		result.add(map2);
+		result.add(map3);
+		return result;
+	}
+
 	public List<ResearchRecord> findListByUserAndClass(String userId, int classId) {
 		//获取符合条件的科研记录
 		List<ResearchRecord> records = researchRecordDao.findListByUserAndClass(userId, classId);
@@ -220,7 +261,13 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		//TODO 权限验证
 		return researchRecordDao.findListByClassForApprove(classId);
 	}
-	
+
+	public List<ResearchRecord> findListByClassForStatistics(int classId) {
+		//TODO 权限验证
+		List<ResearchRecord> recordList = researchRecordDao.findListByClassForStatistics(classId);
+		return findListByRecords(recordList);
+	}
+
 	/**
 	 * 获取一组科研记录的完整信息（包括数据信息，旁证材料，科研记录相关人）
 	 * @param records

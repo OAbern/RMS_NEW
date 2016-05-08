@@ -52,5 +52,18 @@ public interface ResearchRecordDao extends BaseDao<ResearchRecord, String> {
 	 * @return 符合条件的数据
 	 */
 	public List<ResearchRecord> findListByClassForApprove(@Param("cId")int classId);
-	
+
+	/**
+	 * 查找指定类别下的所有审核完成记录
+	 * @param classId 指定类别
+	 * @return 符合条件的数据
+	 */
+	public List<ResearchRecord> findListByClassForStatistics(@Param("cId")int classId);
+
+	/**
+	 * 查找指定类别下的所有记录
+	 * @param classId 指定类别
+	 * @return 符合条件的数据
+	 */
+	public List<ResearchRecord> findListByClassId(@Param("cId")int classId);
 }

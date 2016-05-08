@@ -30,4 +30,9 @@ public class RequestConstant {
      * 获取
      */
     public static final String ROLE = "role";
+
+    /**
+     * 状态值
+     */
+    public static final String STATUS = "status";
 }

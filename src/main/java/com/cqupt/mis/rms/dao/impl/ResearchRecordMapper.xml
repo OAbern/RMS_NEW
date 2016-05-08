@@ -3,16 +3,12 @@
 <mapper namespace="com.cqupt.mis.rms.dao.ResearchRecordDao" >
 
 	<!-- 科研记录简单结果映射 -->
-	<resultMap id="SimpleResearchRecord" type="com.cqupt.mis.rms.vo.ResearchRecordVO" >
-		<id column="record_id" property="recordId" jdbcType="VARCHAR" />
-		<result column="class_id" property="classId" jdbcType="INTEGER" />
+	<resultMap id="SimpleResearchRecord" type="com.cqupt.mis.rms.model.ResearchRecord" >
+		<id column="record_id" property="id" jdbcType="VARCHAR" />
+
 		<result column="return_reason" property="returnReason" jdbcType="VARCHAR" />
 		<result column="status" property="status" jdbcType="INTEGER" />
-		
-		<result column="submit_user_id" property="submitUserId" jdbcType="VARCHAR" />
-		<result column="approved_user_id" property="approvedUserId" jdbcType="VARCHAR" />
 		<result column="submit_time" property="submitTime" jdbcType="TIMESTAMP" />
-
 	</resultMap>
 	
 	<!-- 科研记录的结果映射 -->
@@ -105,14 +101,32 @@
 		WHERE r.`class_id` = #{cId, jdbcType=INTEGER} AND `status` = 1
 	</select>
 
+	<!-- 查找指定类别下的所有审核完成记录 -->
+	<select id="findListByClassForStatistics" resultMap="ResearchRecord">
+		SELECT u1.`user_id` AS `u1_id`, u1.`user_name` AS `u1_name`, u2.`user_id` AS `u2_id`, u2.`user_name` AS `u2_name`,
+		<include refid="ColumnList" />,
+		c.`class_id`, `class_name`, `class_des`, `class_remark`, `is_delete`, `order`, `submittime`
+		FROM `research_record` r
+		LEFT JOIN `research_class` c ON r.`class_id` = c.`class_id`
+		LEFT JOIN `cqupt_user` u1 ON r.`submit_user_id` = u1.`user_id`
+		LEFT JOIN `cqupt_user` u2 ON r.`approved_user_id` = u2.`user_id`
+		WHERE r.`class_id` = #{cId, jdbcType=INTEGER} AND `status` = 2
+	</select>
+
 	<!-- 更新记录状态 -->
 	<update id="modifyStatus">
 		UPDATE `research_record`
 		SET status = #{status, jdbcType=INTEGER}
 		WHERE record_id = #{rId, jdbcType=VARCHAR}
 	</update>
-	
-	
+
+	<!-- 查找所有记录 -->
+	<select id="findListByClassId" resultMap="SimpleResearchRecord">
+		SELECT
+		<include refid="ColumnList" />
+		FROM `research_record` r
+		WHERE r.`class_id` = #{cId, jdbcType=INTEGER}
+	</select>
 	
 	
 	

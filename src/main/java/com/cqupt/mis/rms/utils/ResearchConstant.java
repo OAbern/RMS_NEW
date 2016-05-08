@@ -34,7 +34,7 @@ public class ResearchConstant {
 	/**
 	 * 查询统计科研信息的url
 	 */
-	public static final String STATISTICS_URL = "pages/record/statisticsrecord.html";
+	public static final String STATISTICS_URL = "../../pubrecord/statistics/";
 
 	/**
 	 * 科研字段数据库表名
@@ -50,6 +50,11 @@ public class ResearchConstant {
 	 * 访问尾缀
 	 */
 	public static final String SUFFIX = ".do";
+
+	public static final String STATUS_0 = "保存";
+	public static final String STATUS_1 = "待审批";
+	public static final String STATUS_2 = "审批通过";
+	public static final String STATUS_3 = "审批拒绝";
 
 	/**
 	 * 旁证材料存储的根路径
@@ -113,7 +118,7 @@ public class ResearchConstant {
 	 * @return url
 	 */
 	public static String getStatisticsUrl(int classId) {
-		return STATISTICS_URL + PARAM1 + classId;
+		return STATISTICS_URL + classId + SUFFIX;
 	}
 	
 	/**
