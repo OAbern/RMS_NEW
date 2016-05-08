@@ -29,19 +29,21 @@
 		(#{roleId,jdbcType=INTEGER},#{item,jdbcType=INTEGER})
 		</foreach>
 	</insert>
-	
+
+	<!--根据角色ID查找静态资源权限-->
 	<select id="findByRoleId" resultMap="SimpleRolePurview">
 		SELECT <include refid="Base_Column_List"/>
 		FROM `role_purview_fixed`
 		WHERE `roleId` = #{roleId, jdbcType=INTEGER}
 	</select>
 
+	<!--根绝角色ID和资源ID列表 删除静态资源权限-->
 	<delete id="deleteRolePurview">
 		DELETE FROM role_purview_fixed
 		WHERE `roleId` = #{roleId, jdbcType=INTEGER}
 			AND `purviewId` IN (
 				<foreach collection="resourceIdArr" item="item" index="index"  separator="," >
-					#{item,jdbcType=INTEGER})
+					#{item,jdbcType=INTEGER}
 				</foreach>
 			)
 	</delete>

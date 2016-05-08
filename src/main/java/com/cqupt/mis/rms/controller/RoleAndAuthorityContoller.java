@@ -131,11 +131,15 @@ public class RoleAndAuthorityContoller {
         }
     }
 
+    /**
+     * 改变某个角色的权限信息
+     * @param changedAuthJson 改变权限的json
+     * @return 定向到结果页面
+     */
     @RequestMapping(value="/grant", method=RequestMethod.POST)
     public ModelAndView grant(@RequestParam("json")String changedAuthJson) {
         JSONObject jsonObject = JSONUtils.parseObject(changedAuthJson);
-
-
-        return null;
+        ResultInfo<Object> result = grantServiceImpl.grant(jsonObject);
+        return new ModelAndView("result.jsp", RequestConstant.RESULT, result);
     }
 }

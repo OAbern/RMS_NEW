@@ -255,7 +255,7 @@
             var cRes = pRes.cIds[i];
             dNodes.push({id:cRes.id, pId:pId, name:cRes.name});
             var dAuth = dAuthMap[cRes.id+''];
-            var id = pId + '' + cRes.id;
+            var id = pId + '-' + cRes.id;
             if(typeof(dAuth) == "undefined") {      //未经授权
                 dNodes.push({id:id, pId:cRes.id, name:'录入'});
                 dNodes.push({id:id, pId:cRes.id, name:'管理个人'});
@@ -375,17 +375,30 @@
 
         var dAddStr = '';
         var dDelStr = '';
-        var changedDyn = [];    //变更的动态权限，形如[{id:1, input:1, manage:1, approve:0, statistics:0}]
+        var changedDyn = [];    //变更的动态权限，形如[{classId:1, input:1, manage:1, approve:0, statistics:0}]
         //动态权限改变解析
         for(var i=0; i<dChangedNodes.length; i++) {     //for1
-            var n = dChangedNodes[i];
-            var pName = n.name;
+            var node = dChangedNodes[i];
 
-            if(n.level == 1) {
-                var obj = {id:n.id};
+            if(node.level == 2) {      //只检测叶子节点的状态改变
+                var pId = node.pId;
+                var pNode = $.fn.zTree.getZTreeObj("DTree").getNodeByParam("id", pId, null);       //根据pId查找父节点
+                var pName = pNode.name;
+                var duplicateFlag = false;
+                for(var j=0; j<changedDyn.length; j++) {        //重复检测，避免重复添加
+                    if(changedDyn[j].classId == pId) {
+                        duplicateFlag = true;
+                        break;      //终止重复检测的循环
+                    }
+                }
+
+                if(duplicateFlag)       //该叶子节点的父节点代表的权限已被添加，跳过这个叶子节点的检测
+                        continue;
+
+                var obj = {classId:pId};
                 changedDyn.push(obj);
-                for(var j=0; j<n.children.length; j++) {        //for2
-                    var c = n.children[j];
+                for(var j=0; j<pNode.children.length; j++) {        //for2
+                    var c = pNode.children[j];
                     var flag = c.checked == c.checkedOld;     //flag为true表示没有修改，否则为修改
                     var val = c.checked ? 1 : 0;
                     if(c.name == "录入") {

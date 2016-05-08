@@ -8,17 +8,12 @@ import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cqupt.mis.rms.dao.ResearchClassDao;
-import com.cqupt.mis.rms.dao.ResourceInfoDao;
-import com.cqupt.mis.rms.model.ResearchClass;
-import com.cqupt.mis.rms.model.ResourceInfo;
-import com.cqupt.mis.rms.model.RolePurview;
+import com.cqupt.mis.rms.dao.*;
+import com.cqupt.mis.rms.model.*;
+import com.cqupt.mis.rms.utils.JSONUtils;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
-import com.cqupt.mis.rms.dao.RolePurviewDao;
-import com.cqupt.mis.rms.dao.RolePurviewDynDao;
-import com.cqupt.mis.rms.model.RolePurviewDyn;
 import com.cqupt.mis.rms.service.GrantService;
 
 @Service("grantService")
@@ -36,12 +31,8 @@ public class GrantServiceImpl implements GrantService {
 	@Resource
 	private ResearchClassDao researchClassDao;
 
-	public boolean grant(int roleId, int[] resourceIdArr,List<RolePurviewDyn> rolePurviewDyns) {
-		if(grantFixed(roleId, resourceIdArr)&&grantDyn(rolePurviewDyns))
-			return true;
-		
-		return false;
-	}
+	@Resource
+	private CQUPTRoleDao cquptRoleDao;
 
 	public boolean grantFixed(int roleId, int[] resourceIdArr) {
 		return rolePurviewDao.addRolePurview(roleId, resourceIdArr);
@@ -67,19 +58,37 @@ public class GrantServiceImpl implements GrantService {
 	}
 
 	public ResultInfo<Object> grant(JSONObject map) {
+		//TODO:事务
 		int roleId = (Integer) map.get(ROLEID);
+		//检查角色是否存在
+		CQUPTRole role = cquptRoleDao.selectByPrimaryKey(roleId);
+		if(role == null) {
+			return new ResultInfo<Object>(false, "您正在为一个不存在的角色分配权限");
+		}
+
 		JSONArray addFixedAuth = (JSONArray) map.get(ADD_FIXED_AUTH);
 		JSONArray delFixedAuth = (JSONArray) map.get(DEL_FIXED_AUTH);
 		JSONArray changedDynAuth = (JSONArray) map.get(CHANGED_DYN_AUTH);
 
-		int[] addFixedAuthArray = toArray(addFixedAuth);
-		int[] delFixedAuthArray = toArray(delFixedAuth);
-		rolePurviewDao.addRolePurview(roleId, addFixedAuthArray);		//增加静态权限
-		rolePurviewDao.deleteRolePurview(roleId, delFixedAuthArray);		//删除静态权限
+		int[] addFixedAuthArray = JSONUtils.toArray(addFixedAuth);
+		int[] delFixedAuthArray = JSONUtils.toArray(delFixedAuth);
+
+		boolean result;
+		if(addFixedAuthArray!=null && addFixedAuthArray.length!=0) {
+			result = rolePurviewDao.addRolePurview(roleId, addFixedAuthArray);		//增加静态权限
+			if(!result)
+				return new ResultInfo<Object>(false, "增加静态权限失败！请稍后重试，或者联系管理员解决！");
+		}
+
+		if(delFixedAuthArray!=null && delFixedAuthArray.length!=0) {
+			result = rolePurviewDao.deleteRolePurview(roleId, delFixedAuthArray);		//删除静态权限
+			if(!result)
+				return new ResultInfo<Object>(false, "删除静态权限失败！请稍后重试，或者联系管理员解决！");
+		}
 
 		for (Object aChangedDynAuth : changedDynAuth) {
 			JSONObject obj = (JSONObject) aChangedDynAuth;
-			int classsId = (Integer) obj.get("classId");
+			int classsId = (Integer) obj.get(CLASSID);
 			RolePurviewDyn rolePurviewDyn = rolePurviewDynDao.findSimpleByRoleIdAndClassId(roleId, classsId);
 			if (rolePurviewDyn == null) {
 				rolePurviewDynDao.addOne(roleId, obj);
@@ -88,27 +97,10 @@ public class GrantServiceImpl implements GrantService {
 			}
 		}
 
-		return null;
+		return new ResultInfo<Object>(null, true);
 	}
 
-	/**
-	 *
-	 * @param array
-	 * @return
-     */
-	private int[] toArray(JSONArray array) {
-		int[] result = new int[array.size()];
-		for(int i=0; i<array.size(); i++) {
-			try {
-				Integer num = (Integer) array.get(i);
-				result[i] = num;
-			}catch (ClassCastException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-		return  result;
-	}
+
 
 	/**
 	 * 静态资源的名称
@@ -118,7 +110,7 @@ public class GrantServiceImpl implements GrantService {
 	/**
 	 * 动态资源的名称
 	 */
-	private final String DYNAMIC_RES = "dynamimapcRes";
+	private final String DYNAMIC_RES = "dynamicRes";
 
 	/**
 	 * 静态资源的权限
@@ -136,9 +128,14 @@ public class GrantServiceImpl implements GrantService {
 	private final String ROLEID = "roleId";
 
 	/**
+	 * 类别Id参数名
+	 */
+	private final String CLASSID = "classId";
+
+	/**
 	 * 待添加的静态权限参数名
 	 */
-	private final String ADD_FIXED_AUTH = "AddfixedAuth";
+	private final String ADD_FIXED_AUTH = "addfixedAuth";
 
 	/**
 	 * 待删除的静态权限参数名

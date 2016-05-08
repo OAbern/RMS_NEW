@@ -1,19 +1,14 @@
 package com.cqupt.mis.rms.utils;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sdicons.json.mapper.JSONMapper;
-import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.parser.JSONParser;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 
 /**
  * 解析json格式的工具类
@@ -22,38 +17,6 @@ import com.sdicons.json.parser.JSONParser;
  * 
  */
 public class JSONUtils {
-	
-	/**
-	 * 从json格式转换成一个相应的类
-	 * @param jsonStr json字符串
-	 * @param cla 要转换的对象类型
-	 * @return	相应的对象
-	 */
-	public static Object json2Obj(String jsonStr, Class<?> cla) {
-		Object obj = null;
-		try {
-			JSONParser parser = new JSONParser(new StringReader(jsonStr));
-			JSONValue jsonValue = parser.nextValue();
-			if (jsonValue instanceof com.sdicons.json.model.JSONArray) {
-				List<Object> list = new ArrayList<Object>();
-				JSONArray jsonArray = (JSONArray) jsonValue;
-				for (int i = 0; i < jsonArray.size(); i++) {
-					JSONValue jsonObj = jsonArray.get(i);
-					Object javaObj = JSONMapper.toJava(jsonObj, cla);
-					list.add(javaObj);
-				}
-				obj = list;
-			} else if (jsonValue instanceof com.sdicons.json.model.JSONObject) {
-				obj = JSONMapper.toJava(jsonValue, cla);
-			} else {
-				obj = jsonValue;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return obj;
-		}
-		return obj;
-	}
 
 	/**
 	 * 将对象转化成json，并用response输出
@@ -63,11 +26,9 @@ public class JSONUtils {
 	 */
 	public static void toJSON(Object o, HttpServletResponse response) {
 		try {
-			String str = JSONMapper.toJSON(o).render(false);
+			String str = JSON.toJSONString(o, SerializerFeature.DisableCircularReferenceDetect);	//关掉循环引用检测
 			response.addHeader("Content-Type", "application/json; charset=utf-8");
 			response.getWriter().write(str);
-		} catch (MapperException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally{
@@ -86,11 +47,11 @@ public class JSONUtils {
 	 */
 	public static String toJSONString(Object o) {
 		try {
-			return JSONMapper.toJSON(o).render(true);
-		} catch (MapperException e) {
+			return JSON.toJSONString(o, SerializerFeature.DisableCircularReferenceDetect);	//关掉循环引用检测
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -101,6 +62,28 @@ public class JSONUtils {
 	 */
 	public static JSONObject parseObject(String text) {
 		return JSON.parseObject(text);
+	}
+
+	/**
+	 * 转换为int数组
+	 * @param array @see JSONArray
+	 * @return 如果类型转换异常，则返回null
+	 */
+	public static int[] toArray(JSONArray array) {
+		if(array==null || array.size()==0)
+			return null;
+
+		int[] result = new int[array.size()];
+		for(int i=0; i<array.size(); i++) {
+			try {
+				Integer num = (Integer) array.get(i);
+				result[i] = num;
+			}catch (ClassCastException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return  result;
 	}
 
 }

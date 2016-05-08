@@ -15,23 +15,17 @@ import com.cqupt.mis.rms.vo.ResultInfo;
 public interface GrantService {
 
 	/**
-	 * 通过roleId为该角色授所有权限
-	 * @param roleId
-	 * @param resourceIdArr
-	 * @param rolePurviewDyns
-	 */
-	public boolean grant(int roleId,int resourceIdArr[],List<RolePurviewDyn> rolePurviewDyns);
-
-	/**
 	 * 通过roleId为该角色授静态资源权限
-	 * @param roleId
-	 * @param resourceIdArr
+	 * @param roleId 角色id
+	 * @param resourceIdArr 静态资源id数组
+	 * @return 操作结果
 	 */
 	public boolean grantFixed(int roleId,int resourceIdArr[]);
 
 	/**
 	 * 通过roleId为该角色授动态资源权限
-	 * @param rolePurviewDyns
+	 * @param rolePurviewDyns 动态资源权限列表
+	 * @return 操作结果
 	 */
 	public boolean grantDyn(List<RolePurviewDyn> rolePurviewDyns);
 
@@ -44,7 +38,7 @@ public interface GrantService {
 
 	/**
 	 * 进行授权操作
-	 * @param map json转换的map
+	 * @param map @see JSONObject <p>json字符串转换的JSONObject（内含HashMap）</p>
 	 * @return 操作结果
      */
 	public ResultInfo<Object> grant(JSONObject map);

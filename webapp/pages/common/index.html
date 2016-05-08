@@ -188,7 +188,7 @@
             var first = menu[i].first;
             var second = menu[i].second;
 
-            if(second.length == 0)  //如果二级菜单没有，直接跳过
+            if(typeof(second)=="undefined" || second.length==0)  //如果二级菜单没有，直接跳过
                 continue;
 
             //添加一级菜单
