@@ -51,8 +51,9 @@
                 <p class="text-info">删除的动态资源权限有：<label id="dDel"></label></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">再改改</button>
                 <form action="roleandauth/grant.do" method="post">
+                <button type="button" class="btn btn-default" data-dismiss="modal">再改改</button>
+
                     <input name="json" id="changedAuthJson" type="hidden" required>
                     <button class="btn btn-danger" type="submit">确定修改</button>
                 </form>
@@ -71,9 +72,9 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="panel panel-danger">
+        <div class="panel panel-red">
             <div class="panel-heading">
-                备注
+                '系统管理员功能'中'角色权限管理'是系统中的最高权限，如果勾选，则视为这个角色拥有最高权限！慎待之！
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -86,7 +87,7 @@
                 </div>
 
                 <div style="clear: both"></div>
-                <div class="panel panel-green" style="float: left; width: 45%; margin-right: 10%;">
+                <div class="panel panel-yellow" style="float: left; width: 45%; margin-right: 10%;">
                     <div class="panel-heading">
                         静态资源
                     </div>

@@ -25,6 +25,13 @@
   <sql id="Base_Column_List" >
     user_id, user_pw
   </sql>
+
+    <!--修改用户密码-->
+    <update id="modifyPW">
+      update `user_login`
+      set `user_pw` = #{pw,jdbcType=VARCHAR}
+      where `user_id` = #{userId,jdbcType=VARCHAR}
+    </update>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

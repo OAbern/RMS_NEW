@@ -9,24 +9,25 @@
     <meta name="author" content="">
 
     <title>角色权限管理</title>
-
     <!-- Bootstrap Core CSS -->
     <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
-
     <!-- DataTables CSS -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.css" rel="stylesheet">
-
     <!-- DataTables Responsive CSS -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-responsive/responsive.dataTables.scss" rel="stylesheet">
-
     <!-- Bern Custom CSS -->
     <link href="../../css/ifram-common.css" rel="stylesheet">
+    <style type="text/css">
+        .panel-red a {
+            color: yellowgreen;
+        }
+
+    </style>
+
 </head>
 <body>
 <!-- 新增角色的 Modal -->
@@ -128,11 +129,11 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    <div class="panel panel-yellow">
+    <div class="panel panel-red">
         <div class="panel-heading">
-            <h5 style="float: left">Yellow Panel</h5>
+            <h5 style="float: left">点击进行相应的操作</h5>
             <div style="text-align: right">
-                <button type="button" id="addPerson" class="btn btn-primary btn-sm" style="align-items: right;" onclick="$('#addRole').modal();">新增角色</button>
+                <button type="button" id="addPerson" class="btn btn-success btn-sm" style="align-items: right;" onclick="$('#addRole').modal();">新增角色</button>
             </div>
         </div>
 

@@ -68,9 +68,11 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		if(!CollectionUtils.isEmpty(proofFiles)) {		//仅当旁证材料非空时进行插入，否则略过
 			//存储文件
 			List<Proof> proofList = parseAndStoreProofs(proofFiles);
-			result = proofDao.addList(proofList, record.getId());
-			if(!result)
-				return new ResultInfo<Object>(false, "添加旁证材料失败！");
+			if(!CollectionUtils.isEmpty(proofList)) {
+				result = proofDao.addList(proofList, record.getId());
+				if(!result)
+					return new ResultInfo<Object>(false, "添加旁证材料失败！");
+			}
 		}
 		
 		return new ResultInfo<Object>(null, true);
@@ -91,7 +93,7 @@ public class ResearchRecordServiceImpl implements ResearchRecordService {
 		List<Proof> proofList = new ArrayList<Proof>();
 		for(FileItem fileItem : proofFiles) {
 			String originalName = fileItem.getName();
-			if(originalName==null || "".equals(originalName))
+			if(originalName==null || "".equals(originalName))		//表示这个文件域没有上传文件
 				continue;
 
 			String genName = GenerateUtils.generateFileName(originalName);

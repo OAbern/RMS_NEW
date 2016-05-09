@@ -20,6 +20,12 @@ public interface UserLoginDao extends BaseDao<UserLogin, String>{
 	 * @return
 	 */
 	public UserLogin findUNameAndUPass(@Param("userId")String userId,@Param("userPwd") String userPwd);
-	
-	
+
+	/**
+	 * 修改用户密码
+	 * @param userId 用户id
+	 * @param userPwd 用户密码
+     * @return 操作结果
+     */
+	public boolean modifyPW(@Param("userId")String userId,@Param("pw") String userPwd);
 }

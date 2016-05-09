@@ -8,6 +8,7 @@ import com.cqupt.mis.rms.model.CQUPTRole;
 import com.cqupt.mis.rms.model.CQUPTUser;
 import com.cqupt.mis.rms.model.UserLogin;
 import com.cqupt.mis.rms.model.UserAndRole;
+import com.cqupt.mis.rms.vo.ResultInfo;
 
 /**
  * <p>Title:管理用户信息的服务层接口</p>
@@ -73,4 +74,13 @@ public interface UserManagerService {
 	 * @param RoleIdArr 需要添加的角色集合
 	 * */
 	public boolean addUserRoleInfo(String userID,int[] RoleIdArr);
+
+	/**
+	 * 修改密码
+	 * @param userId 用户id
+	 * @param oldPW 旧密码
+	 * @param newPW 新密码
+     * @return 操作结果
+     */
+	public ResultInfo<Object> modifyPW(String userId, String oldPW, String newPW);
 }

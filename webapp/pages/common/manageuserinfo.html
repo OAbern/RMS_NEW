@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>修改个人信息</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet">
+    <!-- datetimepicker CSS -->
+    <link href="../../css/bootstrap-3.3.5/ex/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- Bern Custom CSS -->
+    <link href="../../css/ifram-common.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">管理个人基本信息</h2>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <form action="modifyUserInfo.action" method="post">
+                    <div class="line-25-per">
+                        <label>姓名</label>
+                        <input class="form-control" id="userName" name="cquptUser.userName" required>
+                        <p class="help-block" id="tips1">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>所在学院</label>
+                        <input class="form-control" id="college" name="cquptUser.userName" required>
+                        <p class="help-block" id="tips2">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>部门</label>
+                        <input class="form-control" id="department" name="cquptUser.department" required>
+                        <p class="help-block" id="tips3">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>性别</label>
+                        <input class="form-control" id="gender" name="cquptUser.gender" required>
+                        <p class="help-block" id="tips4">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>籍贯</label>
+                        <input class="form-control" id="origin" name="cquptUser.origin" required>
+                        <p class="help-block" id="tips5">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>民族</label>
+                        <input class="form-control" id="nationality" name="cquptUser.nationality" required>
+                        <p class="help-block" id="tips6">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>出生日期</label>
+                        <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" id="birthday" name="cquptUser.birthday" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <p class="help-block" id="tips7">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>政治面貌</label>
+                        <input class="form-control" id="politicalStatus" name="cquptUser.politicalStatus" required>
+                        <p class="help-block" id="tips8">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>参加党派时间</label>
+                        <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" id="timeJoinParty" name="cquptUser.timeJoinParty" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <p class="help-block" id="tips9">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>进入重邮时间</label>
+                        <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" id="timeBeginCqupt" name="cquptUser.timeBeginCqupt" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <p class="help-block" id="tips10">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>参加工作时间</label>
+                        <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" id="timeBeginWork" name="cquptUser.timeBeginWork" required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <p class="help-block" id="tips11">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>第一学位</label>
+                        <input class="form-control" id="firstDegree" name="cquptUser.firstDegree" required>
+                        <p class="help-block" id="tips12">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>第一学位专业名称</label>
+                        <input class="form-control" id="firstProfessionalName" name="cquptUser.firstProfessionalName" required>
+                        <p class="help-block" id="tips13">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>第一学位毕业学校</label>
+                        <input class="form-control" id="firstGraduateSchool" name="cquptUser.firstGraduateSchool" required>
+                        <p class="help-block" id="tips14">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>最后学位</label>
+                        <input class="form-control" id="lastDegree" name="cquptUser.lastDegree" required>
+                        <p class="help-block" id="tips15">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>最后学位专业名称</label>
+                        <input class="form-control" id="lastProfessionalName" name="cquptUser.lastProfessionalName" required>
+                        <p class="help-block" id="tips16">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>最后学位毕业学校</label>
+                        <input class="form-control" id="lastGraduateSchool" name="cquptUser.lastGraduateSchool" required>
+                        <p class="help-block" id="tips17">提示</p>
+                    </div>
+
+                    <div class="line-25-per">
+                        <label>最后学历</label>
+                        <input class="form-control" id="lastAcademic" name="cquptUser.lastAcademic" required>
+                        <p class="help-block" id="tips18">提示</p>
+                    </div>
+
+                    <div class="row line-25-per-center tooltip-button">
+                        <button type="submit" class="btn btn-circle btn-lg btn-danger" data-toggle="tooltip" data-placement="left" title="修改">改</button>
+                        <button type="reset" class="btn btn-circle btn-lg btn-info" data-toggle="tooltip" data-placement="right" title="重置">置</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-6 -->
+</div>
+<!-- /.row -->
+
+<!-- jQuery -->
+<script src="../../js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="../../js/bootstrap-3.3.5/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
+<!-- datetimepicker JavaScript -->
+<script src="../../js/bootstrap-3.3.5/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/bootstrap-3.3.5/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script>
+    /**
+     * 按钮提示
+     */
+    $('.tooltip-button').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
+
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    $.ajax() {
+
+    }
+
+</script>
+</body>
+</html>

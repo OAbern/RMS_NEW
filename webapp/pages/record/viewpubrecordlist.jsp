@@ -51,13 +51,13 @@
 
 <div class="row">
     <div class="col-lg-6">
-        <div class="panel panel-default">
+        <div class="panel panel-red">
             <div class="panel-heading">
                 点击查看详细
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow-x: hidden;">
                     <table class="table table-striped table-bordered table-hover" id="dataTables-record-list">
                         <thead>
                         <tr>

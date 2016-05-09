@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
 import com.cqupt.mis.rms.dao.CQUPTRoleDao;
@@ -35,7 +36,6 @@ public class UserManagerServiceImpl implements UserManagerService {
 	}
 
 	public boolean findUNameAndUPass(String userId, String userpwd) {
-		
 		userpwd = EncryptUtils.setUPassEncrypt(userpwd);
 		UserLogin userLogin = userLoginDao.findUNameAndUPass(userId, userpwd);
 		if(userLogin != null)
@@ -45,10 +45,24 @@ public class UserManagerServiceImpl implements UserManagerService {
 	}
 
 	public CQUPTRole findRoleLevel(String userId,int roleLevelId) {
-		
 		CQUPTRole cquptRole = cquptRoleDao.findRoleLevel(userId, roleLevelId);
-		
 		return cquptRole;
+	}
+
+	public ResultInfo<Object> modifyPW(String userId, String oldPW, String newPW) {
+		oldPW = EncryptUtils.setUPassEncrypt(oldPW);
+		newPW = EncryptUtils.setUPassEncrypt(newPW);
+		UserLogin userLogin = userLoginDao.findUNameAndUPass(userId, oldPW);
+		if(userLogin == null) {
+			return new ResultInfo<Object>(false, "用户的原始密码不正确！");
+		}
+
+		boolean result = userLoginDao.modifyPW(userId, newPW);
+		if(result) {
+			return new ResultInfo<Object>(null, true);
+		}else {
+			return new ResultInfo<Object>(false, "修改密码失败！请稍后再试，或者联系管理员解决！");
+		}
 	}
 
 	public boolean readUserBasicInfoExceltoDB(File excelfile) {
@@ -81,7 +95,4 @@ public class UserManagerServiceImpl implements UserManagerService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
-
 }

@@ -49,87 +49,96 @@
 </div>
 <!-- /.row -->
 
-<div class="row">
-    <div class="col-lg-6">
-        <div class="panel panel-default">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#table-panel" data-toggle="tab">记录数据</a>
+    </li>
+    <li><a href="#flot-panel" data-toggle="tab">状态统计</a>
+    </li>
+</ul>
+<br>
+<div class="tab-content">
+    <div class="row tab-pane fade in active" id="table-panel">
+        <div class="col-lg-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    点击查看详细
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="alert alert-info" id="hidden-column">
+                        点击相应的字段名你可以 <b>隐藏/显示</b> 相应的列:<br><br>
+                        <a data-column="0" href="javascript:void(0)" onclick="hiddenColumn(this)">No.</a>
+                        <->
+                        <a data-column="1" href="javascript:void(0)" onclick="hiddenColumn(this)">操作</a>
+                        <->
+                        <a data-column="2" href="javascript:void(0)" onclick="hiddenColumn(this)">记录id</a>
+                        <->
+                        <a data-column="3" href="javascript:void(0)" onclick="hiddenColumn(this)">记录状态</a>
+                        <->
+                        <a data-column="4" href="javascript:void(0)" onclick="hiddenColumn(this)">提交时间</a>
+                        <->
+                        <a data-column="5" href="javascript:void(0)" onclick="hiddenColumn(this)">提交人</a>
+                        <->
+                        <a data-column="6" href="javascript:void(0)" onclick="hiddenColumn(this)">审批人</a>
+                    </div>
+                    <div class="table-responsive" style="overflow-x: hidden;">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-record-list">
+                            <thead>
+                            <tr id="table-title">
+                                <th>No.</th>
+                                <th>操作</th>
+                                <th>记录id</th>
+                                <th>记录状态</th>
+                                <th>提交时间</th>
+                                <th>提交人</th>
+                                <th>审批人</th>
+                            </tr>
+                            </thead>
+                            <tbody id="record">
+                            <!--
+                            <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                                <td>@mdo</td>
+                            </tr>
+                            -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+    </div>
+    <!-- /#table-panel -->
+
+    <div class="row col-lg-6 tab-pane fade" id="flot-panel">
+        <div class="panel panel-primary">
             <div class="panel-heading">
-                点击查看详细
+                系统中当前科研类别下记录状态统计
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <div class="alert alert-info" id="hidden-column">
-                    点击相应的字段名你可以 <b>隐藏/显示</b> 相应的列:<br><br>
-                    <a data-column="0" href="javascript:void(0)" onclick="hiddenColumn(this)">No.</a>
-                    <->
-                    <a data-column="1" href="javascript:void(0)" onclick="hiddenColumn(this)">操作</a>
-                    <->
-                    <a data-column="2" href="javascript:void(0)" onclick="hiddenColumn(this)">记录id</a>
-                    <->
-                    <a data-column="3" href="javascript:void(0)" onclick="hiddenColumn(this)">记录状态</a>
-                    <->
-                    <a data-column="4" href="javascript:void(0)" onclick="hiddenColumn(this)">提交时间</a>
-                    <->
-                    <a data-column="5" href="javascript:void(0)" onclick="hiddenColumn(this)">提交人</a>
-                    <->
-                    <a data-column="6" href="javascript:void(0)" onclick="hiddenColumn(this)">审批人</a>
-
+                <div class="flot-chart">
+                    <div class="flot-chart-content" id="flot-pie-chart" style="width:400px;height:400px;" align="center"></div>
                 </div>
-
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-record-list">
-                        <thead>
-                        <tr id="table-title">
-                            <th>No.</th>
-                            <th>操作</th>
-                            <th>记录id</th>
-                            <th>记录状态</th>
-                            <th>提交时间</th>
-                            <th>提交人</th>
-                            <th>审批人</th>
-                        </tr>
-                        </thead>
-                        <tbody id="record">
-                        <!--
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                        </tr>
-                        -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.table-responsive -->
             </div>
             <!-- /.panel-body -->
         </div>
         <!-- /.panel -->
     </div>
-    <!-- /.col-lg-6 -->
+    <!-- /.col-lg-6 #flot-panel -->
 </div>
-<!-- /.row -->
-
-<div class="col-lg-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            系统中当前科研类别下记录状态统计
-        </div>
-        <!-- /.panel-heading -->
-        <div class="panel-body">
-            <div class="flot-chart">
-                <div class="flot-chart-content" id="flot-pie-chart"></div>
-            </div>
-        </div>
-        <!-- /.panel-body -->
-    </div>
-    <!-- /.panel -->
-</div>
-<!-- /.col-lg-6 -->
+<!-- /.tab-content -->
 
 <!-- jQuery -->
 <script src="js/jquery-1.12.3/jquery-1.12.3.min.js"></script>
@@ -251,7 +260,14 @@
             var plotObj = $.plot($("#flot-pie-chart"), data, {
                 series: {
                     pie: {
-                        show: true
+                        show: true,
+                        label: {
+                            show: true,
+                            radius: 180,
+                            formatter: function (label, series) {
+                                return '<div style="border:1px solid grey;font-size:8pt;text-align:center;padding:5px;color:white;background-color:black;opacity:0.7;">' + label + ' : '+series.data[0][1]+'条</div>';      //Math.round(series.percent) + '%'百分比
+                            }
+                        }
                     }
                 },
                 grid: {
