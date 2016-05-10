@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.dao.CQUPTUserDao;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class UserManagerServiceImpl implements UserManagerService {
 	private UserLoginDao userLoginDao;
 	@Resource 
 	private CQUPTRoleDao cquptRoleDao;
+	@Resource
+	private CQUPTUserDao cquptUserDao;
 	
 	public boolean addUserLoginAndCquptUser(UserLogin uLogin, CQUPTUser cUser) {
 		// TODO Auto-generated method stub
@@ -52,16 +55,30 @@ public class UserManagerServiceImpl implements UserManagerService {
 	public ResultInfo<Object> modifyPW(String userId, String oldPW, String newPW) {
 		oldPW = EncryptUtils.setUPassEncrypt(oldPW);
 		newPW = EncryptUtils.setUPassEncrypt(newPW);
+		//校验原始密码是否正确
 		UserLogin userLogin = userLoginDao.findUNameAndUPass(userId, oldPW);
 		if(userLogin == null) {
 			return new ResultInfo<Object>(false, "用户的原始密码不正确！");
 		}
-
+		//修改密码
 		boolean result = userLoginDao.modifyPW(userId, newPW);
 		if(result) {
 			return new ResultInfo<Object>(null, true);
 		}else {
 			return new ResultInfo<Object>(false, "修改密码失败！请稍后再试，或者联系管理员解决！");
+		}
+	}
+
+	public CQUPTUser findUserById(String userId) {
+		return cquptUserDao.selectByPrimaryKey(userId);
+	}
+
+	public ResultInfo<Object> modifyUserInfo(CQUPTUser user) {
+		boolean result = cquptUserDao.modifyByPrimaryKey(user);
+		if(result) {
+			return new ResultInfo<Object>(null, true);
+		}else {
+			return new ResultInfo<Object>(false, "修改用户信息异常！");
 		}
 	}
 

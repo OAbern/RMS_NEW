@@ -11,7 +11,7 @@ import com.cqupt.mis.rms.model.CQUPTUser;
  *
  */
 @Repository
-public interface CQUPTUserDao extends BaseDao<CQUPTUser, Integer>{
+public interface CQUPTUserDao extends BaseDao<CQUPTUser, String>{
 	/**
 	 * 通过collegeID查找相关的用户
 	 * @param collegeId

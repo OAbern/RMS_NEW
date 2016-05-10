@@ -50,7 +50,7 @@ public interface UserManagerService {
 	public List<CQUPTUser> getUser();
 	/**
 	 * 得到登录用户对象
-	 * @param id用户id
+	 * @param collegeId
 	 * @return
 	 */
 	public CQUPTCollege getCQUPTCollege(String collegeId);
@@ -83,4 +83,18 @@ public interface UserManagerService {
      * @return 操作结果
      */
 	public ResultInfo<Object> modifyPW(String userId, String oldPW, String newPW);
+
+	/**
+	 * 根据id查找用户信息
+	 * @param userId 用户id
+	 * @return 查找结果
+     */
+	public CQUPTUser findUserById(String userId);
+
+	/**
+	 * 修改用户信息
+	 * @param user 用户信息
+	 * @return 操作结果
+     */
+	public ResultInfo<Object> modifyUserInfo(CQUPTUser user);
 }

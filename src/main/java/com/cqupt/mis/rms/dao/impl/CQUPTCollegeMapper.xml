@@ -9,7 +9,13 @@
   <sql id="Base_Column_List" >
     college_id, college_name
   </sql>
-  
+
+  <!-- 获取所有的学院信息 -->
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cqupt_college
+  </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -17,15 +23,7 @@
     from cqupt_college
     where college_id = #{collegeId,jdbcType=VARCHAR}
   </select>
-  
-  <select id="findAll" resultMap="BaseResultMap">
-  	select 
-    <include refid="Base_Column_List" />
-    from cqupt_college
-  </select>
-  
-  
-  
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from cqupt_college
     where college_id = #{collegeId,jdbcType=VARCHAR}
@@ -35,9 +33,7 @@
     insert into cqupt_college (college_id, college_name)
     values (#{collegeId,jdbcType=VARCHAR}, #{collegeName,jdbcType=VARCHAR})
   </insert>
-  
- 
- 
+
   <update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.CQUPTCollege" >
     update cqupt_college
     set college_name = #{collegeName,jdbcType=VARCHAR}

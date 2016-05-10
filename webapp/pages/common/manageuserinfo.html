@@ -34,63 +34,68 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <form action="modifyUserInfo.action" method="post">
+                <form action="../../user/modifyuserinfo.do" method="post">
                     <div class="line-25-per">
                         <label>姓名</label>
-                        <input class="form-control" id="userName" name="cquptUser.userName" required>
+                        <input class="form-control" id="userName" name="userName" >
                         <p class="help-block" id="tips1">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>所在学院</label>
-                        <input class="form-control" id="college" name="cquptUser.userName" required>
+                        <select class="form-control" id="college" name="cquptCollege.collegeId">
+                            <option value="">请选择</option>
+                        </select>
                         <p class="help-block" id="tips2">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>部门</label>
-                        <input class="form-control" id="department" name="cquptUser.department" required>
+                        <input class="form-control" id="department" name="department" >
                         <p class="help-block" id="tips3">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>性别</label>
-                        <input class="form-control" id="gender" name="cquptUser.gender" required>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
                         <p class="help-block" id="tips4">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>籍贯</label>
-                        <input class="form-control" id="origin" name="cquptUser.origin" required>
+                        <input class="form-control" id="origin" name="origin" >
                         <p class="help-block" id="tips5">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>民族</label>
-                        <input class="form-control" id="nationality" name="cquptUser.nationality" required>
+                        <input class="form-control" id="nationality" name="nationality" >
                         <p class="help-block" id="tips6">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>出生日期</label>
-                        <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text" id="birthday" name="cquptUser.birthday" required>
+                        <div class="input-group date form_date col-md-12" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" id="birthday" name="birthday" readonly >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
-                        <p class="help-block" id="tips7">提示</p>
+                        <p class="help-block" id="tips7">请通过插件选择日期</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>政治面貌</label>
-                        <input class="form-control" id="politicalStatus" name="cquptUser.politicalStatus" required>
+                        <input class="form-control" id="politicalStatus" name="politicalStatus" >
                         <p class="help-block" id="tips8">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>参加党派时间</label>
                         <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text" id="timeJoinParty" name="cquptUser.timeJoinParty" required>
+                            <input class="form-control" size="16" type="text" id="timeJoinParty" name="timeJoinParty" readonly >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
@@ -100,7 +105,7 @@
                     <div class="line-25-per">
                         <label>进入重邮时间</label>
                         <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text" id="timeBeginCqupt" name="cquptUser.timeBeginCqupt" required>
+                            <input class="form-control" size="16" type="text" id="timeBeginCqupt" name="timeBeginCqupt" readonly >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
@@ -110,7 +115,7 @@
                     <div class="line-25-per">
                         <label>参加工作时间</label>
                         <div class="input-group date form_date col-md-12" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                            <input class="form-control" size="16" type="text" id="timeBeginWork" name="cquptUser.timeBeginWork" required>
+                            <input class="form-control" size="16" type="text" id="timeBeginWork" name="timeBeginWork" readonly >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
@@ -119,43 +124,43 @@
 
                     <div class="line-25-per">
                         <label>第一学位</label>
-                        <input class="form-control" id="firstDegree" name="cquptUser.firstDegree" required>
+                        <input class="form-control" id="firstDegree" name="firstDegree" >
                         <p class="help-block" id="tips12">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>第一学位专业名称</label>
-                        <input class="form-control" id="firstProfessionalName" name="cquptUser.firstProfessionalName" required>
+                        <input class="form-control" id="firstProfessionalName" name="firstProfessionalName" >
                         <p class="help-block" id="tips13">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>第一学位毕业学校</label>
-                        <input class="form-control" id="firstGraduateSchool" name="cquptUser.firstGraduateSchool" required>
+                        <input class="form-control" id="firstGraduateSchool" name="firstGraduateSchool" >
                         <p class="help-block" id="tips14">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>最后学位</label>
-                        <input class="form-control" id="lastDegree" name="cquptUser.lastDegree" required>
+                        <input class="form-control" id="lastDegree" name="lastDegree" >
                         <p class="help-block" id="tips15">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>最后学位专业名称</label>
-                        <input class="form-control" id="lastProfessionalName" name="cquptUser.lastProfessionalName" required>
+                        <input class="form-control" id="lastProfessionalName" name="lastProfessionalName" >
                         <p class="help-block" id="tips16">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>最后学位毕业学校</label>
-                        <input class="form-control" id="lastGraduateSchool" name="cquptUser.lastGraduateSchool" required>
+                        <input class="form-control" id="lastGraduateSchool" name="lastGraduateSchool" >
                         <p class="help-block" id="tips17">提示</p>
                     </div>
 
                     <div class="line-25-per">
                         <label>最后学历</label>
-                        <input class="form-control" id="lastAcademic" name="cquptUser.lastAcademic" required>
+                        <input class="form-control" id="lastAcademic" name="lastAcademic" >
                         <p class="help-block" id="tips18">提示</p>
                     </div>
 
@@ -191,8 +196,12 @@
         container: "body"
     });
 
+    /**
+     * 日历插件
+     */
     $('.form_date').datetimepicker({
         language:  'zh-CN',
+        format:'yyyy-mm-dd',
         weekStart: 1,
         todayBtn:  1,
         autoclose: 1,
@@ -202,10 +211,59 @@
         forceParse: 0
     });
 
-    $.ajax() {
+    var user;
+    $.ajax({       //获取当前用户信息
+        url:"../../user/getuserinfo.do",
+        dataType:"json",
+        async: false,
+        success:function(data){
+            user = data;
+            if(user == null) {
+                alert("服务器没有当前用户的信息，有可能是您的session已经过期，请您重新登录！");
+                window.parent.location = "../../login.html";
+            }
+        },
+        error:function() {
+            alert('获取用户信息失败，请检查是否登录');
+        }
+    });
 
+    var collegeList;
+    $.ajax({       //获取当前用户信息
+        url:"../../user/getcollege.do",
+        dataType:"json",
+        async: false,
+        success:function(data){
+            collegeList = data;
+        },
+        error:function() {
+            alert('获取学院信息失败，请稍后重试');
+        }
+    });
+
+    for(var i=0; i<collegeList.length; i++) {
+        var c = collegeList[i];
+
+        $('#college').append('<option value="'+c.collegeId+'">'+c.collegeName+'</option>');
+    }
+    if(user.cquptCollege!=null && user.cquptCollege.collegeId!=0) {
+        $('#college').val(user.cquptCollege.collegeId);
     }
 
+    //遍历字段并且往表单设值
+    for(var f in user) {
+        var input = $('#'+f);
+        var value;
+        console.log(typeof(user[f]));
+        if(user[f] == null) {
+            value = '';
+        }else {
+            value = user[f];
+        }
+        if(!(typeof(input)=='undefined')) {
+            input.val(value);
+        }
+    }
 </script>
 </body>
 </html>

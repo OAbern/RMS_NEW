@@ -5,7 +5,8 @@ import java.util.List;
 /**
  * 所有Dao层接口的父类
  * @author welkin
- * @param 所有子类Dao的Model
+ *  T 所有子类Dao的Model类型
+ *  T1 model主键类型
  */
 public interface BaseDao<T,T1> {
 

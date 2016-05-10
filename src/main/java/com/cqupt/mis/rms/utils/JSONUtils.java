@@ -20,13 +20,37 @@ public class JSONUtils {
 
 	/**
 	 * 将对象转化成json，并用response输出
-	 * 这个方法只能在action方法里面调用一次!
+	 * <p>关掉循环引用检测</p>
+	 * <p><b>这个方法只能在action方法里面调用一次!</b></p>
 	 * @param o 要进行转化的对象
 	 * @param response HttpServletResponse
 	 */
 	public static void toJSON(Object o, HttpServletResponse response) {
 		try {
 			String str = JSON.toJSONString(o, SerializerFeature.DisableCircularReferenceDetect);	//关掉循环引用检测
+			response.addHeader("Content-Type", "application/json; charset=utf-8");
+			response.getWriter().write(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			try {
+				response.getWriter().close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 将对象转化成json，并用response输出
+	 * <p>开启null值输出，关掉循环引用检测</p>
+	 * <p><b>这个方法只能在action方法里面调用一次!</b></p>
+	 * @param o 要进行转化的对象
+	 * @param response HttpServletResponse
+	 */
+	public static void toJSONWithNull(Object o, HttpServletResponse response) {
+		try {
+			String str = JSON.toJSONString(o, SerializerFeature.WriteMapNullValue, SerializerFeature.DisableCircularReferenceDetect);	//开启null值输出，关掉循环引用检测
 			response.addHeader("Content-Type", "application/json; charset=utf-8");
 			response.getWriter().write(str);
 		} catch (IOException e) {
