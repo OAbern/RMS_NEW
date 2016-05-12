@@ -1,7 +1,9 @@
 package com.cqupt.mis.rms.dao;
 
+import java.util.List;
 import java.util.Set;
 
+import com.cqupt.mis.rms.model.UserAndRole;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +53,10 @@ public interface CQUPTRoleDao extends BaseDao<CQUPTRole, Integer>{
 	 * @return 角色信息
      */
 	public CQUPTRole findByName(@Param("rName")String roleName);
-	
-   
+
+	/**
+	 * 查找所有的用户及其角色（包含极少的字段）
+	 * @return 所有的用户及其角色
+     */
+	public List<UserAndRole> findAllUserAndRole();
 }

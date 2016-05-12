@@ -3,6 +3,7 @@ package com.cqupt.mis.rms.service;
 import java.util.List;
 
 import com.cqupt.mis.rms.model.CQUPTRole;
+import com.cqupt.mis.rms.model.UserAndRole;
 import com.cqupt.mis.rms.vo.ResultInfo;
 
 /**
@@ -37,5 +38,11 @@ public interface CQUPTRoleService {
 	 * @return	操作结果
      */
 	public ResultInfo<Object> modifyRole(CQUPTRole role);
+
+	/**
+	 * 查找所有的用户和其的角色(包含极少的信息：用户id，用户名，用户角色名，角色id)
+	 * @return
+     */
+	public List<UserAndRole> findAllUserAndRole();
 	 
 }

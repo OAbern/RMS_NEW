@@ -3,6 +3,7 @@ package com.cqupt.mis.rms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cqupt.mis.rms.dao.CQUPTRoleDao;
 import com.cqupt.mis.rms.model.CQUPTRole;
+import com.cqupt.mis.rms.model.UserAndRole;
 import com.cqupt.mis.rms.service.CQUPTRoleService;
 import com.cqupt.mis.rms.service.GrantService;
 import com.cqupt.mis.rms.utils.JSONUtils;
@@ -142,5 +143,15 @@ public class RoleAndAuthorityContoller {
         ResultInfo<Object> result = grantServiceImpl.grant(jsonObject);
         //TODO：权限修改成功更新权限检查列表
         return new ModelAndView("result.jsp", RequestConstant.RESULT, result);
+    }
+
+    /**
+     * 查找所有的用户及其角色信息
+     * @param response @see HttpServletResponse
+     */
+    @RequestMapping("/finduserrole")
+    public void findAllUserRoleInfo(HttpServletResponse response) {
+        List<UserAndRole> userAndRoleList = cquptRoleServiceImpl.findAllUserAndRole();
+        JSONUtils.toJSON(userAndRoleList, response);
     }
 }

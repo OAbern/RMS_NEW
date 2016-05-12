@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.cqupt.mis.rms.dao.UserInfoDao;
+import com.cqupt.mis.rms.model.UserAndRole;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,9 @@ import com.cqupt.mis.rms.service.CQUPTRoleService;
 public class CQUPTRoleServiceImpl implements CQUPTRoleService {
 	@Resource
 	private CQUPTRoleDao cquptRoleDao;
-	
+	@Resource
+	private UserInfoDao userInfoDao;
+
 	public List<CQUPTRole> findAll() {
 		return cquptRoleDao.findAll();
 	}
@@ -66,6 +70,11 @@ public class CQUPTRoleServiceImpl implements CQUPTRoleService {
 		}else {
 			return new ResultInfo<Object>(false, "修改角色名字失败！请稍后再试，或者联系管理员解决！");
 		}
+	}
+
+	public List<UserAndRole> findAllUserAndRole() {
+		List<UserAndRole> userAndRoleList = cquptRoleDao.findAllUserAndRole();
+		return userAndRoleList;
 	}
 
 }

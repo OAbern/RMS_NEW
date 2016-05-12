@@ -6,5 +6,5 @@ package com.cqupt.mis.rms.dao;
  *
  */
 public interface UserInfoDao {
-	
+
 }

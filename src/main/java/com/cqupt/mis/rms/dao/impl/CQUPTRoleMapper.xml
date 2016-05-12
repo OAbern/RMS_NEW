@@ -34,6 +34,19 @@
 
   	</collection>
   </resultMap>
+
+	<!--用户和权限的结果映射-->
+	<resultMap id="UserAndRoleMap" type="com.cqupt.mis.rms.model.UserAndRole">
+		<id column="user_id" property="userId" jdbcType="VARCHAR"/>
+		<association column="user_id" property="user" javaType="com.cqupt.mis.rms.model.CQUPTUser">
+				<id column="user_id" property="userId" jdbcType="VARCHAR"/>
+				<result column="user_name" property="userName" jdbcType="VARCHAR"/>
+		</association>
+		<collection property="roleList" ofType="com.cqupt.mis.rms.model.CQUPTRole">
+			<id column="role_id" property="roleId" jdbcType="INTEGER"/>
+			<result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+		</collection>
+	</resultMap>
   
   <sql id="Base_Column_List" >
     role_id, role_name, role_level_id, description
@@ -151,5 +164,17 @@
 		where role_id = #{roleId,jdbcType=INTEGER}
 	</update>
 
+	<!--查找所有的用户及其角色（包含极少的字段）-->
+	<select id="findAllUserAndRole" resultMap="UserAndRoleMap">
+		SELECT u.`user_id`, ur.`role_id`,u.user_name,r.`role_name`
+		FROM `cqupt_user` AS u
+		LEFT JOIN  `user_role` AS `ur` ON ur.`user_id` = u.`user_id`
+		LEFT JOIN `cqupt_role` AS r ON ur.`role_id` = r.`role_id`
+		<!--
+		SELECT ur.`user_id`, ur.`role_id`,u.user_name,r.`role_name`
+		FROM `user_role` AS `ur`,`cqupt_user` AS u,`cqupt_role` AS r
+		WHERE ur.`user_id` = u.`user_id` AND ur.`role_id`=r.`role_id`
+		-->
+	</select>
 
 </mapper>

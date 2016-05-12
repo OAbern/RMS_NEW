@@ -15,9 +15,20 @@ import com.cqupt.mis.rms.model.CQUPTUser;
  * 
  */
 public class UserAndRole {
+	String userId;	//用户id
 	// 用户基本信息
 	private CQUPTUser user;
 	// 用户角色信息
+
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	private List<CQUPTRole> roleList;
 
 	public CQUPTUser getUser() {

@@ -12,26 +12,96 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- DataTables CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- DataTables Responsive CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-responsive/responsive.dataTables.scss" rel="stylesheet">
 
     <!-- Bern Custom CSS -->
     <link href="../../css/ifram-common.css" rel="stylesheet">
+    <style type="text/css">
+        .panel-red a {
+            color: yellowgreen;
+        }
+
+    </style>
 </head>
 <body>
-<div class="panel panel-yellow">
+<!-- 分配角色的 Modal -->
+<div class="modal fade" id="assignRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><label class="text-info">分配角色</label></h4>
+            </div>
+            <form action="../../roleandauth/modifyrole.do" onsubmit="return $('#roleNameFlag2').val()==1;">
+                <input class="form-control" name="userId" id="userId" type="hidden" required>
+                <div class="modal-body">
+                    <div class="form-group" id="checkbox-role">
+                        <label>选择角色</label>
+                        <!--<div class="checkbox">-->
+                            <!--<label>-->
+                                <!--<input type="checkbox" value="">Checkbox 1-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!-- /.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">放弃分配</button>
+                    <button type="submit" class="btn btn-danger">确认分配</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-header -->
+    </div>
+    <!--./modal-dialog-->
+</div>
+<!--/.modal -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">用户角色管理</h2>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="panel panel-red">
     <div class="panel-heading">
         用户角色管理
     </div>
     <div class="panel-body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-    </div>
-    <div class="panel-footer">
-        Panel Footer
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-user-role">
+                <thead>
+                <tr>
+                    <th>用户编号</th>
+                    <th>用户名称</th>
+                    <th>角色名称</th>
+                    <th>操作</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="table-data">
+                <!--
+                <tr class="odd gradeX">
+                    <td>Trident</td>
+                    <td>Internet Explorer 4.0</td>
+                    <td>Win 95+</td>
+                    <td class="center">4</td>
+                    <td class="center">X</td>
+                </tr>
+                -->
+                </tbody>
+            </table>
+        </div>
+        <!-- /.table-wrapper -->
     </div>
 </div>
 
@@ -43,10 +113,119 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
+<!-- DataTables JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/bower_components/datatables/media/jquery.dataTables.min.js"></script>
+<script src="../../js/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.min.js"></script>
 
 <script>
+    var userAndRoleList;
+    $.ajax({       //获取当前系统中所有用户及其角色信息
+        url:"../../roleandauth/finduserrole.do",
+        type:"get",
+        dataType:"json",
+        contentType: "application/json; charset=utf-8",
+        async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
+        success:function(data){
+            if(data==null || data.length==0) {
+                alert("获取用户及其角色信息失败！");
+            }else {
+                userAndRoleList = data;
+            }
+        },
+        error:function() {
+            alert("获取用户及其角色信息失败！");
+        }
+    });
 
+    for(var i=0; i<userAndRoleList.length; i++) {
+        var userRole = userAndRoleList[i];
+        var roleList = userAndRoleList[i].roleList;
+        var roleNameStr = '';
+        var roleIdStr = '[';
+        for(var j=0; j<roleList.length; j++) {
+            roleNameStr += roleList[j].roleName + ' ， ';
+            roleIdStr += roleList[j].roleId+','
+        }
+        var index = roleNameStr.lastIndexOf('，');
+        if(index > 0) {
+            roleNameStr = roleNameStr.substring(0,index);
+        }
+        index = roleList.lastIndexOf(',');
+        if(index > 0) {
+            roleIdStr = roleIdStr.substring(0,index);
+        }
+        roleIdStr += ']';
+        var rowHtml = '<tr><td>'+userRole.userId+'</td><td>'+userRole.user.userName+'</td><td>'+roleNameStr+'</td><td><a href="javascript:void(0)" class="fa fa-users" onclick="assign('+roleIdStr+')">重新分配角色</a></td><td><a href="javascript:void(0)" class="fa fa-undo">重置密码</a></td></tr>';
+        $('#table-data').append(rowHtml);
+    }
 
+    //加载dataTables
+    $('#dataTables-user-role').DataTable({
+        "language": {       //配置dataTables的提示信息为中文
+            "sProcessing":   "处理中...",
+            "sLengthMenu":   "显示 _MENU_ 项结果",
+            "sZeroRecords":  "没有匹配结果",
+            "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+            "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix":  "",
+            "sSearch":       "搜索:",
+            "sUrl":          "",
+            "sEmptyTable":     "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands":  ",",
+            "oPaginate": {
+                "sFirst":    "首页",
+                "sPrevious": "上页",
+                "sNext":     "下页",
+                "sLast":     "末页"
+            },
+            "oAria": {
+                "sSortAscending":  ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        },
+        "responsive": true
+    });
+
+    window.parent.iFrameHeight();
+
+    $.ajax({       //获取当前系统中所有角色信息
+        url:"../../roleandauth/getrole.do",
+        type:"get",
+        dataType:"json",
+        contentType: "application/json; charset=utf-8",
+        success:function(data){
+            if(data==null || data.length==0) {
+                alert("获取角色信息失败！");
+            }else {
+                for(var i=0; i<data.length; i++) {
+                    var role = data[i];
+                    $('#checkbox-role').append('<div class="checkbox"><label><input type="checkbox" value="'+role.roleId+'">'+role.roleName+'</label></div>');
+                }
+            }
+        },
+        error:function() {
+            alert("获取角色信息失败！");
+        }
+    });
+
+    /************************************************************/
+
+    /**
+     * 打开分配角色modal
+     * @param idArray 角色id数组
+     */
+    function assign(idArray) {
+        $('#checkbox-role input').removeAttr("checked");
+        //选中已经分配的角色
+        for(var i=0; i<idArray.length; i++) {
+            var id = idArray[i];
+            $("#checkbox-role input[value='"+id+"']").attr("checked", "checked");
+        }
+        //TODO
+        $('#assignRole').modal();
+    }
 </script>
 </body>
 </html>
