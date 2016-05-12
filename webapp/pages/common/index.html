@@ -209,7 +209,25 @@
         var ifm= document.getElementById("content");
         var subWeb = document.frames ? document.frames["content"].document : ifm.contentDocument;
         if(ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
+//            ifm.height = subWeb.body.scrollHeight;
+            $('#content').height(subWeb.body.scrollHeight);
+        }
+    }
+
+    /**
+     * 设置iframe的高度
+     */
+    function setIFrameHeight(height) {
+        $('#content').height(height);
+    }
+
+    /**
+     * 比较并设置iframe高度
+     * 如果height 大于 iframe高度则重新设置;否则不做改变
+     */
+    function compareAndSetIFrameHeight(height) {
+        if($('#content').height() < height) {
+            $('#content').height(height);
         }
     }
 

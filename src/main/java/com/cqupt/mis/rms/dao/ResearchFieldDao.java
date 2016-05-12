@@ -21,6 +21,13 @@ public interface ResearchFieldDao extends BaseDao<ResearchField, Integer>{
 	 * @return	符合条件的结果
 	 */
 	public List<ResearchField> findByClassId(int classId);
+
+	/**
+	 * 根据classId查找所有科研字段
+	 * @param fieldId
+	 * @return	符合条件的结果
+	 */
+	public ResearchField findByFieldId(int fieldId);
 	
 	/**
 	 * 根据fieldId对科研动态字段进行假删除

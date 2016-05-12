@@ -20,10 +20,10 @@ public interface ResearchFieldService {
 	
 	/**
 	 * 删除科研动态字段(假删除)
-	 * @param researchField
+	 * @param fieldId 待删除的
 	 * @return
 	 */
-	public boolean deleteField(ResearchField researchField);
+	public boolean deleteField(int fieldId);
 	
 	/**
 	 * 修改科研动态字段

@@ -36,44 +36,47 @@ public class ResearchClassServiceImpl implements ResearchClassService {
 		return new ResultInfo<Object>(result, null);
 	}
 
-	public boolean deleteClass(ResearchClass researchClass) {
-		boolean result1 = false;
-		if(researchClass.getParentId() == 0) {	//删除同一大类
-			result1 = researchClassDao.deleteByPId(researchClass.getClassId());
-		}
+	public boolean deleteClass(int classId) {
+		researchClassDao.deleteByPId(classId);
+		researchClassDao.deleteByClassId(classId);
 
-		boolean result2 = researchClassDao.deleteByClassId(researchClass.getClassId());
-
-		//删除成功后，重新排序
-		if(result1 && result2)
-			return sortDao.sortAfterDelete("research_class", researchClass.getOrder(), 0);
+//		//删除成功后，重新排序
+//		if(result1 && result2)
+//			return sortDao.sortAfterDelete("research_class", researchClass.getOrder(), 0);
 			
-		return false;
+		return true;
 	}
 
-	public boolean modifyClass(ResearchClass researchClass) {
+	public ResultInfo<Object> modifyClass(ResearchClass researchClass) {
 		//获取旧的科研类别信息
-		ResearchClass oldClass = researchClassDao.selectByPrimaryKey(researchClass.getClassId());
-		if(oldClass == null) {
-			return false;
-		}
+//		ResearchClass oldClass = researchClassDao.selectByPrimaryKey(researchClass.getClassId());
+//		if(oldClass == null) {
+//			return false;
+//		}
 		
 		//维护排序字段
-		int oldOrder = oldClass.getOrder();
-		int newOrder = researchClass.getOrder();
-		boolean result = false;
-		if(oldOrder > newOrder) {
-			result = sortDao.sortForModify1("research_class", oldOrder, newOrder, 0);
-		}else if(oldOrder < newOrder) {
-			result = sortDao.sortForModify2("research_class", oldOrder, newOrder, 0);
-		}else if(oldOrder == newOrder) {
-			result = true;
+//		int oldOrder = oldClass.getOrder();
+//		int newOrder = researchClass.getOrder();
+//		boolean result = false;
+//		if(oldOrder > newOrder) {
+//			result = sortDao.sortForModify1("research_class", oldOrder, newOrder, 0);
+//		}else if(oldOrder < newOrder) {
+//			result = sortDao.sortForModify2("research_class", oldOrder, newOrder, 0);
+//		}else if(oldOrder == newOrder) {
+//			result = true;
+//		}
+
+		ResearchClass classResult = researchClassDao.selectByNameAndPid(researchClass.getClassName(), researchClass.getParentId());
+		if(classResult != null) {
+			return new ResultInfo<Object>(false, "修改科研类别异常！已经存在同名的科研类别名称，请换一个名称试试！");
 		}
-		
-		if(result)
-			return researchClassDao.modifyByPrimaryKey(researchClass);
-		
-		return false;
+
+		boolean result = researchClassDao.modifyByPrimaryKey(researchClass);
+		if(result) {
+			return new ResultInfo<Object>(null, true);
+		}else {
+			return new ResultInfo<Object>(false, "修改科研类别失败！请稍后再试，或者联系管理员解决！");
+		}
 	}
 
 	public List<ResearchClass> findAll() {

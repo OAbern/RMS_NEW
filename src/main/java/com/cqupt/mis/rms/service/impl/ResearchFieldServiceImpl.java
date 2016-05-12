@@ -47,11 +47,15 @@ public class ResearchFieldServiceImpl implements ResearchFieldService {
 		}
 	}
 
-	public boolean deleteField(ResearchField researchField) {
-		boolean result = researchFieldDao.delete(researchField.getId());
+	public boolean deleteField(int fieldId) {
+		ResearchField field = researchFieldDao.selectByPrimaryKey(fieldId);
+		if(field == null)		//字段不存在
+			return false;
+
+		boolean result = researchFieldDao.delete(fieldId);
 		
 		if(result)
-			return sortDao.sortAfterDelete("research_field", researchField.getOrder(), researchField.getResearchClass().getClassId());
+			return sortDao.sortAfterDelete("research_field", field.getOrder(), field.getResearchClass().getClassId());
 		
 		return false;
 	}
@@ -59,10 +63,11 @@ public class ResearchFieldServiceImpl implements ResearchFieldService {
 	public boolean modifyField(ResearchField researchField) {
 		//获取旧的科研字段
 		ResearchField oldField = researchFieldDao.selectByPrimaryKey(researchField.getId());
-		if(oldField == null) {
+		if(oldField == null) //字段不存在
 			return false;
-		}
-		
+
+		researchField.setResearchClass(oldField.getResearchClass());
+
 		//维护排序字段
 		int oldOrder = oldField.getOrder();
 		int newOrder = researchField.getOrder();

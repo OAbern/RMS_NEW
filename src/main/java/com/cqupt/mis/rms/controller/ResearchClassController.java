@@ -9,6 +9,7 @@ import com.cqupt.mis.rms.model.ResearchClass;
 import com.cqupt.mis.rms.utils.RequestConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cqupt.mis.rms.service.ResearchClassService;
@@ -73,15 +74,28 @@ public class ResearchClassController {
 		}
 	}
 
-
+	/**
+	 * 修改科研类别信息
+	 * @param researchClass
+     */
 	@RequestMapping("/modify")
-	public void modify(ResearchClass researchClass) {
-		researchClassServiceImpl.modifyClass(researchClass);
+	public ModelAndView modify(ResearchClass researchClass) {
+		ResultInfo<Object> result = researchClassServiceImpl.modifyClass(researchClass);
+		if (result.isResult()) {
+			return new ModelAndView("redirect:/pages/system/manageresearchclass.html");
+		} else {
+			return new ModelAndView("result.jsp", RequestConstant.RESULT, result);
+		}
 	}
 
-	@RequestMapping("/delete")
-	public void delete(ResearchClass researchClass) {
-		researchClassServiceImpl.deleteClass(researchClass);
+	/**
+	 * 删除科研类别
+	 * @param classId
+     */
+	@RequestMapping("/delete/{classId}")
+	public ModelAndView delete(@PathVariable("classId")int classId) {
+		researchClassServiceImpl.deleteClass(classId);
+		return new ModelAndView("redirect:/pages/system/manageresearchclass.html");
 	}
 
 }

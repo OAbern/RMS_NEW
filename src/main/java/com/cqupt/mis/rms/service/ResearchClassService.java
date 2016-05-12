@@ -24,14 +24,14 @@ public interface ResearchClassService {
 	 * @param classId
 	 * @return
 	 */
-	public boolean deleteClass(ResearchClass researchClass);
+	public boolean deleteClass(int classId);
 	
 	/**
 	 * 修改科研类别
 	 * @param researchClass
 	 * @return
 	 */
-	public boolean modifyClass(ResearchClass researchClass);
+	public ResultInfo<Object> modifyClass(ResearchClass researchClass);
 	
 	/**
 	 * 查找所有的科研信息类别

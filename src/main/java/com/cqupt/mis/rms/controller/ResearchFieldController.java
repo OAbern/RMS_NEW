@@ -31,9 +31,8 @@ public class ResearchFieldController {
     @Resource
     ResearchFieldDao researchFieldDao;
 
-    //TODO: 测试用
-    @RequestMapping("/find/{classId}")
-    public void findByClassIdForTest(@PathVariable int classId, HttpServletResponse response) {
+    @RequestMapping("/findbyclass/{classId}")
+    public void findByClassId(@PathVariable int classId, HttpServletResponse response) {
         List<ResearchField> fieldList = researchFieldDao.findByClassId(classId);
         JSONUtils.toJSON(fieldList, response);
     }
@@ -97,4 +96,20 @@ public class ResearchFieldController {
         return new ModelAndView("result.jsp");
     }
 
+    /**
+     * 根据字段ID删除字段
+     * @param id 字段id
+     * @return
+     */
+    @RequestMapping("/delete/{fieldId}")
+    public ModelAndView deleteById(@PathVariable("fieldId")int id) {
+        researchFieldService.deleteField(id);
+        return new ModelAndView("redirect:/pages/system/managedynamicfield.html");
+    }
+
+    @RequestMapping("/modify")
+    public ModelAndView modify(ResearchField field) {
+        researchFieldService.modifyField(field);
+        return  new ModelAndView("redirect:/pages/system/managedynamicfield.html");
+    }
 }

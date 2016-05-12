@@ -12,13 +12,14 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="../../css/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom CSS -->
     <link href="../../css/SB-admin-2-1.0.8/sb-admin-2.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="../../css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <!-- DataTables CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- DataTables Responsive CSS -->
+    <link href="../../css/SB-admin-2-1.0.8/bower_components/datatables-responsive/responsive.dataTables.scss" rel="stylesheet">
     <!-- Bern Custom CSS -->
     <link href="../../css/ifram-common.css" rel="stylesheet">
     <style type="text/css">
@@ -29,6 +30,64 @@
     </style>
 </head>
 <body>
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabel"><label class="text-danger">警告：</label>您正在执行一个毁灭性的操作！</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-info">科研类别一旦删除，将不会在此系统中看到与删除科研类别相关的所有信息！！！</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">放弃删除</button>
+                <a id="deleteHref" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">确认删除</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title">修改科研类别</h5>
+            </div>
+            <form action="../../class/modify.do">
+                <div class="modal-body">
+                    <input class="form-control" name="classId" id="classId" type="hidden">
+                    <input class="form-control" name="parentId" id="parentId" type="hidden">
+                    <div class="form-group">
+                        <label>科研类别名称</label>
+                        <input class="form-control" name="className" id="className" onblur="checkClassName()" required>
+                        <input class="form-control" id="classNameFlag" type="hidden" value="0" required>
+                        <p class="help-block text-info" id="remark2">必填</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>科研类别描述信息</label>
+                        <input class="form-control" name="classDes" id="classDes">
+                        <p class="help-block text-info">可选填</p>
+                    </div>
+
+                    <div class="form-group" id="classRemarkDIV">
+                        <label>科研类别备注信息</label>
+                        <input class="form-control" name="classRemark" id="classRemark">
+                        <p class="help-block text-info">可选填</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">放弃修改</button>
+                    <button type="submit" class="btn btn-danger" >确认修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -64,7 +123,7 @@
                         <!--管理一级科研类别-->
                         <div class="tab-pane fade in active" id="manageFirst-panel">
                             <div class="table-responsive" style="overflow-x: hidden;">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-record-list">
+                                <table class="table table-striped table-bordered table-hover" id="first-table">
                                     <thead>
                                     <tr>
                                         <th>No.</th>
@@ -88,17 +147,17 @@
                             <div class="form-group">
                                 <label style="color: red">*请选择一级科研类别</label>
                                 <select class="form-control" id="select1" name="parentId" required>
-                                    <!--<option>1</option>-->
+                                    <option value="0">请选择</option>
                                 </select>
                             </div>
-                            <div class="table-responsive" style="overflow-x: hidden;" hidden="true">
-                                <table class="table table-striped table-bordered table-hover">
+                            <div class="table-responsive" style="overflow-x: hidden;">
+                                <table class="table table-striped table-bordered table-hover" id="second-table">
                                     <thead>
                                     <tr>
                                         <th>No.</th>
                                         <th>科研类别</th>
+                                        <th>科研描述信息</th>
                                         <th>科研备注信息</th>
-                                        <th>Order</th>
                                         <th>操作</th>
                                         <th>操作</th>
                                     </tr>
@@ -139,7 +198,7 @@
                                 <div class="form-group">
                                     <label style="color: red">*请选择一级科研类别</label>
                                     <select class="form-control" id="select2" name="parentId" required>
-                                        <!--<option>1</option>-->
+                                        <option value="0">请选择</option>
                                     </select>
                                 </div>
 
@@ -189,6 +248,10 @@
 <!-- Custom Theme JavaScript -->
 <script src="../../js/SB-admin-2-1.0.8/sb-admin-2.js"></script>
 
+<!-- DataTables JavaScript -->
+<script src="../../js/SB-admin-2-1.0.8/bower_components/datatables/media/jquery.dataTables.min.js"></script>
+<script src="../../js/SB-admin-2-1.0.8/bower_components/datatables-plugins/integration/bootstrap3/dataTables.bootstrap.min.js"></script>
+
 <script>
     var researchClassList = null;  //科研类别信息
     $.ajax({       //获取当前系统中所有未删除的科研类别
@@ -226,32 +289,92 @@
         if(typeof(fClass.classDes) == 'undefined')
             fClass.classDes = '';
 
-        $('#table-data1').append('<tr><td>'+i+'</td><td>'+fClass.className+'</td><td>'+fClass.classDes+'</td><td><a class="fa fa-pencil-square" href="javascript:void(0)">修改</a></td><td><a class="fa fa-times-circle" href="javascript:void(0)">删除</a></td></tr>');
+        if(typeof(fClass.classRemark) == 'undefined')
+            fClass.classRemark = '';
+
+        var modifyEventStr = 'onclick="showModifyModal('+fClass.classId+','+fClass.parentId+',\''+fClass.className+'\',\''+fClass.classDes+'\',\''+fClass.classRemark+'\')"';
+
+        $('#table-data1').append('<tr><td>'+i+'</td><td>'+fClass.className+'</td><td>'+fClass.classDes+'</td><td><a class="fa fa-pencil-square" href="javascript:void(0)" '+modifyEventStr+'>修改</a></td><td><a class="fa fa-times-circle" href="javascript:void(0)" onclick="confirmDelete('+fClass.classId+')">删除</a></td></tr>');
         var optionHtml = '<option value="'+fClass.classId+'">'+fClass.className+'</option>';
-        $('#select1').append(optionHtml);
-        $('#select2').append(optionHtml);
+        $('#select1').append(optionHtml);       //添加一级菜单选项
+        $('#select2').append(optionHtml);       //添加一级菜单选项
     }
+
+    var tableOption = {
+        "language": {       //配置dataTables的提示信息为中文
+        "sProcessing":   "处理中...",
+                "sLengthMenu":   "显示 _MENU_ 项结果",
+                "sZeroRecords":  "没有匹配结果",
+                "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       "搜索:",
+                "sUrl":          "",
+                "sEmptyTable":     "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands":  ",",
+                "oPaginate": {
+            "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页"
+        },
+        "oAria": {
+            "sSortAscending":  ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+        }
+    },
+        "responsive": true,
+            "sScrollX": "100%",
+            "sScrollXInner": "110%",
+            "bScrollCollapse": true
+    };
+
+    //加载dataTables
+    $('#first-table').DataTable(tableOption);
+//    $('#second-table').DataTable(tableOption);
+
+    //设置iframe高度
+    var noPanelHeight = $('body').height() - $('#manageFirst-panel').outerHeight(true);
+    var heightArray = [];
+    heightArray.push($('#manageFirst-panel').outerHeight(true), $('#manageSecond-panel').outerHeight(true), $('#addFirst-panel').outerHeight(true), $('#addSecond-panel').outerHeight(true));
+    var maxHeight = 0;
+    for(var i=0; i<heightArray.length; i++) {
+        if(maxHeight < heightArray[i]) {
+            maxHeight = heightArray[i];
+        }
+    }
+    maxHeight += noPanelHeight;
+    window.parent.setIFrameHeight(maxHeight);
 
     /********* do code by self end *************/
 
 
     /********* event code *************/
     /**
-     * 展示添加二级科研项目时备注
+     * 展示管理二级科研类别的表格数据
      */
-    //TODO:
     $('#select1').change(function() {
         var pId = $(this).children('option:selected').val();
+        $('#table-data2').empty();
         if(pId == 0) {   //'请选择'的选项
-            $('#sRemark').empty().append('请先选择一级科研类别！');
-            $('#classNameS').attr("disabled",true);
             return;
         }
 
-        $('#table-data2').removeAttrs('hidden');
         for(var i=0; i<secondClassArray.length; i++) {
             var sClass = secondClassArray[i];
-            $('#table-data2').append('<tr><td>'+i+'</td><td>'+sClass.className+'</td><td>'+sClass.classDes+'</td><td><a class="fa fa-pencil-square" href="javascript:void(0)">修改</a></td><td><a class="fa fa-times-circle" href="javascript:void(0)">删除</a></td></tr>');
+            if(typeof(sClass.classDes) == 'undefined')
+                sClass.classDes = '';
+
+            if(typeof(sClass.classRemark) == 'undefined')
+                sClass.classRemark = '';
+
+            var modifyEventStr = 'onclick="showModifyModal('+sClass.classId+','+sClass.parentId+',\''+sClass.className+'\',\''+sClass.classDes+'\',\''+sClass.classRemark+'\')"';
+
+            if(sClass.parentId == pId) {
+                $('#table-data2').append('<tr><td>'+i+'</td><td>'+sClass.className+'</td><td>'+sClass.classDes+'</td><td>'+sClass.classRemark+'</td><td><a class="fa fa-pencil-square" href="javascript:void(0)" '+modifyEventStr+'>修改</a></td><td><a class="fa fa-times-circle" href="javascript:void(0)" onclick="confirmDelete('+sClass.classId+')">删除</a></td></tr>');
+            }
         }
     });
 
@@ -357,6 +480,40 @@
             alert('请检查科研类别或科研项目的名称是否有重名冲突！');
             return false;
         }
+    }
+
+    /**
+     * 确认删除模态框
+     * @param recordId      删除的记录ID
+     */
+    function confirmDelete(classId) {
+        var delURL = '../../class/delete/'+classId+'.do';
+        $('#deleteHref').attr('href', delURL);
+        $('#deleteConfirm').modal();
+    }
+
+    /**
+     * 修改模态框
+     * @param classId   科研类别ID
+     * @param parentId  科研类别父类ID
+     * @param className 科研类别名称
+     * @param classDes  科研类别描述信息
+     * @param classRemark   科研类别备注信息
+     */
+    function showModifyModal(classId, parentId, className, classDes, classRemark) {
+        $('#classId').val(classId);
+        $('#parentId').val(parentId);
+        $('#className').attr("placeholder", className);
+        $('#className').val('');
+        $('#classDes').val(classDes);
+        if(parentId == 0) {     //一级科研类别
+            $('#classRemark').val('');
+            $('#classRemarkDIV').hide();
+        }else {
+            $('#classRemark').val(classRemark);
+            $('#classRemarkDIV').show();
+        }
+        $('#modifyModal').modal();
     }
 </script>
 </body>

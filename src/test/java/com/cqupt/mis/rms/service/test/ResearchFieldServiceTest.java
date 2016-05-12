@@ -75,7 +75,7 @@ public class ResearchFieldServiceTest {
 		field.setOrder(1);
 		field.setResearchClass(class1);
 		
-		researchFieldServiceImpl.deleteField(field);
+//		researchFieldServiceImpl.deleteField(field);
 	}
 	
 	@Test

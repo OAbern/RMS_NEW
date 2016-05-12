@@ -63,6 +63,13 @@
 		FROM  `research_field` f
 		WHERE `class_id` = #{cId, jdbcType=INTEGER} AND `field_des`=#{des, jdbcType=VARCHAR} AND `is_delete`=0
 	</select>
+
+	<!-- 根据fieldId查找字段 -->
+	<select id="findByFieldId" parameterType="java.lang.Integer" resultMap="ResearchField">
+		SELECT <include refid="ColumnList"></include>
+		FROM `research_field` f
+		WHERE field_id = #{field, jdbcType=INTEGER}
+	</select>
 	
 	<!-- 根据主键假删除字段，设置`is_delete`为1，`order`为0 -->
 	<update id="delete" parameterType="java.lang.Integer">
@@ -138,24 +145,16 @@
 	<update id="modifyByPrimaryKey" parameterType="com.cqupt.mis.rms.model.ResearchField" >
 		update `research_field`
 		<set >
-		  <if test="researchClass.classId != 0" >
-		    `class_id` = #{researchClass.classId,jdbcType=INTEGER},
-		  </if>
 		  <if test="name != null" >
 		    `field_name` = #{name,jdbcType=VARCHAR},
 		  </if>
 		  <if test="description != null" >
 		    `field_des` = #{description,jdbcType=VARCHAR},
 		  </if>
-		  <if test="isDelete != 0" >
-		    `is_delete` = #{isDelete,jdbcType=INTEGER},
-		  </if>
-		  <if test="submittime != null" >
-		    `submittime` = #{submittime,jdbcType=TIMESTAMP},
-		  </if>
 		  <if test="order != 0" >
 		    `order` = #{order,jdbcType=INTEGER},
 		  </if>
+		  `is_null` = #{isNull,jdbcType=INTEGER}
 		</set>
 		where `field_id` = #{id,jdbcType=INTEGER}
 	</update>

@@ -64,7 +64,7 @@ public class ResearchClassServiceTest extends AbstractJUnit4SpringContextTests {
 		class1.setClassId(4);
 		class1.setClassName("教学类");
 		class1.setOrder(3);
-		researchClassServiceImpl.deleteClass(class1);
+//		researchClassServiceImpl.deleteClass(class1);
 	}
 	
 	@Test
