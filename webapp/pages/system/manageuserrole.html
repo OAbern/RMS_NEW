@@ -39,9 +39,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><label class="text-info">分配角色</label></h4>
             </div>
-            <form action="../../roleandauth/modifyrole.do" onsubmit="return $('#roleNameFlag2').val()==1;">
-                <input class="form-control" name="userId" id="userId" type="hidden" required>
+            <form action="../../roleandauth/assignrole.do">
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label>用户编号</label>
+                        <input class="form-control" type="text" name="userId" id="userId" readonly required>
+                    </div>
                     <div class="form-group" id="checkbox-role">
                         <label>选择角色</label>
                         <!--<div class="checkbox">-->
@@ -57,6 +60,28 @@
                     <button type="submit" class="btn btn-danger">确认分配</button>
                 </div>
             </form>
+        </div>
+        <!-- /.modal-header -->
+    </div>
+    <!--./modal-dialog-->
+</div>
+<!--/.modal -->
+
+<!-- 重置密码的 Modal -->
+<div class="modal fade" id="resetPW" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title"><label class="text-danger">警告：</label>您正在执行一个严肃的操作！</h5>
+            </div>
+            <div class="modal-body">
+                <p class="text-info">您正在为用户编号为<p id="resetContent" class="text-danger"></p>的用户重置密码</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">放弃重置</button>
+                <a id="resetHref" href="javascript:void(0)" class="btn btn-danger btn-normal active" role="button">确认重置</a>
+            </div>
         </div>
         <!-- /.modal-header -->
     </div>
@@ -155,7 +180,7 @@
             roleIdStr = roleIdStr.substring(0,index);
         }
         roleIdStr += ']';
-        var rowHtml = '<tr><td>'+userRole.userId+'</td><td>'+userRole.user.userName+'</td><td>'+roleNameStr+'</td><td><a href="javascript:void(0)" class="fa fa-users" onclick="assign('+roleIdStr+')">重新分配角色</a></td><td><a href="javascript:void(0)" class="fa fa-undo">重置密码</a></td></tr>';
+        var rowHtml = '<tr><td>'+userRole.userId+'</td><td>'+userRole.user.userName+'</td><td>'+roleNameStr+'</td><td><a href="javascript:void(0)" class="fa fa-users" onclick="assign(\''+userRole.userId+'\', '+roleIdStr+')">重新分配角色</a></td><td><a href="javascript:void(0)" class="fa fa-undo" onclick="resetPW('+userRole.userId+')">重置密码</a></td></tr>';
         $('#table-data').append(rowHtml);
     }
 
@@ -195,13 +220,14 @@
         type:"get",
         dataType:"json",
         contentType: "application/json; charset=utf-8",
+        async: false,       //必须同步执行，否则ajax后面的代码执行会有问题
         success:function(data){
             if(data==null || data.length==0) {
                 alert("获取角色信息失败！");
             }else {
                 for(var i=0; i<data.length; i++) {
                     var role = data[i];
-                    $('#checkbox-role').append('<div class="checkbox"><label><input type="checkbox" value="'+role.roleId+'">'+role.roleName+'</label></div>');
+                    $('#checkbox-role').append('<div class="checkbox"><label><input type="checkbox" name="roleId" value="'+role.roleId+'">'+role.roleName+'</label></div>');
                 }
             }
         },
@@ -214,17 +240,27 @@
 
     /**
      * 打开分配角色modal
+     * @param userId 用户id
      * @param idArray 角色id数组
      */
-    function assign(idArray) {
+    function assign(userId, idArray) {
+        $('#userId').val(userId);
         $('#checkbox-role input').removeAttr("checked");
         //选中已经分配的角色
         for(var i=0; i<idArray.length; i++) {
             var id = idArray[i];
-            $("#checkbox-role input[value='"+id+"']").attr("checked", "checked");
+            console.log($("#checkbox-role input[value='"+id+"']"));
+            $("#checkbox-role input[value='"+id+"']").prop("checked", "checked");
+//            $("#checkbox-role input[value='"+id+"']").attr("checked", "checked"); 使用此方法 不能 正确设置复选框状态
         }
-        //TODO
         $('#assignRole').modal();
+    }
+
+    function resetPW(userId) {
+        $('#resetContent').empty().append('"'+userId+'"');
+        var resetHerf = '../../roleandauth/resetpw/'+userId+'.do';
+        $('#resetHref').attr("href", resetHerf);
+        $('#resetPW').modal();
     }
 </script>
 </body>

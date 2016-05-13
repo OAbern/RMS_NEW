@@ -59,4 +59,27 @@ public interface CQUPTRoleDao extends BaseDao<CQUPTRole, Integer>{
 	 * @return 所有的用户及其角色
      */
 	public List<UserAndRole> findAllUserAndRole();
+
+	/**
+	 * 分配用户角色（添加）
+	 * @param userId 用户Id
+	 * @param roleIdArrayAdd 添加的角色Id数组
+     * @return 操作结果
+     */
+	public boolean assignRoleAdd(@Param("uId")String userId, @Param("roleIdArray")int[] roleIdArrayAdd);
+
+	/**
+	 * 分配用户角色（删除）
+	 * @param userId 用户Id
+	 * @param roleIdArrayDel 删除的角色Id
+	 * @return 操作结果
+	 */
+	public boolean assignRoleDelete(@Param("uId")String userId, @Param("roleIdArray")int[] roleIdArrayDel);
+
+	/**
+	 * 查找指定用户的所有角色Id
+	 * @param userId 待查找用户的Id
+	 * @return 查找到的角色Id数组
+     */
+	public Integer[] findRoleIdByUserId(@Param("uId")String userId);
 }

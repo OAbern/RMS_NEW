@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.cqupt.mis.rms.dao.CQUPTUserDao;
+import com.cqupt.mis.rms.utils.ResearchConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +81,12 @@ public class UserManagerServiceImpl implements UserManagerService {
 		}else {
 			return new ResultInfo<Object>(false, "修改用户信息异常！");
 		}
+	}
+
+	public boolean resetPW(String userId) {
+		String pw = EncryptUtils.getEncString(ResearchConstant.RESET_PW);
+		userLoginDao.modifyPW(userId, pw);
+		return true;
 	}
 
 	public boolean readUserBasicInfoExceltoDB(File excelfile) {

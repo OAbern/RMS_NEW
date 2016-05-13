@@ -177,4 +177,29 @@
 		-->
 	</select>
 
+	<!--分配用户角色（添加）-->
+	<insert id="assignRoleAdd">
+		INSERT INTO `user_role`(`user_id`, `role_id`)
+		VALUES
+		<foreach collection="roleIdArray" item="rId" separator=",">
+			(#{uId, jdbcType=VARCHAR}, #{rId, jdbcType=INTEGER})
+		</foreach>
+	</insert>
+
+	<!--分配用户角色（删除）-->
+	<delete id="assignRoleDelete">
+		DELETE FROM `user_role`
+		WHERE user_id=#{uId, jdbcType=VARCHAR} AND role_id IN (
+		<foreach collection="roleIdArray" item="rId" separator=",">
+			 #{rId, jdbcType=INTEGER}
+		</foreach>
+		)
+	</delete>
+
+	<select id="findRoleIdByUserId" resultType="Integer">
+		SELECT role_id
+		FROM user_role
+		WHERE user_id = #{uId, jdbcType=VARCHAR}
+	</select>
+
 </mapper>

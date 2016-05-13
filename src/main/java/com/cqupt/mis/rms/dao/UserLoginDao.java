@@ -28,4 +28,5 @@ public interface UserLoginDao extends BaseDao<UserLogin, String>{
      * @return 操作结果
      */
 	public boolean modifyPW(@Param("userId")String userId,@Param("pw") String userPwd);
+
 }

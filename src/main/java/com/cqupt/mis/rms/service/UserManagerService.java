@@ -97,4 +97,11 @@ public interface UserManagerService {
 	 * @return 操作结果
      */
 	public ResultInfo<Object> modifyUserInfo(CQUPTUser user);
+
+	/**
+	 * 重置用户密码
+	 * @param userId 用户id
+	 * @return 操作结果
+     */
+	public boolean resetPW(String userId);
 }

@@ -6,6 +6,7 @@ import com.cqupt.mis.rms.model.CQUPTRole;
 import com.cqupt.mis.rms.model.UserAndRole;
 import com.cqupt.mis.rms.service.CQUPTRoleService;
 import com.cqupt.mis.rms.service.GrantService;
+import com.cqupt.mis.rms.service.UserManagerService;
 import com.cqupt.mis.rms.utils.JSONUtils;
 import com.cqupt.mis.rms.utils.RequestConstant;
 import com.cqupt.mis.rms.vo.ResultInfo;
@@ -35,6 +36,9 @@ public class RoleAndAuthorityContoller {
 
     @Resource
     GrantService grantServiceImpl;
+
+    @Resource
+    UserManagerService userManagerServiceImpl;
 
     /**
      * 获取所有的角色信息列表
@@ -153,5 +157,31 @@ public class RoleAndAuthorityContoller {
     public void findAllUserRoleInfo(HttpServletResponse response) {
         List<UserAndRole> userAndRoleList = cquptRoleServiceImpl.findAllUserAndRole();
         JSONUtils.toJSON(userAndRoleList, response);
+    }
+
+    /**
+     * 为用户分配角色
+     * @param roleIdArray 角色id数组
+     * @param userId 用户id
+     * @return 重定向到用户角色管理界面
+     */
+    @RequestMapping("/assignrole")
+    public ModelAndView assignRole(@RequestParam(value="roleId", required=false)int[] roleIdArray, @RequestParam("userId")String userId) {
+        if(roleIdArray == null) {
+            roleIdArray = new int[0];
+        }
+        grantServiceImpl.assignRole(userId, roleIdArray);
+        return new ModelAndView("redirect:/pages/system/manageuserrole.html");
+    }
+
+    /**
+     * 重置密码
+     * @param userId 用户Id
+     * @return 定向到结果页面
+     */
+    @RequestMapping("/resetpw/{uId}")
+    public ModelAndView resetPW(@PathVariable("uId")String userId) {
+        userManagerServiceImpl.resetPW(userId);
+        return new ModelAndView("result.jsp", RequestConstant.RESULT, new ResultInfo<Object>(null, true));
     }
 }

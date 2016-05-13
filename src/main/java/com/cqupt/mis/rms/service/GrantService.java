@@ -6,6 +6,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSONObject;
 import com.cqupt.mis.rms.model.RolePurviewDyn;
 import com.cqupt.mis.rms.vo.ResultInfo;
+import org.apache.ibatis.annotations.Result;
 
 /**
  * 授权管理逻辑接口层
@@ -42,5 +43,13 @@ public interface GrantService {
 	 * @return 操作结果
      */
 	public ResultInfo<Object> grant(JSONObject map);
+
+	/**
+	 * 给指定用户分配角色
+	 * @param userId 指定的用户Id
+	 * @param roleIdArray 角色id数组
+     * @return 操作结果
+     */
+	public boolean assignRole(String userId, int[] roleIdArray);
 	
 }

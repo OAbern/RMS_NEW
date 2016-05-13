@@ -39,20 +39,23 @@ public class AuthorityFilter implements Filter {
 	private Map<Integer, Map<Integer, RolePurviewDyn>> dynamicResourceMap;	//外层map中：类别id为key， 权限为value；内层map中：角色id为key，权限为value
 
 	private Set<String> noInterceptUrl;		//不进行拦截的url列表
+
 	/**
 	 * 初始化的方法
 	 */
 	public void init(FilterConfig config) throws ServletException {
-		wac = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
-		authorityResource = (AuthorityResource) wac.getBean("authorityResource");
-		
-		fixedResourceMap = authorityResource.getFixedResourceMap();
-		dynamicResourceMap = authorityResource.getDynamicResourceMap();
+//		wac = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
+//		authorityResource = (AuthorityResource) wac.getBean("authorityResource");
+//
+//		fixedResourceMap = authorityResource.getFixedResourceMap();
+//		dynamicResourceMap = authorityResource.getDynamicResourceMap();
 		
 		noInterceptUrl = new HashSet<String>();
 		noInterceptUrl.add("login");
-		noInterceptUrl.add("error");
-		noInterceptUrl.add("");
+		noInterceptUrl.add("image.jsp");
+		noInterceptUrl.add("404.html");
+//		noInterceptUrl.add("error");
+//		noInterceptUrl.add("");
 	}
 	
 	/**
@@ -73,34 +76,68 @@ public class AuthorityFilter implements Filter {
      */
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
 			FilterChain chain) throws IOException, ServletException {
+
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+		//获取请求路径（即项目根路径之后的 路径）
+		String requestUrl = request.getRequestURI();
+		String rootPath = request.getContextPath() + "/";
+		requestUrl = requestUrl.substring(rootPath.length());
+
+		if(noIntercept(requestUrl)) {	//不拦截的页面，通过
+			chain.doFilter(servletRequest, servletResponse);
+			return;
+		}
+		Object userId = (String)request.getSession().getAttribute(SessionConstant.USERID);
+		Object roleId = request.getSession().getAttribute(SessionConstant.ROLEID);
+//		Object menuInfo = (String)request.getSession().getAttribute(SessionConstant.MENU_INFO);
+		if(userId==null || roleId==null) {
+			response.sendRedirect(rootPath + "login.jsp");
+		}else {
+			chain.doFilter(servletRequest, servletResponse);
+
+		}
+
+//		checkAuthority(servletRequest, servletResponse, chain);
 		
+	}
+
+	/**
+	 * 权限检查
+	 * @param servletRequest
+	 * @param servletResponse
+	 * @param chain
+	 * @throws IOException
+	 * @throws ServletException
+     */
+	private void checkAuthority(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		String requestUrl = request.getRequestURI();
 		int index = requestUrl.indexOf("rms2/");
 		requestUrl = requestUrl.substring(index+5);
 		System.out.println(requestUrl);
-		
+
 		if(noIntercept(requestUrl)) {	//不拦截的页面，通过
 			chain.doFilter(servletRequest, servletResponse);
 			return;
 		}
-		
+
 		if(decideFixed(request)) {	//静态权限匹配，通过
 			chain.doFilter(servletRequest, servletResponse);
 			return;
 		}
-		
+
 		if(decideDynamic(request)) {	//动态权限匹配，通过
 			chain.doFilter(servletRequest, servletResponse);
 			return;
 		}
-		
+
 		//权限校验不通过,重定向到越权界面
 		response.sendRedirect("accessDenied.jsp");
-		
 	}
-	
+
 	/**
 	 * 检测是否满足静态资源的权限
 	 * @param request 请求
@@ -126,9 +163,14 @@ public class AuthorityFilter implements Filter {
 	 * @return 若为不拦截的URL返回true，否则返回false
 	 */
 	public boolean noIntercept(String url) {
-		if(noInterceptUrl.contains(url))
-			return true;
-		
+		for(String noIncepUrl : noInterceptUrl) {
+			if(url.indexOf(noIncepUrl) == 0) {
+				return true;
+			}
+		}
+//		if(noInterceptUrl.contains(url))
+//			return true;
+//
 		return false;
 			
 	}

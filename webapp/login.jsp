@@ -21,55 +21,87 @@
 
     <!-- Custom styles for this template -->
     <link href="css/bootstrap-3.3.5/ex/signin.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="css/SB-admin-2-1.0.8/bower_components/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
+<%
+    String failedInfo = (String)request.getAttribute("loginFailed");
+    if(failedInfo == null) {
+        failedInfo = "";
+    }
+%>
 
 <body>
+<input id="failedInfo" type="hidden" value="<%=failedInfo %>"/>
+<!-- 提示信息的Modal -->
+<div class="modal fade" id="tips-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><label class="text-danger">提示信息</label></h4>
+            </div>
+            <div class="modal-body">
+                <br/>
+                <h2 class="text-primary" id="tips"></h2>
+                <br/>
+            </div>
+            <div class="modal-footer" align="center">
+                <button type="button" class="btn btn-warning btn-block" data-dismiss="modal">Got it</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
 
     <h1>重邮经管学院科研信息管理系统</h1>
 
-    <form class="form-signin" action="login/check.do" method="post" onsubmit="return true">
-        <h3 class="form-signin-heading">Please sign in</h3>
+    <form class="form-signin" action="login/check.do" method="post" onsubmit="return checkForm()">
+        <h3 class="form-signin-heading">请登录</h3>
 
         <!-- 用户名 -->
-        <label for="inputUsername" class="sr-only">用户名</label>
-        <input type="Username" name="userName" id="inputEmail" class="form-control" placeholder="用户名" required autofocus>
+        <div class="form-group">
+            <label class="sr-only">用户名</label>
+            <input name="userName" id="userName" class="form-control" placeholder="用户名" title="用户名" required autofocus>
+        </div>
 
         <!-- 密码 -->
-        <label for="inputPassword" class="sr-only">密码</label>
-        <input type="password" name="userPwd" id="inputPassword" class="form-control" placeholder="密码" required>
+        <div class="form-group">
+            <label class="sr-only">密码</label>
+            <input type="password" name="userPwd" id="userPwd" class="form-control" placeholder="密码" required>
+        </div>
 
         <!-- 验证码 -->
-        <div>
-            <label for="inputCode" class="sr-only">验证码</label>
-            <input type="code" name="check" id="input" class="form-control" placeholder="验证码" required>
-            <!-- 验证码图片 -->
-            <div id="checkCode">
-                <img id="randImage" src="image.jsp" />
-                <span id="change" onclick="javascript:loadimage();">换一张</span>
+        <div class="form-group" style="overflow: hidden;">
+            <label class="sr-only">验证码</label>
+            <div class="form-control" style="text-align: left;">
+                <input name="check" id="check" placeholder="验证码" style="width: 60%; padding-left: 6px; border: none;" required>
+                <!-- 验证码图片 -->
+                <span id="checkCode" style="margin-left: 4%;" onclick="loadimage();">
+                    <img style="" id="randImage" src="image.jsp" />
+                    <span style="margin-left: 2%; vertical-align: middle;" class="fa fa-refresh" id="change"></span>
+                </span>
             </div>
+
         </div>
 
         <!-- 身份 -->
-        <label for="inputIdentity" class="sr-only">身份</label>
-        <select class="form-control1" name="loginType" id="role">
-            <option value="0">请选择角色</option>
-        </select>
-
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+        <div class="form-group">
+            <label class="sr-only">身份</label>
+            <select class="form-control" name="loginType" id="role">
+                <option value="0">请选择角色</option>
+            </select>
         </div>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-        <button class="btn btn-lg btn-primary btn-block" type="reset">重置</button>
+        <button class="btn btn-lg btn-info btn-block" type="reset">重置</button>
     </form>
 
 </div> <!-- /container -->
 
-<div class="mastfoot">
+<div class="mastfoot" style="left: 39%;">
     <div class="inner">
         <p>Support By <a href="javascript:void(0)">重邮信管工作室</a>, by <a href="javascript:void(0)">@Bern</a>.</p>
     </div>
@@ -82,20 +114,21 @@
 <script src="js/bootstrap-3.3.5/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(function() {
-        /*提示信息*/
-        //$.ligerDialog.tip({ title: '提示信息', content: '请不要使用IE7,否则部分科研成果不能正常展示！如果您使用的是360浏览器，请打开浏览器的极速模式进行访问！' });
+        if($('#failedInfo').val() != '') {
+            showTipsModal($('#failedInfo').val());
+        }
 
         /*加载角色信息*/
         $.ajax({
             url : "login/findRoleList.do",
             type : 'POST',
             dataType : 'JSON',
-            timeout : 5000,
+            timeout : 0,
             error : function() {
                 alert('没有选择身份');
             },
             success : function(msg) {
-                $("#role").empty();
+//                $("#role").empty();
                 $.each(eval(msg), function(i, item) {
                     $(
                             "<option value='" + item.roleId + "'>"
@@ -104,23 +137,23 @@
                 });
             }
         });
-    })
+    });
 
     /**
      * 表单完整性校验
      **/
     function checkForm() {
-        if($("#userName").attr("value") == "") {
-            alert("请输入用户名");
+        if($("#userName").val() == "") {
+            showTipsModal("请输入用户名");
             return false;
-        } else if($("#userPwd").attr("value") == "") {
-            alert("请输入用户密码");
+        } else if($("#userPwd").val() == "") {
+            showTipsModal("请输入用户密码");
             return false;
-        } else if($("#check").attr("value")=="" || $("#check").attr("value").length<4) {
-            alert("请输入完整的验证码");
+        } else if($("#check").val()=="" || $("#check").val().length != 4) {
+            showTipsModal("请输入完整的验证码");
             return false;
-        } else if($("#role").val() == "") {
-            alert("请选择身份信息");
+        } else if($("#role").val()==0 || $("#role").val()=="0") {
+            showTipsModal("请选择身份信息");
             return false;
         } else {
             return true;
@@ -134,6 +167,16 @@
         document.getElementById("randImage").src = "image.jsp?"+Math.random();
     }
 
+    /**
+     * 展示提示信息的modal
+     * @param tipsInfo 提示信息
+     */
+    function showTipsModal(tipsInfo) {
+        $('#tips').empty().append(tipsInfo);
+        $('#tips-modal').modal({
+            keyboard: false
+        });
+    }
 </script>
 </body>
 </html>

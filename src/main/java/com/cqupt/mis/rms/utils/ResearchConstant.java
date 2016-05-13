@@ -63,6 +63,12 @@ public class ResearchConstant {
 	public static final String PROOF_STORE_PATH_ROOT = "E:/RMS旁证材料";
 
 	/**
+	 * 重置密码
+	 * TODO: 写在XML里面
+	 */
+	public static final String RESET_PW = "123456";
+
+	/**
 	 * 便于人阅读的时间格式
 	 */
 	public static final String DATE_FORMAT_PATTERN = "yyyy/MM/dd HH:mm";

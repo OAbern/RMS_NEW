@@ -5,7 +5,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,13 +53,13 @@ public class LoginController {
 	public ModelAndView loginCheck(HttpServletRequest request) {
 		ModelAndView view = new ModelAndView();
 
-		//TODO： 方便测试代码，跳过登录检验
-		request.getSession().setAttribute(SessionConstant.USERID, "1");
-		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
-		view.setViewName("redirect:/login/menu.do");
-		if(true)
-			return view;
-		//TODO： 方便测试代码，跳过登录检验
+//		//TODO： 方便测试代码，跳过登录检验
+//		request.getSession().setAttribute(SessionConstant.USERID, "1");
+//		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
+//		view.setViewName("redirect:/login/menu.do");
+//		if(true)
+//			return view;
+//		//TODO： 方便测试代码，跳过登录检验
 
 		String userName = request.getParameter("userName");
         String userPwd = request.getParameter("userPwd");
@@ -79,7 +81,7 @@ public class LoginController {
      				// 用户名和密码正确,则保存登录名和用户角色信息——因为后面很多地方会使用到这两个参数，所以存放在session里面
      				request.getSession().setAttribute(SessionConstant.USERID, userName);
      				request.getSession().setAttribute(SessionConstant.ROLEID, role.getRoleId());
-     				view.setViewName("redirect:/pages/common/main.html");
+     				view.setViewName("redirect:/pages/common/index.html");
      			} else {
      				request.setAttribute("loginFailed", "用户名或密码错误！");
      				view.setViewName("login.jsp");
@@ -97,14 +99,14 @@ public class LoginController {
 	
 	@RequestMapping("/menu")
 	public void getMenu(HttpServletRequest request, HttpServletResponse response) {
-		//TODO： 方便测试代码，跳过登录检验
-		request.getSession().setAttribute(SessionConstant.USERID, "1");
-		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
-		//TODO: 方便测试代码，跳过登录检验
+//		//TODO： 方便测试代码，跳过登录检验
+//		request.getSession().setAttribute(SessionConstant.USERID, "1");
+//		request.getSession().setAttribute(SessionConstant.ROLEID, "1");
+//		//TODO: 方便测试代码，跳过登录检验
 
 		Object menuObj = request.getSession().getAttribute(SessionConstant.MENU_INFO);
-		//if(menuObj == null) {		//从数据库获取数据
-		if(true) {		//TODO: 方便测试
+		if(menuObj == null) {		//从数据库获取数据
+//		if(true) {		//TODO: 方便测试
 			Object roleIdObj = request.getSession().getAttribute(SessionConstant.ROLEID);
 			if(roleIdObj == null) {
 				return;
@@ -121,6 +123,18 @@ public class LoginController {
 		}
 
 	}
-	
-	
+
+	/**
+	 * 退出登录
+	 * @param session @see HttpSession
+	 * @return 重定向到登录页面
+     */
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpSession session) {
+		//清除会话中所有的数据
+		session.removeAttribute(SessionConstant.USERID);
+		session.removeAttribute(SessionConstant.MENU_INFO);
+		session.removeAttribute(SessionConstant.ROLEID);
+		return new ModelAndView("redirect:/login.jsp");
+	}
 }

@@ -90,7 +90,7 @@ public class UserInfoController {
 
 	/**
 	 * 获取学院信息
-	 * @param response
+	 * @param response @see HttpServletResponse
      */
 	@RequestMapping("/getcollege")
 	public void getCollege(HttpServletResponse response) {

@@ -1,5 +1,6 @@
 package com.cqupt.mis.rms.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,54 @@ public class GrantServiceImpl implements GrantService {
 		return new ResultInfo<Object>(null, true);
 	}
 
+	public boolean assignRole(String userId, int[] roleIdArrNew) {
+		Integer[] roleIdArrOld = cquptRoleDao.findRoleIdByUserId(userId);
+		final int PLACE_HOLDER = -1;		//角色Id占位符，注意角色Id的的值不应该设为-1，否则将导致程序出现逻辑错误
+		List<Integer> roleIdListAdd = new ArrayList<Integer>();
+		List<Integer> roleIdListDel = new ArrayList<Integer>();
+
+		//查找要增加的元素
+		for(int i=0; i<roleIdArrNew.length; i++) {
+			boolean addFlag = true;
+			for(int j=0; j<roleIdArrOld.length; j++) {
+				if(roleIdArrNew[i] == roleIdArrOld[j]) {
+					addFlag = false;
+					roleIdArrOld[j] = PLACE_HOLDER;		//相同则意为在数据表中不加不减，置为-1
+					break; 		//终止内层循环
+				}
+			}
+			if(addFlag) {		//addFlag为true，表示在roleIdArrNew有，在roleIdArrOld无的元素，即为将要在数据表增加的元素
+				roleIdListAdd.add(roleIdArrNew[i]);
+			}
+		}
+
+		//查找要删除的元素
+		for(int item : roleIdArrOld) {
+			if(item != PLACE_HOLDER) {		//值不等，表示在roleIdArrNew无，在roleIdArrOld有的元素，即为将要在数据表删除的元素
+				roleIdListDel.add(item);
+			}
+		}
+
+		//插入数据库
+		if(roleIdListAdd.size() != 0) {
+			int[] roleIdArrAdd = new int[roleIdListAdd.size()];
+			for(int i=0; i<roleIdArrAdd.length; i++) {
+				roleIdArrAdd[i] = roleIdListAdd.get(i);
+			}
+			cquptRoleDao.assignRoleAdd(userId, roleIdArrAdd);
+		}
+
+		//从数据库删除
+		if(roleIdListDel.size() != 0) {
+			int[] roleIdArrDel = new int[roleIdListDel.size()];
+			for(int i=0; i<roleIdArrDel.length; i++) {
+				roleIdArrDel[i] = roleIdListDel.get(i);
+			}
+			cquptRoleDao.assignRoleDelete(userId, roleIdArrDel);
+		}
+
+		return true;
+	}
 
 
 	/**
