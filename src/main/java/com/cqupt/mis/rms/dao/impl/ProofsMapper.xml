@@ -64,7 +64,12 @@
         </if>
     </delete>
 
-
+    <select id="selectByPrimaryKey" resultMap="Proof" parameterType="java.lang.Integer" >
+        select
+        <include refid="ColumnList" />
+        from proofs
+        where proof_id = #{proofId,jdbcType=INTEGER}
+    </select>
 
 
 
@@ -73,12 +78,7 @@
 
 <!-- ********************************************************** -->
 	
-  <select id="selectByPrimaryKey" resultMap="Proof" parameterType="java.lang.Integer" >
-    select 
-    <include refid="ColumnList" />
-    from proofs
-    where proof_id = #{proofId,jdbcType=INTEGER}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from proofs
     where proof_id = #{proofId,jdbcType=INTEGER}

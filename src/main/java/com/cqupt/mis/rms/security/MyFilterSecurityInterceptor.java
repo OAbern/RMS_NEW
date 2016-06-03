@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
  * @author welkin
  *
  */
+@Deprecated
 public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter{
 	{
 		System.out.println("***********************3********************************");

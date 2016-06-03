@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
  * @author Bern
  *
  */
+@Deprecated
 public class MyAccessDecisionManager implements AccessDecisionManager{
 	{
 		System.out.println("***********************2********************************");

@@ -31,6 +31,7 @@ import com.cqupt.mis.rms.model.RolePurviewDyn;
  * @author welkin
  *
  */
+@Deprecated
 public class MyFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource, ApplicationContextAware {
 	{
 		System.out.println("***********************1********************************");

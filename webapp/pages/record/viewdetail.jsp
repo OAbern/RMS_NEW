@@ -278,7 +278,7 @@
     //加载旁证材料的数据
     for(var i=0; i<proofsList.length; i++) {
         var p = proofsList[i];
-        var pPath = p.proofPath;
+        var pPath = 'file/proof/download/'+ p.proofId + '.do';
         var pName = p.uploadProofName;
         if(pPath == null)
             pPath = "javascript:void(0)";

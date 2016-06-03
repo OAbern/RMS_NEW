@@ -19,6 +19,7 @@ import com.cqupt.mis.rms.service.UserManagerService;
  * @author Bern
  *
  */
+@Deprecated
 public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	{
 		System.out.println("***********************5********************************");

@@ -27,6 +27,7 @@ import com.cqupt.mis.rms.utils.EncryptUtils;
  * @author welkin
  *
  */
+@Deprecated
 public class MyUserDetailsServiceImpl implements UserDetailsService {
 	{
 		System.out.println("***********************4********************************");
